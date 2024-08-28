@@ -1,0 +1,126 @@
+<section class="payment-page">
+    <div class="container">
+        <h1 class="font-weight-bold text-center mb-5">Payment</h1>
+        <div class="row">
+            <!-- Payment Summary -->
+            <div class="col-md-6">
+                <div class="form-container">
+                    <h3 class="my-2 text-info">Payment Summary</h3>
+                    <p class="text-muted"><strong>Amount:</strong> Rs. 750</p>
+                    <p class="text-muted"><strong>Movie:</strong> Devara</p>
+                    <p class="text-muted"><strong>Language:</strong> Telugu</p>
+                    <p class="text-muted"><strong>Theatre:</strong> Shanthi Theatre</p>
+                    <p class="text-muted"><strong>Date & Time:</strong> August 25, 2024, 7:00 PM</p>
+                    <p class="text-muted"><strong>Seats:</strong> A1, A2, A3</p>
+                    <p class="text-muted">Thank you for booking with MovieBook. If you have any issues with your payment, please contact our support team.</p>
+                </div>
+            </div>
+            <!-- Payment Options -->
+            <div class="col-md-6 payment-options mt-4 mt-md-0">
+                <!-- Coupon Code -->
+                <div class="card mb-3 p-4 no-hover-effect">
+                    <div >
+                        <form>
+                            <div class="form-group">
+                                <label for="couponCode">Enter Coupon Code</label>
+                                <div class="row">
+                                    <div class="col-md-8 col-12">
+                                        <input type="text" class="form-control" id="couponCode" placeholder="Enter your coupon code">
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0 col-12 text-center">
+                                        <button type="button" class="btn btn-outline-primary btn-block apply-coupon">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Card Payment -->
+                <div class="card">
+                    <div class="card-header" id="cardHeading">
+                        <h5 class="card-title">Credit/Debit Card</h5>
+                    </div>
+                    <div class="card-body" id="cardDetails">
+                        <form>
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" class="form-control" id="cardNumber" placeholder="Enter your card number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cardName">Name on Card</label>
+                                <input type="text" class="form-control" id="cardName" placeholder="Enter name on card" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="expiryDate">Expiry Date</label>
+                                    <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" class="form-control" id="cvv" placeholder="CVV" required>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-outline-primary btn-block proceed-to-pay">Pay Now</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- UPI Payment -->
+                <div class="card">
+                    <div class="card-header" id="upiHeading">
+                        <h5 class="card-title">UPI Payment</h5>
+                    </div>
+                    <div class="card-body" id="upiDetails">
+                        <form>
+                            <div class="form-group">
+                                <label for="upiId">UPI ID</label>
+                                <input type="text" class="form-control" id="upiId" placeholder="Enter your UPI ID" required>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-outline-primary btn-block proceed-to-pay">Pay Now</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Online Payment -->
+                <div class="card">
+                    <div class="card-header" id="onlineHeading">
+                        <h5 class="card-title">Online Payment</h5>
+                    </div>
+                    <div class="card-body" id="onlineDetails">
+                        <div class="payment-methods">
+                            <div class="row">
+                                <div class="col-6 mb-2">
+                                    <button class="btn btn-light w-100 payment-option" data-method="gpay">
+                                        <img src="https://cdn.statically.io/gh/vamsivardhanalajangi/online-movie-ticket-booking/5b926d38/images/gpay.png" alt="Google Pay" class="mr-1"> Google Pay
+                                    </button>
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <button class="btn btn-light w-100 payment-option" data-method="paytm">
+                                        <img src="https://cdn.statically.io/gh/vamsivardhanalajangi/online-movie-ticket-booking/5b926d38/images/Paytm_Logo.png" alt="Paytm" class="mr-1"> Paytm
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 mb-2">
+                                    <button class="btn btn-light w-100 payment-option" data-method="phonepe">
+                                        <img src="https://cdn.statically.io/gh/vamsivardhanalajangi/online-movie-ticket-booking/5b926d38/images/phone_pe.png" alt="PhonePe" class="mr-1"> PhonePe
+                                    </button>
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <button class="btn btn-light w-100 payment-option" data-method="lazypay">
+                                        <img src="https://cdn.statically.io/gh/vamsivardhanalajangi/online-movie-ticket-booking/5b926d38/images/lazy.png" alt="LazyPay" class="mr-1"> LazyPay
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-outline-primary btn-block proceed-to-pay mt-1">Pay Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
