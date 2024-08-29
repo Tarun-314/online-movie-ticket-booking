@@ -13,38 +13,46 @@
               <div class="form-row">
                 <div class="form-group col-md-5">
                   <label for="name" class="font-weight-bold text-secondary">Name</label>
-                  <input type="text" size="10" class="form-control form-control-sm" id="name" placeholder="Enter your name" value="John Doe">
+                  <input type="text" size="10" class="form-control form-control-sm" id="name" placeholder="Enter your name" value="{{user.FullName}}">
                 </div>
                 <div class="col-md-1"></div>
                 <div class="form-group col-md-5">
                   <label for="email" class="font-weight-bold text-secondary">Email</label>
-                  <input type="email" class="form-control form-control-sm" id="email" placeholder="Enter your email" value="john.doe@example.com">
+                  <input type="email" class="form-control form-control-sm" id="email" placeholder="Enter your email" value="{{user.Email}}">
                 </div>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-5">
                   <label for="password" class="font-weight-bold text-secondary">Password</label>
-                  <input type="password" class="form-control form-control-sm" id="password" placeholder="Enter your password">
+                  <input type="password" class="form-control form-control-sm" id="password" placeholder="Enter your new password">
                 </div>
                 <div class="col-md-1"></div>
                 <div class="form-group col-md-5">
                   <label for="security-question" class="font-weight-bold text-secondary">Security Question</label>
-                  <select class="form-control form-control-sm" id="security-question">
-                    <option selected>What was the name of your first pet?</option>
-                    <option>What is your mother's maiden name?</option>
-                    <option>What is your favorite book?</option>
+                  <select class="form-control form-control-sm" id="security-question" [value]="user.SecurityQuestion">
+                    <option value="" disabled>Select a security question</option>
+                    <option value="first_pet">What is the name of your first pet?</option>
+                    <option value="first_car">What was the make and model of your first car?</option>
+                    <option value="mothers_maiden_name">What is your mother's maiden name?</option>
+                    <option value="elementary_school">What was the name of your elementary school?</option>
+                    <option value="first_employer">What was the name of your first employer?</option>
+                    <option value="favorite_book">What is your favorite book?</option>
+                    <option value="childhood_nickname">What was your childhood nickname?</option>
+                    <option value="birth_city">What is the name of the city where you were born?</option>
+                    <option value="dream_job">What was your dream job as a child?</option>
+                    <option value="favorite_movie">What is your favorite movie?</option>
                   </select>
                 </div>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-5">
                   <label for="security-answer" class="font-weight-bold text-secondary">Security Answer</label>
-                  <input type="text" class="form-control form-control-sm" id="security-answer" placeholder="Enter your answer" value="Fluffy">
+                  <input type="text" class="form-control form-control-sm" id="security-answer" placeholder="Enter your answer" value="{{user.SecurityAnswer}}">
                 </div>
               </div>
               <div class="text-center my-2">
                 <button type="reset" class="btn btn-outline-danger btn-sm mr-1">Reset</button>
-                <button type="submit" class="btn btn-outline-primary btn-sm">Save Changes</button>
+                <button type="submit" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#infoModal">Save Changes</button>
               </div>
             </form>
           </div>
@@ -74,30 +82,38 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Tholi Prema</td>
-                <td>Inox PVR</td>
-                <td>15 Aug, 2024</td>
-                <td>06:00 AM</td>
-                <td>A5, A6</td>
-                <td>₹500</td>
-                <td>TXN123456789</td>
-                <td>Credit Card</td>
+
+              <tr *ngFor="let p of user_purchase_history">
+                <td>{{p.Movie}}</td>
+                <td>{{p.Multiplex}}</td>
+                <td>{{p.BookingDate | date: "dd MMM yyyy"}}</td>
+                <td>{{p.ShowTime}}</td>
+                <td>{{p.Seats}}</td>
+                <td>{{p.Amount}}</td>
+                <td>{{p.TransactionID}}</td>
+                <td>{{p.PaymentMode}}</td>
               </tr>
-              <tr>
-                <td>Tholi Prema</td>
-                <td>Inox PVR</td>
-                <td>15 Aug, 2024</td>
-                <td>06:00 AM</td>
-                <td>A5, A6</td>
-                <td>₹500</td>
-                <td>TXN123456789</td>
-                <td>Credit Card</td>
-              </tr>
-              <!-- Additional rows can be added here -->
+              
             </tbody>
           </table>
         </div>
       </div>
     </div>
   </section>
+
+  <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Information</h5>
+                <a href="#" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+            </div>
+            <div class="modal-body pb-0 px-2 text-center">
+                <p class="text-muted">Hello {{user.FullName}}..! <br />Changes have been saved.</p>
+            </div>
+            
+        </div>
+    </div>
+  </div>

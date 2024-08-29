@@ -372,4 +372,6 @@ margin-bottom: 3px;
 font-size: 0.875rem !important; /* Smaller font size for the label */
 }
 
-
+td{
+  font-size: 14px !important;
+}

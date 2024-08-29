@@ -15,19 +15,19 @@
             <!-- Movie Details -->
             <div class="col-md-8">
                 <div class="card-body ml-2">
-                  <h2 class="golden-gradient-text my-4">{{movie.Title}}</h2>
-                  <p class="text-muted"><i class="fa fa-calendar text-info "></i> <strong class="ml-2">Release:</strong> {{movie.ReleaseDate | date:"dd MMM yyyy"}}</p>
-                  <p class="text-muted"><i class="fa fa-list-ol text-primary "></i><strong class="ml-2">Genre:</strong> {{movie.Genre}}</p>
-                  <p class="text-muted"><i class="fa fa-info-circle text-secondary "></i> <strong class="ml-2">Description:</strong> {{movie.Description}}</p>
-                  <p class="text-muted"><i class="fa fa-clock-o text-danger "></i> <strong class="ml-2">Duration:</strong> {{movie.Duration}} mins</p>
-                  <p class="text-muted"><i class="fa fa-users text-success "></i> <strong class="ml-2">Casting:</strong> {{movie.Casting}}</p>
-                  <p class="text-muted"><i class="fa fa-star text-warning "></i> <strong class="ml-2">IMDb Ratings:</strong> {{movie.Rating}}</p>
+                  <h2 class="golden-gradient-text my-4 text-capitalize">{{movie.Title}}</h2>
+                  <p class="text-muted text-capitalize"><i class="fa fa-calendar text-info "></i> <strong class="ml-2">Release:</strong> {{movie.ReleaseDate | date:"dd MMM yyyy"}}</p>
+                  <p class="text-muted text-capitalize"><i class="fa fa-list-ol text-primary "></i><strong class="ml-2">Genre:</strong> {{movie.Genre}}</p>
+                  <p class="text-muted text-capitalize"><i class="fa fa-info-circle text-secondary "></i> <strong class="ml-2">Description:</strong> {{movie.Description}}</p>
+                  <p class="text-muted text-capitalize"><i class="fa fa-clock-o text-danger "></i> <strong class="ml-2">Duration:</strong> {{movie.Duration}} mins</p>
+                  <p class="text-muted text-capitalize"><i class="fa fa-users text-success "></i> <strong class="ml-2">Casting:</strong> {{movie.Casting}}</p>
+                  <p class="text-muted text-capitalize"><i class="fa fa-star text-warning "></i> <strong class="ml-2">IMDb Ratings:</strong> {{movie.Rating}}</p>
                   <div class="d-flex">
                     <!-- Button to trigger modal -->
                     <button class="btn btn-outline-danger mr-2" data-toggle="modal" data-target="#trailerModal">
                       <i class="fa fa-play"></i> Watch Trailer
                     </button>
-                    <a routerLink="/ticket-booking" class="btn btn-outline-success">
+                    <a routerLink="/ticket-booking/{{movie.MovieID}}" class="btn btn-outline-success">
                       <i class="fa fa-ticket"></i> Book Tickets
                     </a>
                   </div>

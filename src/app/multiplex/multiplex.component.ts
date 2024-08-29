@@ -1,23 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from '../services/data-services';
 import { Multiplex } from '../models/data-model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-multiplex',
   templateUrl: './multiplex.component.html',
   styleUrl: './multiplex.component.css'
 })
-export class MultiplexComponent implements OnInit{
+export class MultiplexComponent implements OnInit, OnDestroy{
 
   multiplexes:Multiplex[] = [];
   searchMul='';
+  private citySubscription: Subscription;
 
   constructor(private dataService:DataService)
   {}
 
   ngOnInit()
   {
-    this.multiplexes = this.dataService.getMultiplexes();
+    this.citySubscription = this.dataService.selectedCity$.subscribe(city => {
+      this.multiplexes = this.dataService.getMultiplexByCity(city);
+    });
   }
 
   getStars(rating: number): string[] {
@@ -38,4 +42,9 @@ export class MultiplexComponent implements OnInit{
     );
   }
 
+  ngOnDestroy(): void {
+    if (this.citySubscription) {
+      this.citySubscription.unsubscribe();
+    }
+  }
 }

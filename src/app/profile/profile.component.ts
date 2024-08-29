@@ -1,4 +1,6 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { DataService } from '../services/data-services';
+import { PurchaseHistory, User } from '../models/data-model';
 
 declare var $: any;
 
@@ -7,7 +9,18 @@ declare var $: any;
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit{
+
+  constructor(private dataService:DataService){}
+  user:User;
+  user_purchase_history:PurchaseHistory[];
+
+  ngOnInit()
+  {
+    this.user = this.dataService.getUserDetails();
+    this.user_purchase_history=this.dataService.getUserPurchaseHistory();
+  }
+
   ngAfterViewInit(): void {
     $(document).ready(function() {
       $('#Table5').DataTable({

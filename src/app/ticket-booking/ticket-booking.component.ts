@@ -1,4 +1,7 @@
 import { Component, Renderer2, OnInit } from '@angular/core';
+import { Movie } from '../models/data-model';
+import { ActivatedRoute, Router, Params } from '@angular/router';
+import { DataService } from '../services/data-services';
 
 declare var $: any;
 
@@ -8,9 +11,34 @@ declare var $: any;
   styleUrls: ['./ticket-booking.component.css']
 })
 export class TicketBookingComponent implements OnInit {
-  constructor(private renderer: Renderer2) {}
+
+
+  id:string;
+  movie:Movie;
+  isMovPresent:boolean = false;
+  genres: string[];
+
+  constructor(private route:ActivatedRoute, private renderer: Renderer2, private router:Router, private dataService:DataService){}
 
   ngOnInit() {
+
+    this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
+      if (this.id) {
+        this.movie = this.dataService.getMovieById(this.id);
+
+        if(this.movie)
+        {
+          this.isMovPresent=true;
+          this.genres= this.movie.Genre.split(",");
+        }
+        else
+          this.router.navigate(['/error']);
+      } else {
+        this.router.navigate(['/error']);
+      }
+    });    
+
     this.generateDateButtons();
     this.setupSeatMatrix();
     this.setupDateAndTimeSelection();

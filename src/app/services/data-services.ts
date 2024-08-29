@@ -1,16 +1,28 @@
-import { Injectable } from "@angular/core";
-import { City, Movie, Multiplex, Review } from "../models/data-model";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { City, LinkedMovies, Movie, Multiplex, PurchaseHistory, Review, User } from "../models/data-model";
 
 @Injectable({providedIn:'root'})
 export class DataService
 {
-    cityobj:City = new City(["Hyderabad", "Chennai", "Mumbai", "Delhi", "Kolkata", "Pune"]);
+
+    private selectedCitySubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+    selectedCity$: Observable<string> = this.selectedCitySubject.asObservable();
+
+    constructor() {
+        this.selectedCitySubject.next(this.getCities()[0]); 
+    }
+
+    cityobj:City = new City(["Hyderabad", "Chennai", "Mumbai", "Delhi", "Kolkata"]);
     cities:string[] = this.cityobj.cities;
     getCities():string[]
     {
         return this.cities;
     }
-    
+
+    setCity(city: string): void {
+        this.selectedCitySubject.next(city);
+    }
 
     multiplexes: Multiplex[] = [
     new Multiplex(
@@ -80,17 +92,23 @@ export class DataService
         new Date('2024-08-24T08:52:02')
     )
     ];
+
     getMultiplexes():Multiplex[]
     {
         return this.multiplexes;
     }
 
-    getMultiplex(id:string):Multiplex
+    getMultiplexById(id:string):Multiplex
     {
         return this.multiplexes.find(multiplex => multiplex.TheatreID === id);
     }
 
-    getMovie(id:string):Movie
+    getMultiplexByCity(c:string):Multiplex[]
+    {
+        return this.multiplexes.filter(multiplex => multiplex.Area === c);
+    }
+
+    getMovieById(id:string):Movie
     {
         return this.movies.find(movie => movie.MovieID === id);
     }
@@ -210,5 +228,170 @@ export class DataService
     addReview(Rev:Review)
     {
         this.reviews.push(Rev);
+    }
+
+    user:User = new User(
+        '0DF0AFEC-B326-4ED3-8094-7BE78F1EDC11',
+        'Sarah Brown',
+        'hash5',
+        'sarahbrown@example.com',
+        '5678901234',
+        '0',
+        'first_pet',
+        'harry',
+        'User',
+        new Date('2024-08-24T08:39:13')
+    );
+
+    users:User[] = [
+        {
+            UserID: '0EC74B46-6419-4049-A24E-7B1E0DF6616E',
+            FullName: 'Chris Wilson',
+            PasswordHash: 'hash6',
+            Email: 'chriswilson@example.com',
+            PhoneNumber: '6789012345',
+            Bookings: '0',
+            SecurityQuestion: 'What is your favorite book?',
+            SecurityAnswer: 'To Kill a Mockingbird',
+            Role: 'User',
+            UpdatedAt: new Date('2024-08-24 08:39:13')
+        },
+        {
+            UserID: '2BC57594-3F0D-473E-B2D4-6829F4B8290D',
+            FullName: 'David Anderson',
+            PasswordHash: 'hash8',
+            Email: 'davidanderson@example.com',
+            PhoneNumber: '8901234567',
+            Bookings: '0',
+            SecurityQuestion: 'What is the name of the city where you were born?',
+            SecurityAnswer: 'Chicago',
+            Role: 'User',
+            UpdatedAt: new Date('2024-08-24 08:39:13')
+        },
+        {
+            UserID: '3980E8A0-9C28-448E-A989-4E5B9ABF726B',
+            FullName: 'Linda Thompson',
+            PasswordHash: 'hash9',
+            Email: 'lindathompson@example.com',
+            PhoneNumber: '9012345678',
+            Bookings: '0',
+            SecurityQuestion: 'What was your dream job as a child?',
+            SecurityAnswer: 'Astronaut',
+            Role: 'User',
+            UpdatedAt: new Date('2024-08-24 08:39:13')
+        },
+        {
+            UserID: '5DBCF802-C88C-4EF4-9FC9-E7C0B0CD710F',
+            FullName: 'Admin2',
+            PasswordHash: 'adminhash2',
+            Email: 'admintwo@example.com',
+            PhoneNumber: '2233445566',
+            Bookings: '0',
+            SecurityQuestion: 'What was the make and model of your first car?',
+            SecurityAnswer: 'Ford Mustang',
+            Role: 'Admin',
+            UpdatedAt: new Date('2024-08-24 08:39:13')
+        },
+        {
+            UserID: '6ED7036C-DD67-45A9-AEC1-74D3E27C0674',
+            FullName: 'Admin1',
+            PasswordHash: 'adminhash1',
+            Email: 'adminone@example.com',
+            PhoneNumber: '1122334455',
+            Bookings: '0',
+            SecurityQuestion: 'What is the name of your first pet?',
+            SecurityAnswer: 'Max',
+            Role: 'Admin',
+            UpdatedAt: new Date('2024-08-24 08:39:13')
+        },
+        {
+            UserID: '72F61BA2-B98C-4D6A-8EF5-D0B8F556E273',
+            FullName: 'Mike Johnson',
+            PasswordHash: 'hash3',
+            Email: 'mikejohnson@example.com',
+            PhoneNumber: '3456789012',
+            Bookings: '0',
+            SecurityQuestion: 'What is your mother\'s maiden name?',
+            SecurityAnswer: 'Williams',
+            Role: 'User',
+            UpdatedAt: new Date('2024-08-24 08:39:13')
+        }
+    ];
+
+    getUsers():User[]
+    {
+        return this.users;
+    }
+    
+    getUserDetails():User
+    {
+        return this.user;
+    }
+
+    user_purchases:PurchaseHistory[] = [new PurchaseHistory(
+        'Tholi Prema',
+        'Inox PVR',
+        new Date('2024-08-15'),
+        '06:00 AM',
+        'A5, A6',
+        '₹500',
+        'TXN123456789',
+        'Credit Card'
+      ),
+       new PurchaseHistory(
+        'Tholi Prema',
+        'Inox PVR',
+        new Date('2024-08-15'),
+        '06:00 AM',
+        'A5, A6',
+        '₹500',
+        'TXN123456789',
+        'Credit Card'
+      )];
+      
+    getUserPurchaseHistory():PurchaseHistory[]
+    {
+        return this.user_purchases;
+    }
+
+    linkedMovies:LinkedMovies[] = [
+        new LinkedMovies(
+          '0192E9D2-B38D-4878-BBED-80FE3AB16E11',
+          '05B467B0-3788-4726-ADC1-415C079B73DB',
+          'Theatre A',
+          '1441A9C5-EB00-493C-8F54-2C14C74A3AFF',
+          'Movie A',
+          1,
+          new Date('2024-08-28'),
+          '{"9:30AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","12:30PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","3:30PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","6:30PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000"}',
+          '80,80,80,80'
+        ),
+
+        new LinkedMovies(
+          '024E8F30-2EF8-4723-A380-1B1670EDB425',
+          'F8B39DB1-8113-440E-B414-332A54E17EF8',
+          'Theatre A',
+          '31BD7D4C-B4C4-44D3-9B96-F37720B1F95E',
+          'Movie A',
+          1,
+          new Date('2024-08-30'),
+          '{"8:00AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","11:00AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","2:00PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","5:00PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000"}',
+          '80,80,80,80'
+        ),
+
+        new LinkedMovies(
+          '04B77770-AA27-4F2D-8A36-67AEB55C4A9C',
+          'D90F1552-7CB1-4611-879F-CFF2B676FA72',
+          'Theatre A',
+          'C4DA0DB8-F320-41F9-9DDF-BF858C8643C2',
+          'Movie A',
+          1,
+          new Date('2024-08-28'),
+          '{"11:00AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","2:00PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","5:00PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","8:00PM":"0000000000000000000000000000000000000000000000000000000000000000000000000000000"}',
+        '80,80,80,80')];
+    
+    getLinkedMovies():LinkedMovies[]
+    {
+        return this.linkedMovies;
     }
 }

@@ -1,22 +1,25 @@
 <!-- Movie Section -->
 <section class="container my-3">
+  <div *ngIf="!isMovPresent" class="row justify-content-center p-4">
+    <h3 class="text-danger">Invalid Parameters. Retry Again</h3>
+  </div>
     <!-- Movie Name and Genres -->
     <div class="row mb-4">
       <div class="col-md-12 text-center">
-        <h2 class="display-4 my-3 font-weight-bold">Inception</h2>
+        <h2 class="display-5 mt-3 mb-2 font-weight-bold text-capitalize">{{movie.Title}}</h2>
         <div class="my-2">
-          <span class="badge badge-danger badge-genre mx-1">Action</span>
-          <span class="badge badge-outline-info badge-genre mx-1">Sci-Fi</span>
-          <span class="badge badge-dark badge-genre mx-1">Thriller</span>
+          <span class="badge badge-danger badge-genre mx-1 text-capitalize">{{genres[0]}}</span>
+          <span class="badge badge-outline-info badge-genre mx-1 text-capitalize">{{genres[1]}}</span>
+          <span class="badge badge-dark badge-genre mx-1 text-capitalize">{{genres[2]}}</span>
         </div>
         <div class="d-flex justify-content-center align-items-centermy-1">
-          <p class="font-weight-bold small"><i class="fa fa-language"></i> English</p>
+          <p class="font-weight-bold small text-capitalize"><i class="fa fa-language"></i> {{movie.Language}}</p>
           <div class="small mx-3">
-            <span class="badge badge-warning mr-1 small">8.5</span>
+            <span class="badge badge-warning mr-1 small">{{movie.Rating}}</span>
             <small class="text-muted small">IMDb Ratings</small>
           </div>
           <div class="small">
-            <i class="fa fa-heart text-danger"></i> 1.2k
+            <i class="fa fa-heart text-danger"></i> {{movie.Likes | likes}}
           </div>
         </div>
       </div>

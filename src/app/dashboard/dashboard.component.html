@@ -68,29 +68,28 @@
         <h4 class="text-primary my-2 mr-sm-3"><i class="fa fa-television"></i> Multiplex List</h4>
         <button class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#manageMultiplexModal">Add Multiplex</button>
       </div>
-        <div class="table-responsive mx-3">
+        <div class="table-responsive">
           <table id="Table" class="table table-md table-striped">
             <thead class="thead-dark">
               <tr>
                 <th>Name</th>
                 <th>Area</th>
-                <th>Location</th>
                 <th>Ratings</th>
                 <th>Screens</th>
                 <th>Total Seats</th>
-                <th>Admin</th>
+                <th>Updated</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Cinema Palace</td>
-                <td>Downtown</td>
-                <td>123 Main St</td>
-                <td>4.5</td>
-                <td>5</td>
-                <td>500</td>
-                <td>1</td>
+
+              <tr *ngFor="let m of multiplexes">
+                <td>{{m.Name}}</td>
+                <td>{{m.Area}}</td>
+                <td>{{m.Ratings}}</td>
+                <td>{{m.Screens}}</td>
+                <td>{{m.TotalSeats}}</td>
+                <td>{{m.UpdatedAt | date:"dd MMM yyyy"}}</td>
                 <td>
                   <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#manageMultiplexModal">
                     <i class="fa fa-edit"></i>
@@ -100,6 +99,7 @@
                   </button>
                 </td>
               </tr>
+
             </tbody>
           </table>
         </div>
@@ -194,14 +194,14 @@
         <h4 class="text-primary my-2 mr-sm-3"><i class="fa fa-film"></i> Movie List</h4>
         <button class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#manageMovieModal">Add Movie</button>
       </div>
-        <div class="table-responsive mx-3">
+        <div class="table-responsive">
           <table id="Table2" class="table table-md table-striped">
             <thead class="thead-dark">
               <tr>
                 <th>Title</th>
                 <th>Genre</th>
                 <th>Duration</th>
-                <th>Release Date</th>
+                <th>Release</th>
                 <th>Rating</th>
                 <th>Likes</th>
                 <th>Casting</th>
@@ -210,15 +210,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Tholi Prema</td>
-                <td>Romance</td>
-                <td>120 minutes</td>
-                <td>15 Aug, 2024</td>
-                <td>8.5</td>
-                <td>1500</td>
-                <td>John Doe, Jane Doe</td>
-                <td>English</td>
+
+              <tr *ngFor="let mov of movies">
+                <td>{{mov.Title}}</td>
+                <td>{{mov.Genre}}</td>
+                <td>{{mov.Duration}} mins</td>
+                <td>{{mov.ReleaseDate | date:"dd MMM, yyyy"}}</td>
+                <td>{{mov.Rating}}</td>
+                <td>{{mov.Likes | likes}}</td>
+                <td>{{mov.Casting}}</td>
+                <td>{{mov.Language}}</td>
                 <td>
                   <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#manageMovieModal">
                     <i class="fa fa-edit"></i>
@@ -228,6 +229,7 @@
                   </button>
                 </td>
               </tr>
+
               <!-- Additional rows can be added here -->
             </tbody>
           </table>
@@ -306,7 +308,7 @@
           <h4 class="text-primary my-2 mr-sm-3 text-center"><i class="fa fa-link" aria-hidden="true"></i> Linked Movies</h4>
           <button class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#linkMovieModal"> Add</button>  
         </div>
-        <div class="table-responsive mx-3">
+        <div class="table-responsive">
           <table id="Table3" class="table table-md table-striped">
             <thead class="thead-dark">
               <tr>
@@ -320,13 +322,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Cinema Palace</td>
-                <td>Tholi Prema</td>
-                <td>1</td>
-                <td>2024-08-15</td>
-                <td>06:30 AM</td>
-                <td>100</td>
+
+              <tr *ngFor="let lm of linkedMovies">
+                <td>{{lm.TheatreName}}</td>
+                <td>{{lm.MovieName}}</td>
+                <td>{{lm.ScreenNumber}}</td>
+                <td>{{lm.ShowDate | date:"dd MMM yyyy"}}</td>
+                <td>{{lm.ShowTimes | showTimes}}</td>
+                <td>{{lm.AvailableSeats}}</td>
                 <td>
                   <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#linkMovieModal">
                     <i class="fa fa-edit"></i>
@@ -336,7 +339,7 @@
                   </button>
                 </td>
               </tr>
-              <!-- Additional rows can be added here -->
+
             </tbody>
           </table>
         </div>
@@ -350,7 +353,7 @@
         <div class="d-flex align-items-center justify-content-center">
           <h4 class="text-primary my-4 my-md-2 mr-3 text-center"><i class="fa fa-users" aria-hidden="true"></i> Users</h4>
         </div>
-        <div class="table-responsive mx-3">
+        <div class="table-responsive">
           <table id="Table4" class="table table-md table-striped">
             <thead class="thead-dark">
               <tr>
@@ -358,19 +361,22 @@
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
+                <th>Role</th>
                 <th>Bookings</th>
                 <th>Registered</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>John Doe</td>
-                <td>john.doe&#64;example.com</td>
-                <td>+1234567890</td>
-                <td>User</td>
-                <td>2024-08-15 10:00:00</td>
+            
+              <tr *ngFor="let user of users">
+                <td>{{user.UserID}}</td>
+                <td>{{user.FullName}}</td>
+                <td>{{user.Email}}</td>
+                <td>{{user.PhoneNumber}}</td>
+                <td>{{user.Role}}</td>
+                <td>{{user.Bookings}}</td>
+                <td>{{user.UpdatedAt | date: "dd MMM yyyy"}}</td>
                 <td>
                   <button class="btn btn-outline-warning btn-sm mr-1 rounded" title="Block" data-toggle="modal" data-target="#editUserModal">
                     <i class="fa fa-ban"></i>
@@ -380,7 +386,7 @@
                   </button>
                 </td>
               </tr>
-              <!-- Additional rows can be added here -->
+
             </tbody>
           </table>
         </div>

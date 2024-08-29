@@ -17,14 +17,14 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="cityDropdown">
             <span class="dropdown-item small disabled">-- Select City --</span>
-            <a *ngFor="let city of Cities" class="dropdown-item" [attr.data-value]="city" (click)="selectCity(city)">{{ city }}</a>
+            <a *ngFor="let city of Cities" routerLink="/home" class="dropdown-item text-capitalize" [attr.data-value]="city" (click)="selectCity(city)">{{ city }}</a>
           </div>
         </div>
 
         <!-- User Menu -->
         <div class="dropdown mb-2 mb-sm-0 flex-fill mx-1">
           <button class="btn btn-outline-secondary text-white dropdown-toggle w-100" type="button" id="userMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="https://cdn-icons-png.flaticon.com/512/3048/3048127.png" alt="User" class="rounded-circle mr-2" style="width: 30px; height: 30px;"> John Doe
+            <img src="https://cdn-icons-png.flaticon.com/512/3048/3048127.png" alt="User" class="rounded-circle mr-2" style="width: 30px; height: 30px;"> {{user.FullName}}
           </button>
           <div class="dropdown-menu" aria-labelledby="userMenuButton">
             <a class="dropdown-item" routerLink="/profile" routerLinkActive="hactive">

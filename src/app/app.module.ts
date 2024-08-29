@@ -24,6 +24,7 @@ import { HomeComponent } from './home/home.component';
 import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.component';
 import { LikesPipe } from './pipes/likes.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { ShowTimesPipe } from './pipes/show-times.pipe';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     HomeComponent,
     ConfirmBookingComponent,
     LikesPipe,
-    TruncatePipe
+    TruncatePipe,
+    ShowTimesPipe
   ],
   imports: [
     BrowserModule,

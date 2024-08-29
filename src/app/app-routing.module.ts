@@ -20,7 +20,7 @@ const routes: Routes = [
   {path: 'login',component: LoginComponent},
   { path: 'mul-details/:id', component: MulDetailsComponent, canActivate:[IdGuard] },
   { path: 'mov-details/:id', component: MovDetailsComponent, canActivate:[IdGuard] },
-  { path: 'ticket-booking', component: TicketBookingComponent },
+  { path: 'ticket-booking/:id', component: TicketBookingComponent, canActivate:[IdGuard]  },
   { path: 'ticket-confirm', component: ConfirmBookingComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'dashboard', component: DashboardComponent },

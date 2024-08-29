@@ -21,7 +21,7 @@ export class MulDetailsComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       if (this.id) {
-        this.multiplex = this.dataService.getMultiplex(this.id);
+        this.multiplex = this.dataService.getMultiplexById(this.id);
         if(this.multiplex)
           this.isMulPresent=true;
         else

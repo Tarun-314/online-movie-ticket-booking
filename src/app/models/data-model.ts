@@ -116,3 +116,107 @@ export class Review {
     this.ReviewDate = ReviewDate;
   }
 }
+
+
+export class User {
+  UserID: string;
+  FullName: string;
+  PasswordHash: string;
+  Email: string;
+  PhoneNumber: string;
+  Bookings: string;
+  SecurityQuestion?: string;
+  SecurityAnswer?: string;
+  Role: string;
+  UpdatedAt: Date;
+
+  constructor(
+    UserID: string,
+    FullName: string,
+    PasswordHash: string,
+    Email: string,
+    PhoneNumber: string,
+    Bookings: string,
+    SecurityQuestion?: string,
+    SecurityAnswer?: string,
+    Role: string = 'User',
+    UpdatedAt: Date = new Date()
+  ) {
+    this.UserID = UserID;
+    this.FullName = FullName;
+    this.PasswordHash = PasswordHash;
+    this.Email = Email;
+    this.PhoneNumber = PhoneNumber;
+    this.Bookings = Bookings;
+    this.SecurityQuestion = SecurityQuestion;
+    this.SecurityAnswer = SecurityAnswer;
+    this.Role = Role;
+    this.UpdatedAt = UpdatedAt;
+  }
+}
+
+export class PurchaseHistory {
+  Movie: string;
+  Multiplex: string;
+  BookingDate: Date;
+  ShowTime: string;
+  Seats: string;
+  Amount: string;
+  TransactionID: string;
+  PaymentMode: string;
+
+  constructor(
+    Movie: string,
+    Multiplex: string,
+    BookingDate: Date,
+    ShowTime: string,
+    Seats: string,
+    Amount: string,
+    TransactionID: string,
+    PaymentMode: string
+  ) {
+    this.Movie = Movie;
+    this.Multiplex = Multiplex;
+    this.BookingDate = BookingDate;
+    this.ShowTime = ShowTime;
+    this.Seats = Seats;
+    this.Amount = Amount;
+    this.TransactionID = TransactionID;
+    this.PaymentMode = PaymentMode;
+  }
+}
+
+
+export class LinkedMovies {
+  TheatreMovieID: string;
+  TheatreID: string;
+  TheatreName: string;
+  MovieID: string;
+  MovieName: string;
+  ScreenNumber: number;
+  ShowDate: Date;
+  ShowTimes: string; 
+  AvailableSeats: string;
+
+  constructor(
+    TheatreMovieID: string,
+    TheatreID: string,
+    TheatreName: string,
+    MovieID: string,
+    MovieName: string,
+    ScreenNumber: number,
+    ShowDate: Date,
+    ShowTimes: string,
+    AvailableSeats: string
+  ) {
+    this.TheatreMovieID = TheatreMovieID;
+    this.TheatreID = TheatreID;
+    this.TheatreName = TheatreName;
+    this.MovieID = MovieID;
+    this.MovieName = MovieName;
+    this.ScreenNumber = ScreenNumber;
+    this.ShowDate = ShowDate;
+    this.ShowTimes = ShowTimes;
+    this.AvailableSeats = AvailableSeats;
+  }
+}

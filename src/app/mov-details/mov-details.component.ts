@@ -30,9 +30,8 @@ export class MovDetailsComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       if (this.id) {
-        this.movie = this.dataService.getMovie(this.id);
+        this.movie = this.dataService.getMovieById(this.id);
         this.reviews = this.dataService.getReviews(this.id);
-        console.log(this.reviews);
 
         if(this.movie)
           this.isMovPresent=true;
