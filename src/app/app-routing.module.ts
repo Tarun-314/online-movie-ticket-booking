@@ -13,6 +13,7 @@ import { TicketBookingComponent } from './ticket-booking/ticket-booking.componen
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.component';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {path: 'home',component: HomeComponent},
@@ -35,6 +36,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule,FormsModule]
 })
 export class AppRoutingModule { }
