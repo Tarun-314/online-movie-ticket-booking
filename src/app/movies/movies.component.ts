@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Movie } from '../models/data-model';
+import { DataService } from '../services/data-services';
 
 @Component({
   selector: 'app-movies',
@@ -6,5 +8,20 @@ import { Component } from '@angular/core';
   styleUrl: './movies.component.css'
 })
 export class MoviesComponent {
+  movies:Movie[] = [];
+  searchMov='';
 
+  constructor(private dataService:DataService)
+  {}
+
+  ngOnInit()
+  {
+    this.movies = this.dataService.getMovies();
+  }
+
+  filterMovies(): Movie[] {
+    return this.movies.filter(mov =>
+      mov.Title.toLowerCase().startsWith(this.searchMov.toLowerCase())
+    );
+  }
 }

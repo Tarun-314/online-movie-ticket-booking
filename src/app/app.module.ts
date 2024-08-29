@@ -22,6 +22,8 @@ import { ErrorComponent } from './error/error.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.component';
+import { LikesPipe } from './pipes/likes.pipe';
+import { TruncatePipe } from './pipes/truncate.pipe';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.compo
     ErrorComponent,
     LoginComponent,
     HomeComponent,
-    ConfirmBookingComponent
+    ConfirmBookingComponent,
+    LikesPipe,
+    TruncatePipe
   ],
   imports: [
     BrowserModule,

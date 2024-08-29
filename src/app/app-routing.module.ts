@@ -14,12 +14,13 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.component';
 import { FormsModule } from '@angular/forms';
+import { IdGuard } from './guards/IdGuard';
 
 const routes: Routes = [
   {path: 'home',component: HomeComponent},
   {path: 'login',component: LoginComponent},
-  { path: 'mul-details', component: MulDetailsComponent },
-  { path: 'mov-details', component: MovDetailsComponent },
+  { path: 'mul-details/:id', component: MulDetailsComponent, canActivate:[IdGuard] },
+  { path: 'mov-details/:id', component: MovDetailsComponent, canActivate:[IdGuard] },
   { path: 'ticket-booking', component: TicketBookingComponent },
   { path: 'ticket-confirm', component: ConfirmBookingComponent },
   { path: 'profile', component: ProfileComponent },

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../services/data-services';
 
 @Component({
   selector: 'app-header',
@@ -6,41 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  Cities: string[] = [];
+  selectedCity: string = '';
 
-  constructor() { }
-
-  ngOnInit(): void {
-    this.initializeCityDropdown();
+  constructor(private dataServices: DataService) {
+    this.Cities = dataServices.getCities();
+    this.selectedCity=this.Cities[0];
   }
 
-  private initializeCityDropdown(): void {
-    const cityDropdownButton = document.getElementById('cityDropdown') as HTMLElement;
-    const cityDropdownItems = document.querySelectorAll('#cityDropdown + .dropdown-menu .dropdown-item') as NodeListOf<HTMLElement>;
+  ngOnInit(): void {}
 
-    const defaultOptionText = 'New York';
-    if (cityDropdownButton) {
-      const iconElement = cityDropdownButton.querySelector('.fa-map-marker');
-      const textNode = document.createTextNode(` ${defaultOptionText}`);
-      cityDropdownButton.innerHTML = '';
-      if (iconElement) {
-        cityDropdownButton.appendChild(iconElement);
-      }
-      cityDropdownButton.appendChild(textNode);
-    }
-
-    cityDropdownItems.forEach(item => {
-      item.addEventListener('click', function () {
-        const selectedCity = this.textContent?.trim() || defaultOptionText;
-        if (cityDropdownButton) {
-          const iconElement = cityDropdownButton.querySelector('.fa-map-marker');
-          const textNode = document.createTextNode(` ${selectedCity}`);
-          cityDropdownButton.innerHTML = '';
-          if (iconElement) {
-            cityDropdownButton.appendChild(iconElement);
-          }
-          cityDropdownButton.appendChild(textNode);
-        }
-      });
-    });
+  selectCity(city: string): void {
+    this.selectedCity = city;
   }
 }
