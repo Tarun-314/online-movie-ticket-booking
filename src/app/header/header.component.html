@@ -11,15 +11,13 @@
         </div>
         
         <!-- City Dropdown -->
-        <div class="dropdown mb-2 mb-sm-0  flex-fill mx-1">
+        <div class="dropdown mb-2 mb-sm-0 flex-fill mx-1">
           <button class="btn btn-outline-secondary text-white dropdown-toggle w-100" type="button" id="cityDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-map-marker text-white mr-1"></i> New York
+            <i class="fa fa-map-marker text-white mr-1"></i> {{ selectedCity }}
           </button>
           <div class="dropdown-menu" aria-labelledby="cityDropdown">
             <span class="dropdown-item small disabled">-- Select City --</span>
-            <a class="dropdown-item" href="#" data-value="nyc">New York</a>
-            <a class="dropdown-item" href="#" data-value="la">Los Angeles</a>
-            <a class="dropdown-item" href="#" data-value="ch">Chicago</a>
+            <a *ngFor="let city of Cities" class="dropdown-item" [attr.data-value]="city" (click)="selectCity(city)">{{ city }}</a>
           </div>
         </div>
 

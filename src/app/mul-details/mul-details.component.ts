@@ -1,4 +1,7 @@
 import { Component, Renderer2, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Multiplex } from '../models/data-model';
+import { DataService } from '../services/data-services';
 
 declare var $: any;
 
@@ -8,12 +11,41 @@ declare var $: any;
   styleUrls: ['./mul-details.component.css']
 })
 export class MulDetailsComponent implements OnInit {
-  constructor(private renderer: Renderer2) {}
+
+  id:string;
+  multiplex:Multiplex;
+  isMulPresent:boolean = false;
+  constructor(private renderer: Renderer2, private router:Router, private route:ActivatedRoute, private dataService:DataService) {}
 
   ngOnInit() {
+    this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
+      if (this.id) {
+        this.multiplex = this.dataService.getMultiplex(this.id);
+        if(this.multiplex)
+          this.isMulPresent=true;
+        else
+          this.router.navigate(['/error']);
+      } else {
+        this.router.navigate(['/error']);
+      }
+    });    
+
     this.generateDateButtons();
     this.setupSeatMatrix();
     this.setupDateAndTimeSelection();
+  }
+
+  getStars(rating: number): string[] {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStar;
+
+    return [
+      ...Array(fullStars).fill('fa-star'),
+      ...Array(halfStar).fill('fa-star-half-o'),
+      ...Array(emptyStars).fill('fa-star-o')
+    ];
   }
   
   formatDate(date: Date): string {

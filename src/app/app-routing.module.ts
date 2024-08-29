@@ -13,12 +13,13 @@ import { TicketBookingComponent } from './ticket-booking/ticket-booking.componen
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.component';
+import { IdGuard } from './guards/IdGuard';
 
 const routes: Routes = [
   {path: 'home',component: HomeComponent},
   {path: 'login',component: LoginComponent},
-  { path: 'mul-details', component: MulDetailsComponent },
-  { path: 'mov-details', component: MovDetailsComponent },
+  { path: 'mul-details/:id', component: MulDetailsComponent, canActivate:[IdGuard] },
+  { path: 'mov-details/:id', component: MovDetailsComponent, canActivate:[IdGuard] },
   { path: 'ticket-booking', component: TicketBookingComponent },
   { path: 'ticket-confirm', component: ConfirmBookingComponent },
   { path: 'profile', component: ProfileComponent },
@@ -34,7 +35,7 @@ const routes: Routes = [
 
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

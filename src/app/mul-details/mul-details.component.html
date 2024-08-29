@@ -1,33 +1,35 @@
-<!-- Multiplex Details Section -->
-<section class="container my-4">
-    <div class="row bg-light p-4 mx-1 rounded shadow-sm">
-      <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
-        <div class="d-flex flex-column align-items-start mb-3 mb-md-0">
-          <h4 class="text-primary mb-1">Multiplex 1</h4>
-          <p class="text-muted mb-0"><i class="fa fa-map-marker text-danger mr-1"></i> Area Name: XXX</p>
-        </div>
-        <div class="d-flex flex-column align-items-start mb-3 mb-md-0">
-          <span class="badge badge-outline-info mb-2"><i class="fa fa-ticket mr-1"></i> M-Ticket Available</span>
-          <span class="badge badge-outline-warning"><i class="fa fa-cutlery mr-1"></i> Food & Beverages Available</span>
-        </div>
-        <div class="d-flex flex-column align-items-start mb-3 mb-md-0">
-          <p class="text-muted mb-1"><i class="fa fa-film mr-1 text-danger"></i> No. of Shows: 4</p>
-          <p class="text-muted mb-0"><i class="fa fa-tv mr-1 text-danger"></i> No. of Screens: 4</p>
-        </div>
-        <div class="d-flex flex-column align-items-start">
-          <div>
-            <span class="text-muted mr-2 mb-2">4.5</span>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star-half-o text-warning"></i>
+  <!-- Multiplex Details Section -->
+  <section class="container my-4">
+      <div *ngIf="!isMulPresent" class="row justify-content-center p-4">
+        <h3 class="text-danger">Invalid Parameters. Retry Again</h3>
+      </div>
+      <div class="row bg-light p-4 mx-1 rounded shadow-sm">
+        <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
+          <div class="d-flex flex-column align-items-start mb-3 mb-md-0">
+            <h4 class="text-primary mb-1">{{multiplex.Name}}</h4>
+            <p class="text-muted mb-0"><i class="fa fa-map-marker text-danger mr-1"></i> {{multiplex.Area}}</p>
           </div>
+          <div class="d-flex flex-column align-items-start mb-3 mb-md-0">
+            <span class="badge badge-outline-info mb-2"><i class="fa fa-ticket mr-1"></i> M-Ticket Available</span>
+            <span class="badge badge-outline-warning"><i class="fa fa-cutlery mr-1"></i> Food & Beverages Available</span>
+          </div>
+          <div class="d-flex flex-column align-items-start mb-3 mb-md-0">
+            <p class="text-muted mb-1"><i class="fa fa-film mr-1 text-danger"></i> No. of Shows: 4</p>
+            <p class="text-muted mb-0"><i class="fa fa-tv mr-1 text-danger"></i> No. of Screens: {{multiplex.Screens}}</p>
+          </div>
+          
+          <div class="d-flex flex-column align-items-start">
+            <div>
+              <span class="text-muted mr-2 mb-2">{{multiplex.Ratings}}</span>
+              <ng-container *ngFor="let star of getStars(multiplex.Ratings)">
+                <i class="fa" [ngClass]="star + ' text-warning'"></i>
+              </ng-container>
+            </div>
 
-          <a href="https://maps.app.goo.gl/beDqpGbAMzRmaoE26" target="_blank" class="text-success"><i class="fa fa-map"></i> Locate on map</a>
+            <a href="{{multiplex.Location}}" target="_blank" class="text-success"><i class="fa fa-map"></i> Locate on map</a>
+          </div>
         </div>
       </div>
-    </div>
   </section>
 
   <section class="container">
@@ -46,7 +48,7 @@
           <input type="text" class="form-control" placeholder="Search movies...">
         </div>
     </div>
-</section>
+  </section>
   
   <section class="container my-4">
     <div class="row">

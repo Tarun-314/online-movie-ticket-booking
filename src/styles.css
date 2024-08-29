@@ -304,9 +304,19 @@ color: #333;
 font-weight: 500; 
 }
 
+.card-text
+{
+  font-size: 11px;
+}
+
 .my-text3
 {
   font-size: 13px !important;
+}
+
+.my-text4
+{
+  font-size: 11px !important;
 }
 
 a{
