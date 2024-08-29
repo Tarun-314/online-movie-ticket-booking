@@ -7,7 +7,8 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
   isForgotPassword: boolean = false;
-
+  securityQuestion: string ='';
+  securityAnswer: string='';
   toggleView() {
     this.isForgotPassword = !this.isForgotPassword;
   }
@@ -16,6 +17,14 @@ export class LoginComponent {
     const card = document.getElementById("card");
     if (card) {
       card.style.transform = direction === 'register' ? "rotateY(-180deg)" : "rotateY(0deg)";
+    }
+  }
+
+  onSubmit(form: any) {
+    if (form.valid) {
+      console.log('Form Submitted', form.value);
+    } else {
+      console.log('Form is invalid');
     }
   }
 }

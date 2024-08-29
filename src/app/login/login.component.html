@@ -7,30 +7,133 @@
                   <div class="inner-box hide-scrollbar" id="card">
                       <!-- Registration Form -->
                       <div class="card-front hide-scrollbar">
-                          <form>
+                          <form #registrationForm="ngForm" (ngSubmit)="onSubmit(registrationForm)">
                               <h5 class="mt-2 text-danger">Create Account</h5>
-                              <input type="text" placeholder="Name" required />
-                              <input type="email" placeholder="Email" required />
-                              <input type="text" placeholder="Mobile" required />
-                              <input type="password" placeholder="Password" required />
-                              <select name="security_question" id="security_question" required>
-                                  <option value="" disabled selected>Select a security question</option>
-                                  <option value="first_pet">What is the name of your first pet?</option>
-                                  <option value="first_car">What was the make and model of your first car?</option>
-                                  <option value="mothers_maiden_name">What is your mother's maiden name?</option>
-                                  <option value="elementary_school">What was the name of your elementary school?</option>
-                                  <option value="first_employer">What was the name of your first employer?</option>
-                                  <option value="favorite_book">What is your favorite book?</option>
-                                  <option value="childhood_nickname">What was your childhood nickname?</option>
-                                  <option value="birth_city">What is the name of the city where you were born?</option>
-                                  <option value="dream_job">What was your dream job as a child?</option>
-                                  <option value="favorite_movie">What is your favorite movie?</option>
-                              </select>
-                              <input type="text" placeholder="Security Answer" required />
-                              <button type="submit" class="my-2">Sign Up</button>
-                              <p class="mb-5">Have an Account? <span (click)="flipCard('register')">Sign In</span></p>
-                          </form>
+                              <input
+                                    type="text"
+                                    placeholder = Name
+                                    id="name"
+                                    class="form-control"
+                                    name="name"
+                                    ngModel
+                                    required
+                                    pattern="^[a-zA-Z ]{3,15}$"
+                                    minlength="3"
+                                    #name="ngModel"
+                                    [ngClass]="{ 'is-invalid':name.dirty && name.invalid && name.touched }"
+                              />
+                              <div *ngIf="name.dirty && name.invalid && name.touched" class="invalid-feedback">
+                                  <div *ngIf="name.errors?.required">
+                                    Name is required
+                                  </div>
+                                  <div *ngIf="name.errors?.minlength">
+                                    Name must be at least 3 characters
+                                  </div>
+                                  <div *ngIf="name.errors?.pattern">
+                                    Name should not contain alphabets and space only
+                                  </div>
+                              </div>
+                              <input
+                                    type="email"
+                                    placeholder = "Email"
+                                    id="email"
+                                    class="form-control"
+                                    name="email"
+                                    ngModel
+                                    required
+                                    email
+                                    #email="ngModel"
+                                    [ngClass]="{ 'is-invalid':email.dirty && email.invalid && email.touched }"
+                              />
+                              <div *ngIf="email.dirty && email.invalid && email.touched" class="invalid-feedback">
+                                  <div *ngIf="email.errors?.required">Email is required</div>
+                                  <div *ngIf="email.errors?.email">Invalid email format</div>
+                              </div>
+                              <input
+                                    type="text"
+                                    placeholder= MobileNumber
+                                    id="mobile"
+                                    class="form-control"
+                                    name="mobile"
+                                    ngModel
+                                    required
+                                    pattern="^[0-9]{10}$"
+                                    #mobile="ngModel"
+                                    [ngClass]="{ 'is-invalid':mobile.dirty && mobile.invalid && mobile.touched }"
+                              />
+                              <div *ngIf="mobile.dirty && mobile.invalid && mobile.touched" class="invalid-feedback">
+                                   <div *ngIf="mobile.errors?.required">Mobile number is required</div>
+                                   <div *ngIf="mobile.errors?.pattern">Invalid mobile number</div>
+                              </div>
+                              <input
+                                    type="password"
+                                    placeholder="Password"
+                                    id="password"
+                                    class="form-control"
+                                    name="password"
+                                    ngModel
+                                    required
+                                    minlength="8"
+                                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$"
+                                    #password="ngModel"
+                                    [ngClass]="{ 'is-invalid':password.dirty && password.invalid && password.touched }"
+                              />
+                              <div *ngIf="password.dirty && password.invalid && password.touched" class="invalid-feedback">
+                                    <div *ngIf="password.errors?.required">Password is required</div>
+                                    <div *ngIf="password.errors?.minlength">
+                                    Password must be at least 8 characters
+                                    </div>
+                                    <div *ngIf="password.errors?.pattern">
+                                    Password must contain at least one uppercase letter, one lowercase
+                                    letter, and one number
+                                    </div>
+                                </div>
+                                
+                                <select
+                                      name="security_question"
+                                      id="security_question"
+                                      class="form-control"
+                                      required
+                                      [(ngModel)]="securityQuestion"
+                                      #securityQuestionCtrl="ngModel"
+                                      [ngClass]="{ 'is-invalid': securityQuestionCtrl.invalid && securityQuestionCtrl.touched }"
+                                >
+                                      <option value="" disabled selected>Select a security question</option>
+                                      <option value="first_pet">What is the name of your first pet?</option>
+                                      <option value="first_car">What was the make and model of your first car?</option>
+                                      <option value="mothers_maiden_name">What is your mother's maiden name?</option>
+                                      <option value="elementary_school">What was the name of your elementary school?</option>
+                                      <option value="first_employer">What was the name of your first employer?</option>
+                                      <option value="favorite_book">What is your favorite book?</option>
+                                      <option value="childhood_nickname">What was your childhood nickname?</option>
+                                      <option value="birth_city">What is the name of the city where you were born?</option>
+                                      <option value="dream_job">What was your dream job as a child?</option>
+                                      <option value="favorite_movie">What is your favorite movie?</option>
+                                    </select>
+                                    <div *ngIf="securityQuestionCtrl.dirty && securityQuestionCtrl.invalid && securityQuestionCtrl.touched" class="invalid-feedback">
+                                      <div *ngIf="securityQuestionCtrl.errors?.required">Please select a security question</div>
+                                    </div>
+                                <input
+                                      type="text"
+                                      id="security_answer"
+                                      class="form-control"
+                                      name="security_answer"
+                                      [(ngModel)]="securityAnswer"
+                                      required
+                                      minlength="3"
+                                      #securityAnswerCtrl="ngModel"
+                                      [ngClass]="{ 'is-invalid': securityAnswerCtrl.invalid && securityAnswerCtrl.touched }"
+                                      placeholder="Security Answer"
+                                />
+                                    <div *ngIf="securityAnswerCtrl.dirty && securityAnswerCtrl.invalid && securityAnswerCtrl.touched" class="invalid-feedback">
+                                      <div *ngIf="securityAnswerCtrl.errors?.required">Security answer is required</div>
+                                      <div *ngIf="securityAnswerCtrl.errors?.minlength">Answer must be at least 3 characters</div>
+                                    </div>
+                                  <button type="submit" class="my-2">Sign Up</button>
+                                  <p class="mb-5">Have an Account? <span (click)="flipCard('register')">Sign In</span></p>    
+                            </form>
                       </div>
+                      
 
                       <!-- Login Form -->
                       <div class="card-back">
