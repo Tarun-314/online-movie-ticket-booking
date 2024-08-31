@@ -1,66 +1,101 @@
+<!-- Multiplexes List -->
 <!-- Modal Structure -->
 <div class="modal fade" id="manageMultiplexModal" tabindex="-1" role="dialog" aria-labelledby="manageMultiplexModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="manageMultiplexModalLabel">Manage Multiplex</h5>
-          <a href="#" type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="manageMultiplexModalLabel">Manage Multiplex</h5>
+        <a href="#" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </a>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-row">
-              <div class="form-group px-sm-4 my-1 col-md-6">
-                <label for="name" class="font-weight-bold text-secondary">Name</label>
-                <input type="text" class="form-control form-control-sm" id="name" placeholder="Enter theatre name" value="Cinema Palace">
-              </div>
-              <div class="form-group px-sm-4 my-1 col-md-6">
-                <label for="area" class="font-weight-bold text-secondary">Area</label>
-                <input type="text" class="form-control form-control-sm" id="area" placeholder="Enter area" value="Downtown">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group px-sm-4 my-1 col-md-6">
-                <label for="location" class="font-weight-bold text-secondary">Location</label>
-                <input type="text" class="form-control form-control-sm" id="location" placeholder="Enter location" value="123 Main St">
-              </div>
-              <div class="form-group px-sm-4 my-1 col-md-6">
-                <label for="ratings" class="font-weight-bold text-secondary">Ratings</label>
-                <input type="number" step="0.1" min="0" max="5" class="form-control form-control-sm" id="ratings" placeholder="Enter ratings" value="4.5">
+      </div>
+      <div class="modal-body">
+        <form #multiplexForm="ngForm">
+          <div class="form-row">
+            <div class="form-group px-sm-4 my-1 col-md-6">
+              <label for="name" class="font-weight-bold text-secondary">Name</label>
+              <input type="text" class="form-control form-control-sm" id="name" name="name" ngModel
+                     required minlength="3" placeholder="Enter theatre name">
+              <div *ngIf="multiplexForm.controls.name?.touched || multiplexForm.controls.name?.dirty" class="text-danger mt-2">
+                <div *ngIf="multiplexForm.controls.name?.errors?.required">Name is required.</div>
+                <div *ngIf="multiplexForm.controls.name?.errors?.minlength">Name must be at least 3 characters long.</div>
               </div>
             </div>
-            <div class="form-row">
-              <div class="form-group px-sm-4 my-1 col-md-6">
-                <label for="screens" class="font-weight-bold text-secondary">Screens</label>
-                <input type="number" class="form-control form-control-sm" id="screens" placeholder="Enter number of screens" value="5">
-              </div>
-              <div class="form-group px-sm-4 my-1 col-md-6">
-                <label for="total-seats" class="font-weight-bold text-secondary">Total Seats</label>
-                <input type="number" class="form-control form-control-sm" id="total-seats" placeholder="Enter total seats" value="500">
+            <div class="form-group px-sm-4 my-1 col-md-6">
+              <label for="area" class="font-weight-bold text-secondary">Area</label>
+              <input type="text" class="form-control form-control-sm" id="area" name="area" ngModel
+                     required placeholder="Enter area">
+              <div *ngIf="multiplexForm.controls.area?.touched || multiplexForm.controls.area?.dirty" class="text-danger mt-2">
+                <div *ngIf="multiplexForm.controls.area?.errors?.required">Area is required.</div>
               </div>
             </div>
-            <div class="form-row">
-              <div class="form-group px-sm-4 my-1 col-md-6">
-                <label for="user-id" class="font-weight-bold text-secondary">Admin User ID</label>
-                <input type="number" class="form-control form-control-sm" id="user-id" placeholder="Enter admin user ID" value="1">
-              </div>
-              <div class="form-group px-sm-4 my-1 col-md-6">
-                <label for="image" class="font-weight-bold text-secondary">Image</label>
-                <input type="text" class="form-control form-control-sm" id="image" placeholder="Enter Image CDN">
+          </div>
+          <div class="form-row">
+            <div class="form-group px-sm-4 my-1 col-md-6">
+              <label for="location" class="font-weight-bold text-secondary">Location</label>
+              <input type="text" class="form-control form-control-sm" id="location" name="location" ngModel
+                     required placeholder="Enter location">
+              <div *ngIf="multiplexForm.controls.location?.touched || multiplexForm.controls.location?.dirty" class="text-danger mt-2">
+                <div *ngIf="multiplexForm.controls.location?.errors?.required">Location is required.</div>
               </div>
             </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-outline-primary btn-sm">Add Multiplex</button>
-        </div>
+            <div class="form-group px-sm-4 my-1 col-md-6">
+              <label for="ratings" class="font-weight-bold text-secondary">Ratings</label>
+              <input type="number" step="0.1" min="0" max="5" class="form-control form-control-sm" id="ratings" name="ratings" ngModel
+                     required placeholder="Enter ratings">
+              <div *ngIf="multiplexForm.controls.ratings?.touched || multiplexForm.controls.ratings?.dirty" class="text-danger mt-2">
+                <div *ngIf="multiplexForm.controls.ratings?.errors?.required">Ratings are required.</div>
+                <div *ngIf="multiplexForm.controls.ratings?.errors?.min">Ratings must be at least 0.</div>
+                <div *ngIf="multiplexForm.controls.ratings?.errors?.max">Ratings cannot exceed 5.</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group px-sm-4 my-1 col-md-6">
+              <label for="screens" class="font-weight-bold text-secondary">Screens</label>
+              <input type="number" class="form-control form-control-sm" id="screens" name="screens" ngModel
+                     required placeholder="Enter number of screens">
+              <div *ngIf="multiplexForm.controls.screens?.touched || multiplexForm.controls.screens?.dirty" class="text-danger mt-2">
+                <div *ngIf="multiplexForm.controls.screens?.errors?.required">Number of screens is required.</div>
+              </div>
+            </div>
+            <div class="form-group px-sm-4 my-1 col-md-6">
+              <label for="total-seats" class="font-weight-bold text-secondary">Total Seats</label>
+              <input type="number" class="form-control form-control-sm" id="total-seats" name="total-seats" ngModel
+                     required placeholder="Enter total seats">
+              <div *ngIf="multiplexForm.controls['total-seats']?.touched || multiplexForm.controls['total-seats']?.dirty" class="text-danger mt-2">
+                <div *ngIf="multiplexForm.controls['total-seats']?.errors?.required">Total seats are required.</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group px-sm-4 my-1 col-md-6">
+              <label for="user-id" class="font-weight-bold text-secondary">Admin User ID</label>
+              <input type="number" class="form-control form-control-sm" id="user-id" name="user-id" ngModel
+                     required placeholder="Enter admin user ID">
+              <div *ngIf="multiplexForm.controls['user-id']?.touched || multiplexForm.controls['user-id']?.dirty" class="text-danger mt-2">
+                <div *ngIf="multiplexForm.controls['user-id']?.errors?.required">Admin User ID is required.</div>
+              </div>
+            </div>
+            <div class="form-group px-sm-4 my-1 col-md-6">
+              <label for="image" class="font-weight-bold text-secondary">Image</label>
+              <input type="text" class="form-control form-control-sm" id="image" name="image" ngModel
+                     placeholder="Enter Image CDN">
+              <div *ngIf="multiplexForm.controls.image?.touched || multiplexForm.controls.image?.dirty" class="text-danger mt-2">
+                <!-- Optionally add validation for image if needed -->
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-outline-primary btn-sm" [disabled]="!multiplexForm.form.valid">Add Multiplex</button>
+          </div>
+        </form>        
       </div>
     </div>
   </div>
-  
-  
+</div>
+  <!-- Multiplexes table -->
   <section class="container">
     <div class="card my-5 shadow-lg border-light no-hover-effect">
     <div class="card-body mx-4">
@@ -107,7 +142,7 @@
     </div>
   </section>
   
-  
+  <!-- Movie List -->
   <!-- Modal Structure -->
   <div class="modal fade" id="manageMovieModal" tabindex="-1" role="dialog" aria-labelledby="manageMovieModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -119,74 +154,123 @@
           </a>
         </div>
         <div class="modal-body">
-          <form>
+          <form #movieForm="ngForm">
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="title" class="font-weight-bold text-secondary">Title</label>
-                <input type="text" class="form-control form-control-sm" id="title" placeholder="Enter movie title" value="Tholi Prema">
+                <input type="text" class="form-control form-control-sm" id="title" name="title" ngModel
+                       required minlength="2" placeholder="Enter movie title">
+                <div *ngIf="movieForm.controls.title?.touched || movieForm.controls.title?.dirty" class="text-danger mt-2">
+                  <div *ngIf="movieForm.controls.title?.errors?.required">Title is required.</div>
+                  <div *ngIf="movieForm.controls.title?.errors?.minlength">Title must be at least 2 characters long.</div>
+                </div>
               </div>
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="genre" class="font-weight-bold text-secondary">Genre</label>
-                <input type="text" class="form-control form-control-sm" id="genre" placeholder="Enter genre" value="Romance">
+                <input type="text" class="form-control form-control-sm" id="genre" name="genre" ngModel
+                       required placeholder="Enter genre">
+                <div *ngIf="movieForm.controls.genre?.touched || movieForm.controls.genre?.dirty" class="text-danger mt-2">
+                  <div *ngIf="movieForm.controls.genre?.errors?.required">Genre is required.</div>
+                </div>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="duration" class="font-weight-bold text-secondary">Duration (Mins)</label>
-                <input type="number" class="form-control form-control-sm" id="duration" placeholder="Enter duration" value="120">
+                <input type="number" class="form-control form-control-sm" id="duration" name="duration" ngModel
+                       required min="1" placeholder="Enter duration">
+                <div *ngIf="movieForm.controls.duration?.touched || movieForm.controls.duration?.dirty" class="text-danger mt-2">
+                  <div *ngIf="movieForm.controls.duration?.errors?.required">Duration is required.</div>
+                  <div *ngIf="movieForm.controls.duration?.errors?.min">Duration must be at least 1 minute.</div>
+                </div>
               </div>
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="release-date" class="font-weight-bold text-secondary">Release Date</label>
-                <input type="date" class="form-control form-control-sm" id="release-date" placeholder="Enter release date" value="2024-08-15">
+                <input type="date" class="form-control form-control-sm" id="release-date" name="release-date" ngModel
+                       required placeholder="Enter release date">
+                <div *ngIf="movieForm.controls['release-date']?.touched || movieForm.controls['release-date']?.dirty" class="text-danger mt-2">
+                  <div *ngIf="movieForm.controls['release-date']?.errors?.required">Release date is required.</div>
+                </div>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="rating" class="font-weight-bold text-secondary">Rating</label>
-                <input type="number" step="0.1" min="0" max="10" class="form-control form-control-sm" id="rating" placeholder="Enter rating" value="8.5">
+                <input type="number" step="0.1" min="0" max="10" class="form-control form-control-sm" id="rating" name="rating" ngModel
+                       required placeholder="Enter rating">
+                <div *ngIf="movieForm.controls.rating?.touched || movieForm.controls.rating?.dirty" class="text-danger mt-2">
+                  <div *ngIf="movieForm.controls.rating?.errors?.required">Rating is required.</div>
+                  <div *ngIf="movieForm.controls.rating?.errors?.min">Rating must be at least 0.</div>
+                  <div *ngIf="movieForm.controls.rating?.errors?.max">Rating cannot exceed 10.</div>
+                </div>
               </div>
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="likes" class="font-weight-bold text-secondary">Likes</label>
-                <input type="number" class="form-control form-control-sm" id="likes" placeholder="Enter number of likes" value="1500">
+                <input type="number" class="form-control form-control-sm" id="likes" name="likes" ngModel
+                       required min="0" step="1" placeholder="Enter number of likes">
+                <div *ngIf="movieForm.controls.likes?.touched || movieForm.controls.likes?.dirty" class="text-danger mt-2">
+                  <div *ngIf="movieForm.controls.likes?.errors?.required">Number of likes is required.</div>
+                  <div *ngIf="movieForm.controls.likes?.errors?.min">Number of likes must be at least 0.</div>
+                </div>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="description" class="font-weight-bold text-secondary">Description</label>
-                <textarea class="form-control form-control-sm" id="description" rows="1" placeholder="Enter description">A romantic movie about...</textarea>
+                <textarea class="form-control form-control-sm" id="description" name="description" ngModel
+                          rows="1" placeholder="Enter description" required></textarea>
+                <div *ngIf="movieForm.controls.description?.touched || movieForm.controls.description?.dirty" class="text-danger mt-2">
+                  <div *ngIf="movieForm.controls.description?.errors?.required">Description is required.</div>
+                </div>
               </div>
               <div class="form-group px-sm-4 col-md-6">
                 <label for="casting" class="font-weight-bold text-secondary">Casting</label>
-                <input type="text" class="form-control form-control-sm" id="casting" placeholder="Enter casting" value="John Doe, Jane Doe">
+                <input type="text" class="form-control form-control-sm" id="casting" name="casting" ngModel
+                       required placeholder="Enter casting">
+                <div *ngIf="movieForm.controls.casting?.touched || movieForm.controls.casting?.dirty" class="text-danger mt-2">
+                  <div *ngIf="movieForm.controls.casting?.errors?.required">Casting is required.</div>
+                </div>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="trailer" class="font-weight-bold text-secondary">Trailer</label>
-                <input type="text" class="form-control form-control-sm" id="trailer" placeholder="Enter trailer URL" value="https://youtube.com/trailer">
+                <input type="text" class="form-control form-control-sm" id="trailer" name="trailer" ngModel
+                       placeholder="Enter trailer URL">
+                <div *ngIf="movieForm.controls.trailer?.touched || movieForm.controls.trailer?.dirty" class="text-danger mt-2">
+                  <!-- Optionally add validation for trailer URL if needed -->
+                </div>
               </div>
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="language" class="font-weight-bold text-secondary">Language</label>
-                <input type="text" class="form-control form-control-sm" id="language" placeholder="Enter language" value="English">
+                <input type="text" class="form-control form-control-sm" id="language" name="language" ngModel
+                       required placeholder="Enter language">
+                <div *ngIf="movieForm.controls.language?.touched || movieForm.controls.language?.dirty" class="text-danger mt-2">
+                  <div *ngIf="movieForm.controls.language?.errors?.required">Language is required.</div>
+                </div>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-12">
                 <label for="image" class="font-weight-bold text-secondary">Image</label>
-                <input type="text" class="form-control form-control-sm" id="image" placeholder="Enter image URL" value="https://example.com/image.jpg">
+                <input type="text" class="form-control form-control-sm" id="image" name="image" ngModel
+                       placeholder="Enter image URL">
+                <div *ngIf="movieForm.controls.image?.touched || movieForm.controls.image?.dirty" class="text-danger mt-2">
+                  <div *ngIf="!movieForm.controls.image?.value">Link not entered.</div>
+                </div>
               </div>
             </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-outline-primary btn-sm" [disabled]="!movieForm.form.valid">Add Movie</button>
+            </div>
           </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-outline-primary btn-sm">Add Movie</button>
         </div>
       </div>
     </div>
   </div>
   
-  
+  <!-- Movie table -->
   <section class="container">
     <div class="card my-5 shadow-lg border-light no-hover-effect">
     <div class="card-body mx-4">
@@ -229,8 +313,6 @@
                   </button>
                 </td>
               </tr>
-
-              <!-- Additional rows can be added here -->
             </tbody>
           </table>
         </div>
@@ -238,7 +320,7 @@
     </div>
   </section>
   
-  
+  <!-- Linked Movies -->
   <!-- Modal Structure -->
   <div class="modal fade" id="linkMovieModal" tabindex="-1" role="dialog" aria-labelledby="linkMovieModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -250,50 +332,68 @@
           </a>
         </div>
         <div class="modal-body">
-          <form>
+          <form #linkMovieForm="ngForm">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="theatre-id" class="font-weight-bold text-secondary">Theatre</label>
-                <select id="theatre-id" class="form-control form-control-sm">
-                  <option selected>Select Theatre</option>
-                  <!-- Options should be populated with available theatres -->
+                <select id="theatre-id" class="form-control form-control-sm" ngModel name="theatreId" #theatreId="ngModel" required>
+                  <option value="" disabled selected>Select Theatre</option>
                   <option value="1">Cinema Palace</option>
                   <option value="2">Inox PVR</option>
                 </select>
+                <div *ngIf="theatreId.invalid && (theatreId.dirty || theatreId.touched || linkMovieForm.submitted)" class="text-danger">
+                  <small *ngIf="theatreId.errors?.['required']">Theatre is required.</small>
+                </div>
               </div>
               <div class="form-group col-md-6">
                 <label for="movie-id" class="font-weight-bold text-secondary">Movie</label>
-                <select id="movie-id" class="form-control form-control-sm">
-                  <option selected>Select Movie</option>
-                  <!-- Options should be populated with available movies -->
+                <select id="movie-id" class="form-control form-control-sm" ngModel name="movieId" #movieId="ngModel" required>
+                  <option value="" disabled selected>Select Movie</option>
                   <option value="1">Tholi Prema</option>
                   <option value="2">Another Movie</option>
                 </select>
+                <div *ngIf="movieId.invalid && (movieId.dirty || movieId.touched || linkMovieForm.submitted)" class="text-danger">
+                  <small *ngIf="movieId.errors?.['required']">Movie is required.</small>
+                </div>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="screen-number" class="font-weight-bold text-secondary">Screen Number</label>
-                <input type="number" class="form-control form-control-sm" id="screen-number" placeholder="Enter screen number" value="1">
+                <input type="number" class="form-control form-control-sm" id="screen-number" placeholder="Enter screen number" ngModel name="screenNumber" #screenNumber="ngModel" required min="1">
+                <div *ngIf="screenNumber.invalid && (screenNumber.dirty || screenNumber.touched || linkMovieForm.submitted)" class="text-danger">
+                  <small *ngIf="screenNumber.errors?.['required']">Screen number is required.</small>
+                  <small *ngIf="screenNumber.errors?.['min']">Screen number must be at least 1.</small>
+                </div>
               </div>
               <div class="form-group col-md-6">
                 <label for="show-date" class="font-weight-bold text-secondary">Show Date</label>
-                <input type="date" class="form-control form-control-sm" id="show-date" placeholder="Enter show date">
+                <input type="date" class="form-control form-control-sm" id="show-date" placeholder="Enter show date" ngModel name="showDate" #showDate="ngModel" required>
+                <div *ngIf="showDate.invalid && (showDate.dirty || showDate.touched || linkMovieForm.submitted)" class="text-danger">
+                  <small *ngIf="showDate.errors?.['required']">Show date is required.</small>
+                </div>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="show-code" class="font-weight-bold text-secondary">Show Time(s)</label>
-                <input type="text" class="form-control form-control-sm" id="show-code" placeholder="Enter show time" value="06:30 AM">
+                <input type="text" class="form-control form-control-sm" id="show-code" placeholder="Enter show time" ngModel name="showTime" #showTime="ngModel" required>
+                <div *ngIf="showTime.invalid && (showTime.dirty || showTime.touched || linkMovieForm.submitted)" class="text-danger">
+                  <small *ngIf="showTime.errors?.['required']">Show time is required.</small>
+                </div>
               </div>
               <div class="form-group col-md-6">
                 <label for="available-seats" class="font-weight-bold text-secondary">Available Seats</label>
-                <input type="number" class="form-control form-control-sm" id="available-seats" placeholder="Enter available seats" value="100">
+                <input type="number" class="form-control form-control-sm" id="available-seats" placeholder="Enter available seats" ngModel name="availableSeats" #availableSeats="ngModel" required min="1">
+                <div *ngIf="availableSeats.invalid && (availableSeats.dirty || availableSeats.touched || linkMovieForm.submitted)" class="text-danger">
+                  <small *ngIf="availableSeats.errors?.['required']">Available seats are required.</small>
+                  <small *ngIf="availableSeats.errors?.['min']">Available seats must be at least 1.</small>
+                </div>
               </div>
             </div>
             <div class="text-center my-2">
               <button type="reset" class="btn btn-outline-danger btn-sm mr-1">Reset</button>
-              <button type="submit" class="btn btn-outline-primary btn-sm">Link Movie</button>
+              <button type="submit" class="btn btn-outline-primary btn-sm" [disabled]="linkMovieForm.invalid"git >Link Movie</button>
             </div>
           </form>
         </div>
@@ -393,4 +493,5 @@
       </div>
     </div>
   </div>
+  
   

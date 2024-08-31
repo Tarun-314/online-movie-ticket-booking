@@ -109,3 +109,16 @@ span {
     margin-bottom: 10px !important;
     color: #2d66d0 !important;
 }
+input.is-invalid {
+    border-color: #dc3545 !important; /* Red border for invalid input */
+  }
+  
+  input.is-valid {
+    border-color: #28a745 !important; /* Green border for valid input */
+  }
+  
+  input {
+    border-radius: 10px !important;
+    transition: border-color 0.3s ease-in-out; /* Smooth transition for border color change */
+  }
+
