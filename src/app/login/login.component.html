@@ -67,41 +67,38 @@
                   
                   <!-- Password -->
                   <input
-                      type="password"
-                      placeholder="Password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      ngModel
-                      required
-                      minlength="8"
-                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
-                      #password="ngModel"
-                      [ngClass]="{ 'is-invalid': password.dirty && password.invalid && password.touched }"
+                    type="password"
+                    placeholder="Password"
+                    id="password"
+                    class="form-control"
+                    name="password"
+                    ngModel
+                    required
+                    minlength="8"
+                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+                    #password="ngModel"
+                    [ngClass]="{ 'is-invalid': password.dirty && password.invalid && password.touched, 'is-valid': password.valid && confirmPassword.valid && password.value === confirmPassword.value }"
                   />
                   <div *ngIf="password.dirty && password.invalid && password.touched" class="invalid-feedback">
-                      <div *ngIf="password.errors?.required">Password is required</div>
-                      <div *ngIf="password.errors?.minlength">Password must be at least 8 characters</div>
-                      <div *ngIf="password.errors?.pattern">Password must contain at least one uppercase letter, one lowercase letter, and one digit</div>
+                    <div *ngIf="password.errors?.['required']">Password is required</div>
+                    <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters</div>
+                    <div *ngIf="password.errors?.['pattern']">Password must contain at least one uppercase letter, one lowercase letter, and one digit</div>
                   </div>
-                  
                   <!-- Confirm Password -->
                   <input
-                      type="password"
-                      placeholder="Confirm Password"
-                      id="confirmPassword"
-                      class="form-control"
-                      name="confirmPassword"
-                      ngModel
-                      required
-                      minlength="8"
-                      [ngClass]="{ 'is-invalid': confirmPassword.dirty && confirmPassword.invalid && confirmPassword.touched }"
-                      #confirmPassword="ngModel"
-                      (input)="checkPasswordMatch()"
+                    type="password"
+                    placeholder="Confirm Password"
+                    id="confirmPassword"
+                    class="form-control"
+                    name="confirmPassword"
+                    ngModel
+                    required
+                    #confirmPassword="ngModel"
+                    [ngClass]="{ 'is-invalid': (confirmPassword.dirty && confirmPassword.invalid && confirmPassword.touched) || (confirmPassword.dirty && password.value !== confirmPassword.value), 'is-valid': password.valid && confirmPassword.valid && password.value === confirmPassword.value }"
                   />
-                  <div *ngIf="confirmPassword.dirty && confirmPassword.invalid && confirmPassword.touched" class="invalid-feedback">
-                      <div *ngIf="confirmPassword.errors?.required">Please confirm your password</div>
-                      <div *ngIf="passwordMismatch">Passwords do not match</div>
+                  <div *ngIf="(confirmPassword.dirty && confirmPassword.invalid && confirmPassword.touched) || (confirmPassword.dirty && password.value !== confirmPassword.value)" class="invalid-feedback">
+                    <div *ngIf="confirmPassword.errors?.['required']">Please confirm your password</div>
+                    <div *ngIf="confirmPassword.dirty && password.value !== confirmPassword.value">Passwords do not match</div>
                   </div>
   
                   <!-- Security Question -->
