@@ -25,6 +25,7 @@ import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.compo
 import { LikesPipe } from './pipes/likes.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { ShowTimesPipe } from './pipes/show-times.pipe';
+import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ShowTimesPipe } from './pipes/show-times.pipe';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

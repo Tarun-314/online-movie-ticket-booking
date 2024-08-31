@@ -42,10 +42,6 @@
             </div>
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
-                <label for="user-id" class="font-weight-bold text-secondary">Admin User ID</label>
-                <input type="number" class="form-control form-control-sm" id="user-id" placeholder="Enter admin user ID" value="1">
-              </div>
-              <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="image" class="font-weight-bold text-secondary">Image</label>
                 <input type="text" class="form-control form-control-sm" id="image" placeholder="Enter Image CDN">
               </div>
@@ -84,12 +80,12 @@
             <tbody>
 
               <tr *ngFor="let m of multiplexes">
-                <td>{{m.Name}}</td>
-                <td>{{m.Area}}</td>
-                <td>{{m.Ratings}}</td>
-                <td>{{m.Screens}}</td>
-                <td>{{m.TotalSeats}}</td>
-                <td>{{m.UpdatedAt | date:"dd MMM yyyy"}}</td>
+                <td>{{m.name}}</td>
+                <td>{{m.area}}</td>
+                <td>{{m.ratings}}</td>
+                <td>{{m.screens}}</td>
+                <td>{{m.totalSeats}}</td>
+                <td>{{m.updatedAt | date:"dd MMM yyyy"}}</td>
                 <td>
                   <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#manageMultiplexModal">
                     <i class="fa fa-edit"></i>
@@ -212,14 +208,14 @@
             <tbody>
 
               <tr *ngFor="let mov of movies">
-                <td>{{mov.Title}}</td>
-                <td>{{mov.Genre}}</td>
-                <td>{{mov.Duration}} mins</td>
-                <td>{{mov.ReleaseDate | date:"dd MMM, yyyy"}}</td>
-                <td>{{mov.Rating}}</td>
-                <td>{{mov.Likes | likes}}</td>
-                <td>{{mov.Casting}}</td>
-                <td>{{mov.Language}}</td>
+                <td>{{mov.title}}</td>
+                <td>{{mov.genre}}</td>
+                <td>{{mov.duration}} mins</td>
+                <td>{{mov.releaseDate | date:"dd MMM, yyyy"}}</td>
+                <td>{{mov.rating}}</td>
+                <td>{{mov.likes | likes}}</td>
+                <td>{{mov.casting}}</td>
+                <td>{{mov.language}}</td>
                 <td>
                   <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#manageMovieModal">
                     <i class="fa fa-edit"></i>
@@ -324,12 +320,12 @@
             <tbody>
 
               <tr *ngFor="let lm of linkedMovies">
-                <td>{{lm.TheatreName}}</td>
-                <td>{{lm.MovieName}}</td>
-                <td>{{lm.ScreenNumber}}</td>
-                <td>{{lm.ShowDate | date:"dd MMM yyyy"}}</td>
-                <td>{{lm.ShowTimes | showTimes}}</td>
-                <td>{{lm.AvailableSeats}}</td>
+                <td>{{lm.theatreName}}</td>
+                <td>{{lm.movieName}}</td>
+                <td>{{lm.screenNumber}}</td>
+                <td>{{lm.showDate | date:"dd MMM yyyy"}}</td>
+                <td>{{lm.showTimes | showTimes}}</td>
+                <td>{{lm.availableSeats}}</td>
                 <td>
                   <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#linkMovieModal">
                     <i class="fa fa-edit"></i>
@@ -370,13 +366,13 @@
             <tbody>
             
               <tr *ngFor="let user of users">
-                <td>{{user.UserID}}</td>
-                <td>{{user.FullName}}</td>
-                <td>{{user.Email}}</td>
-                <td>{{user.PhoneNumber}}</td>
-                <td>{{user.Role}}</td>
-                <td>{{user.Bookings}}</td>
-                <td>{{user.UpdatedAt | date: "dd MMM yyyy"}}</td>
+                <td>{{user.userId}}</td>
+                <td>{{user.fullName}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.phoneNumber}}</td>
+                <td>{{user.role}}</td>
+                <td>{{user.bookingCount}}</td>
+                <td>{{user.updatedAt | date: "dd MMM yyyy"}}</td>
                 <td>
                   <button class="btn btn-outline-warning btn-sm mr-1 rounded" title="Block" data-toggle="modal" data-target="#editUserModal">
                     <i class="fa fa-ban"></i>

@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
-import { DataService } from '../services/data-services';
-import { LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
+import { TheatreMovieWithName, UMovie, UTheatre, UserWithBookingCount } from '../models/dashboard-model';
+import { DashboardService } from '../services/dashboard-services';
 
 declare var $: any;
 
@@ -9,31 +9,94 @@ declare var $: any;
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements AfterViewInit, OnInit {
+export class DashboardComponent implements OnInit {
   
-  constructor(private dataService:DataService){}
+  constructor(private service:DashboardService){}
 
-  multiplexes:Multiplex[]=[];
-  movies:Movie[]=[];
-  linkedMovies:LinkedMovies[]=[];
-  users:User[]=[];
+  multiplexes:UTheatre[]=[];
+  movies:UMovie[]=[];
+  linkedMovies:TheatreMovieWithName[]=[];
+  users:UserWithBookingCount[]=[];
 
   ngOnInit(): void {
-    this.multiplexes = this.dataService.getMultiplexes();
-    this.movies = this.dataService.getMovies();
-    this.linkedMovies = this.dataService.getLinkedMovies();
-    this.users = this.dataService.getUsers();
-  }
+    this.service.getAllTheaters().subscribe({
+      next:(data: UTheatre[]) => {
+        this.multiplexes = data;
+      },
+      error:(error) => {
+        console.error('Error fetching theaters:', error);
+      },
+      complete:()=>{$(document).ready(function() {
+        $('#Table').DataTable({
+          retrieve: true,
+          paging: true,
+          searching: true,
+          ordering: true,
+          info: true,
+          lengthChange: true
+        });
+      });}
+    });
 
-  ngAfterViewInit(): void {
-    $(document).ready(function() {
-      $('#Table,#Table2,#Table3,#Table4,#Table5').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true,
-        info: true,
-        lengthChange: true
-      });
+    // Fetch all movies
+    this.service.getAllMovies().subscribe({
+      next:(data: UMovie[]) => {
+        this.movies = data;
+      },
+      error:(error) => {
+        console.error('Error fetching movies:', error);
+      },
+      complete:()=>{$(document).ready(function() {
+        $('#Table2').DataTable({
+          retrieve: true,
+          paging: true,
+          searching: true,
+          ordering: true,
+          info: true,
+          lengthChange: true
+        });
+      });}
+    });
+
+    // Fetch all theatre movies with names
+    this.service.getAllTheatreMovies().subscribe({
+      next:(data: TheatreMovieWithName[]) => {
+        this.linkedMovies = data;
+      },
+      error:(error) => {
+        console.error('Error fetching theatre movies:', error);
+      },
+      complete:()=>{$(document).ready(function() {
+        $('#Table3').DataTable({
+          retrieve: true,
+          paging: true,
+          searching: true,
+          ordering: true,
+          info: true,
+          lengthChange: true
+        });
+      });}
+    });
+
+    // Fetch all users with booking count
+    this.service.getAllUsers().subscribe({
+      next:(data: UserWithBookingCount[]) => {
+        this.users = data;
+      },
+      error:(error) => {
+        console.error('Error fetching users:', error);
+      },
+      complete:()=>{$(document).ready(function() {
+        $('#Table4').DataTable({
+          retrieve: true,
+          paging: true,
+          searching: true,
+          ordering: true,
+          info: true,
+          lengthChange: true
+        });
+      });}
     });
   }
+  
 }
