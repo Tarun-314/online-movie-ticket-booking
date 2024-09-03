@@ -1,5 +1,7 @@
 import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from '../services/data-services';
+import { LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Bookings, LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
 
 declare var $: any;
@@ -11,12 +13,13 @@ declare var $: any;
 })
 export class DashboardComponent implements AfterViewInit, OnInit, OnDestroy {
   
-  constructor(private dataService:DataService){}
+  constructor(private dataService:DataService, private fb: FormBuilder){}
 
   multiplexes:Multiplex[]=[];
   movies:Movie[]=[];
   linkedMovies:LinkedMovies[]=[];
   users:User[]=[];
+  linkMovieForm: FormGroup;
   user_purchase_history:Bookings[];
 
   ngOnInit(): void {

@@ -9,17 +9,22 @@ import { DataService } from '../services/data-services';
   templateUrl: './confirm-booking.component.html',
   styleUrls: ['./confirm-booking.component.css']
 })
-export class ConfirmBookingComponent implements OnInit{
+export class ConfirmBookingComponent implements OnInit {
+  @ViewChild('ticket', { static: true }) ticketElement: ElementRef;
+  
+  qrCodeUrl: string;
+  bookingId: string;
 
   bookingId: string = '';
   qrCodeUrl: string = '';
   bookingData:any;
 
   constructor(private router:Router, private dataService:DataService){}
-
   ngOnInit() {
     this.retrieveStateData();
     this.generateQRCode();
+    this.generateBookingId();
+    this.sendTicketEmail(); // Added this line to send email on init
   }
 
   retrieveStateData() {
@@ -56,21 +61,58 @@ export class ConfirmBookingComponent implements OnInit{
     });
   }
 
-  downloadImage() {
-    const ticketElement = document.querySelector('.ticket') as HTMLElement;
+  generateBookingId() {
+    // Implement your booking ID generation logic here
+    this.bookingId = 'BOOK' + Math.random().toString(36).substr(2, 9).toUpperCase();
+  }
 
-    html2canvas(ticketElement, {
-      scale: 1.2, 
-      useCORS: true,
-      allowTaint: true
-    }).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.href = imgData;
-      link.download = 'ticket.png';
-      link.click();
-    }).catch(error => {
-      console.error('Error generating image:', error);
-    });
+
+    downloadImage() {
+      const ticketElement = document.querySelector('.ticket') as HTMLElement;
+  
+      html2canvas(ticketElement, {
+        scale: 1.2, 
+        useCORS: true,
+        allowTaint: true
+      }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = imgData;
+        link.download = 'ticket.png';
+        link.click();
+      }).catch(error => {
+        console.error('Error generating image:', error);
+      });
+    }
+
+  // New function to send email
+  async sendTicketEmail() {
+    try {
+      const ticketImage = await this.generateTicketImage();
+      
+      const templateParams = {
+        to_email: 'user@example.com', // Replace with actual user email
+        from_name: 'Movie Booking Service',
+        message: 'Here is your movie ticket.',
+        ticket_image: ticketImage
+      };
+
+      // emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams, 'YOUR_USER_ID')
+      //   .then((response) => {
+      //     console.log('Email sent successfully', response);
+      //     // You can add user feedback here, e.g., showing a success message
+      //   }, (error) => {
+      //     console.error('Error sending email:', error);
+      //     // You can add user feedback here, e.g., showing an error message
+      //   });
+    } catch (error) {
+      console.error('Error generating ticket image', error);
+    }
+  }
+
+  // New function to generate ticket image
+  async generateTicketImage(): Promise<string> {
+    const canvas = await html2canvas(this.ticketElement.nativeElement);
+    return canvas.toDataURL('image/png');
   }
 }
