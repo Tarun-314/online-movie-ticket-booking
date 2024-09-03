@@ -19,7 +19,6 @@ export class ConfirmBookingComponent implements OnInit {
     this.retrieveStateData();
     this.generateQRCode();
     this.generateBookingId();
-    this.sendTicketEmail(); // Added this line to send email on init
   }
 
   retrieveStateData() {
