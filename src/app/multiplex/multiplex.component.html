@@ -10,7 +10,7 @@
     </div>
     <div class="row">
       <div class="text-center mx-3 alert alert-danger w-100" role="alert" *ngIf="filterMultiplexes().length==0">
-        <h5 class="text-danger my-0">No records found..!</h5>
+        <h6 class="text-danger my-0">No records found..!</h6>
       </div>
       <a *ngFor="let mul of filterMultiplexes() | slice:0:6" routerLink="/mul-details/{{mul.TheatreID}}" class="col-md-4 col-sm-6 multiplex-item">
         <div class="card multiplex-card">

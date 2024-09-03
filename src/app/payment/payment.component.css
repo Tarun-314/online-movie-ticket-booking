@@ -29,6 +29,12 @@
     display: block !important;
     transition: max-height 0.5s ease-in-out, opacity 1s ease-in-out !important;
 }
+
+.rounded2
+{
+    border-radius: 15px !important;
+}
+
 .form-container {
     background-color: white !important;
     border-radius: 10px !important;
@@ -69,4 +75,12 @@ height: 30px !important;
 }
 .payment-methods .btn.selected img {
     filter: none !important; /* Reset filter to ensure the icon remains visible */
+}
+
+
+
+.no-hover-effect2:hover {
+    transform: none !important;
+    transition: none !important;
+    box-shadow: none !important;
 }
