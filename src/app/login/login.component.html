@@ -31,22 +31,22 @@
                   </div>
                   
                   <!-- Email -->
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    id="email"
-                    class="form-control"
-                    name="email"
-                    ngModel
-                    required
-                    #email="ngModel"
-                    [ngClass]="{ 'is-invalid': email.dirty && email.invalid && email.touched }"
-                  />
-                  <div *ngIf="email.dirty && email.invalid && email.touched" class="invalid-feedback">
-                    <div *ngIf="email.errors?.required">Email is required</div>
-                    <div *ngIf="email.errors?.email">Invalid email format</div>
-                  </div>
-                  
+                      <input
+                        type="email"
+                        placeholder="Email"
+                        id="email"
+                        class="form-control"
+                        name="email"
+                        ngModel
+                        required
+                        pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" 
+                        #email="ngModel"
+                        [ngClass]="{ 'is-invalid': email.dirty && email.invalid && email.touched }"
+                      />
+                      <div *ngIf="email.dirty && email.invalid && email.touched" class="invalid-feedback">
+                        <div *ngIf="email.errors?.required">Email is required</div>
+                        <div *ngIf="email.errors?.pattern">Invalid email format</div>
+                      </div>              
                   <!-- Mobile Number -->
                   <input
                     type="text"
@@ -62,7 +62,7 @@
                   />
                   <div *ngIf="mobile.dirty && mobile.invalid && mobile.touched" class="invalid-feedback">
                     <div *ngIf="mobile.errors?.required">Mobile number is required</div>
-                    <div *ngIf="mobile.errors?.pattern">Invalid mobile number</div>
+                    <div *ngIf="mobile.errors?.pattern">10 digits are required in mobile number</div>
                   </div>
                   
                   <!-- Password -->
