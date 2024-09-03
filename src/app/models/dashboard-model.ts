@@ -77,4 +77,17 @@ export class UserWithBookingCount {
     updatedAt?: Date;
     bookingCount: number = 0;
 }
+export interface BookingDetails {
+    userID: string;
+    movieName: string;
+    theatreName: string;
+    bookingDate: Date;
+    showDate: Date;
+    showTime: string;
+    seats: string;
+    totalPrice: number;
+    transactionID: string;
+    paymentMethod: string;
+}
+
 
