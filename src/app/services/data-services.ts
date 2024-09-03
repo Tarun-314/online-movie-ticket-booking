@@ -1,30 +1,43 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { City, LinkedMovies, Movie, Multiplex, PurchaseHistory, Review, User } from "../models/data-model";
+import { City, Coupon, LinkedMovies, Movie, Multiplex, Bookings, Review, User, Payment } from "../models/data-model";
 
 @Injectable({providedIn:'root'})
 export class DataService
 {
-
     private selectedCitySubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
     selectedCity$: Observable<string> = this.selectedCitySubject.asObservable();
-
+  
+    cityobj: City = new City(["Hyderabad", "Chennai", "Mumbai", "Delhi", "Kolkata"]);
+    cities: string[] = this.cityobj.cities;
+  
     constructor() {
-        this.selectedCitySubject.next(this.getCities()[0]); 
+      const savedCity = localStorage.getItem('selectedCity');
+      if (savedCity) {
+        this.selectedCitySubject.next(savedCity);
+      } else {
+        this.selectedCitySubject.next(this.getCities()[0]);
+      }
+  
+      this.selectedCity$.subscribe(city => {
+        localStorage.setItem('selectedCity', city);
+      });
     }
-
-    cityobj:City = new City(["Hyderabad", "Chennai", "Mumbai", "Delhi", "Kolkata"]);
-    cities:string[] = this.cityobj.cities;
-    getCities():string[]
-    {
-        return this.cities;
+  
+    getCities(): string[] {
+      return this.cities;
     }
-
+  
     setCity(city: string): void {
-        this.selectedCitySubject.next(city);
+      this.selectedCitySubject.next(city);
     }
 
-    multiplexes: Multiplex[] = [
+    getCity():string
+    {
+        return this.selectedCitySubject.getValue();
+    }
+
+    private multiplexes: Multiplex[] = [
     new Multiplex(
         '05B467B0-3788-4726-ADC1-415C079B73DB',
         'Liberty Cinema',
@@ -113,7 +126,7 @@ export class DataService
         return this.movies.find(movie => movie.MovieID === id);
     }
 
-    movies: Movie[] = [
+    private movies: Movie[] = [
     new Movie(
         '00E57EEB-5B5B-446A-8C8C-D01032D59552',
         'PK',
@@ -210,7 +223,7 @@ export class DataService
         return this.movies;
     }
 
-    reviews: Review[] = [
+    private reviews: Review[] = [
         new Review('0DFFA809-CAE2-4C33-A9F1-1370DAC12BFA','2BC57594-3F0D-473E-B2D4-6829F4B8290D','User A','31BD7D4C-B4C4-44D3-9B96-F37720B1F95E', 4, 'A beautiful story of self-discovery.', new Date('2024-08-24T14:52:27')),
         new Review('0E07FEF1-377C-448C-B5CB-96C0F7AEB647','0EC74B46-6419-4049-A24E-7B1E0DF6616E','User B','31BD7D4C-B4C4-44D3-9B96-F37720B1F95E', 4.5, 'Mind-blowing visuals and action.', new Date('2024-08-24T14:45:44')),
         new Review('0ECCBB1C-5860-46DE-AE43-E6F40278ED29','3980E8A0-9C28-448E-A989-4E5B9ABF726B','User C','F3C55992-42B9-43A6-B4BA-C785D1938FDD', 4.5, 'A dark and captivating tale.', new Date('2024-08-24T14:56:21')),
@@ -230,7 +243,7 @@ export class DataService
         this.reviews.push(Rev);
     }
 
-    user:User = new User(
+    private user:User = new User(
         '0DF0AFEC-B326-4ED3-8094-7BE78F1EDC11',
         'Sarah Brown',
         'hash5',
@@ -243,7 +256,7 @@ export class DataService
         new Date('2024-08-24T08:39:13')
     );
 
-    users:User[] = [
+    private users:User[] = [
         {
             UserID: '0EC74B46-6419-4049-A24E-7B1E0DF6616E',
             FullName: 'Chris Wilson',
@@ -328,70 +341,187 @@ export class DataService
         return this.user;
     }
 
-    user_purchases:PurchaseHistory[] = [new PurchaseHistory(
-        'Tholi Prema',
-        'Inox PVR',
-        new Date('2024-08-15'),
-        '06:00 AM',
-        'A5, A6',
-        '₹500',
-        'TXN123456789',
-        'Credit Card'
-      ),
-       new PurchaseHistory(
-        'Tholi Prema',
-        'Inox PVR',
-        new Date('2024-08-15'),
-        '06:00 AM',
-        'A5, A6',
-        '₹500',
-        'TXN123456789',
-        'Credit Card'
-      )];
+    private user_purchases: Bookings[] = [
+        new Bookings(
+          'BookingID1', // Replace with actual BookingID
+          '0DF0AFEC-B326-4ED3-8094-7BE78F1EDC11', // Replace with actual UserID
+          'MovieID1', // Replace with actual MovieID
+          'MovieID1', // Replace with actual MovieID
+          'TheatreID1', // Replace with actual TheatreID
+          'TheatreID1', // Replace with actual TheatreID
+          new Date('2024-08-15'),
+          new Date('2024-08-15'), // ShowDate
+          '06:00 AM',
+          1, // ScreenNumber
+          2, // NumberOfSeats
+          'A5, A6',
+          500, // TotalPrice
+          "Txfei3r",
+          'Pending', // Status
+          'Credit Card'
+        ),
+        new Bookings(
+          'BookingID2', 
+          '0DF0AFEC-B326-4ED3-8094-7BE78F1EDC11', 
+          'MovieID2', 
+          'MovieID2', 
+          'TheatreID2', 
+          'TheatreID2', 
+          new Date('2024-08-15'),
+          new Date('2024-08-15'), 
+          '06:00 AM',
+          1, 
+          2, 
+          'A5, A6',
+          500, 
+          "Txuwegfwe",
+          'Pending', 
+          'Credit Card'
+        )
+      ];
       
-    getUserPurchaseHistory():PurchaseHistory[]
+      
+    getUserPurchaseHistory(id: string): Bookings[] 
+    {
+        return this.user_purchases.filter(purchase => purchase.UserID === id);
+    }
+      
+
+    getAllUsersHistory()
     {
         return this.user_purchases;
     }
 
-    linkedMovies:LinkedMovies[] = [
+    private linkedMovies:LinkedMovies[] = [
         new LinkedMovies(
-          '0192E9D2-B38D-4878-BBED-80FE3AB16E11',
           '05B467B0-3788-4726-ADC1-415C079B73DB',
           'Theatre A',
+          'Delhi',
           '1441A9C5-EB00-493C-8F54-2C14C74A3AFF',
           'Movie A',
+          'https://wallpapercave.com/wp/wp10314725.jpg',
+          'Telugu',
+          new Date('2024-08-25'),
+          7989829,
+          8.9,
           1,
-          new Date('2024-08-28'),
-          '{"9:30AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","12:30PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","3:30PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","6:30PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000"}',
+          new Date('2024-09-03'),
+          '{"09:30 AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","12:30 PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","03:30 PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","06:30 PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000"}',
           '80,80,80,80'
         ),
 
         new LinkedMovies(
-          '024E8F30-2EF8-4723-A380-1B1670EDB425',
-          'F8B39DB1-8113-440E-B414-332A54E17EF8',
+          '05B467B0-3788-4726-ADC1-415C079B73DB',
           'Theatre A',
+          'Delhi',
           '31BD7D4C-B4C4-44D3-9B96-F37720B1F95E',
           'Movie A',
+          'https://wallpapercave.com/wp/wp10314725.jpg',
+          'Telugu',
+          new Date('2024-08-25'),
+          7989829,
+          8.9,
           1,
-          new Date('2024-08-30'),
-          '{"8:00AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","11:00AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","2:00PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","5:00PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000"}',
+          new Date('2024-09-03'),
+          '{"08:00 AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","11:00 AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","02:00 PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","05:00 PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000"}',
           '80,80,80,80'
         ),
 
         new LinkedMovies(
-          '04B77770-AA27-4F2D-8A36-67AEB55C4A9C',
-          'D90F1552-7CB1-4611-879F-CFF2B676FA72',
-          'Theatre A',
-          'C4DA0DB8-F320-41F9-9DDF-BF858C8643C2',
-          'Movie A',
+          '05B467B0-3788-4726-ADC1-415C079B73DB',
+          'Theatre B',
+          'Delhi',
+          '1441A9C5-EB00-493C-8F54-2C14C74A3AFF',
+          'Movie B',
+          'https://wallpapercave.com/wp/wp10314725.jpg',
+          'Telugu',
+          new Date('2024-08-25'),
+          7989829,
+          8.9,
           1,
-          new Date('2024-08-28'),
-          '{"11:00AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","2:00PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","5:00PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","8:00PM":"0000000000000000000000000000000000000000000000000000000000000000000000000000000"}',
-        '80,80,80,80')];
+          new Date('2024-09-01'),
+          '{"09:00 AM":"11100000000000000000000000000000000000000000000000000000000000000000000000000000","11:00 AM":"00111100000000000000000000000000000000000000000000000000000000000000000000000000","02:00 PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","05:00 PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","08:00 PM":"0000000000000000000000000000000000000000000000000000000000000000000000000000000"}',
+        '80,80,80,80,80'),
+    
+        new LinkedMovies(
+            '05B467B0-3788-4726-ADC1-415C079B73DB',
+            'Theatre A',
+            'Delhi',
+            'C4DA0DB8-F320-41F9-9DDF-BF858C8643C2',
+            'Movie B',
+            'https://wallpapercave.com/wp/wp10314725.jpg',
+            'Telugu',
+            new Date('2024-08-25'),
+            7989829,
+            8.9,
+            1,
+            new Date('2024-09-03'),
+            '{"11:00 AM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","02:00 PM":"00000001111000000000000000000000000000000000000000000000000000000000000000000000","05:00 PM":"00000000000000000000000000000000000000000000000000000000000000000000000000000000","08:00 PM":"0000000000000000000000000000000000000000000000000000000000000000000000000000000"}',
+          '80,80,80,80')
+    ];
     
     getLinkedMovies():LinkedMovies[]
     {
         return this.linkedMovies;
     }
+
+    getLinkedMoviesByIDDate(theatreID: string, date: string): LinkedMovies[] {
+        return this.linkedMovies.filter(movie => movie.TheatreID === theatreID && movie.ShowDate.toISOString().split('T')[0] === date);
+    }      
+
+    getLinkedMulsByIDDateCity(movieID: string, date:string): LinkedMovies[]    {
+        return this.linkedMovies.filter(movie => movie.MovieID === movieID && movie.ShowDate.toISOString().split('T')[0] === date && movie.Area === this.getCity());
+    }
+
+    getSeatString(multiplexID: string, movieName: string, selectedDate: string, selectedTime: string): string {
+
+        for (const movie of this.linkedMovies) {
+            if (
+                movie.TheatreID === multiplexID &&
+                movie.MovieName === movieName &&
+                movie.ShowDate.toISOString().split('T')[0] === selectedDate 
+            ) {
+                const showTimes = JSON.parse(movie.ShowTimes);
+                console.log(showTimes);
+                if (showTimes[selectedTime]) {
+                    return showTimes[selectedTime];
+                }
+            }
+        }
+        
+        return "00000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    }
+
+    setSeatString(multiplexID: string, movieName: string, selectedDate: string, selectedTime: string, newSeatString: string): boolean {
+        for (const movie of this.linkedMovies) {
+          if (
+            movie.TheatreID === multiplexID &&
+            movie.MovieName === movieName &&
+            movie.ShowDate.toISOString().split('T')[0] === selectedDate
+          ) {
+            const showTimes = JSON.parse(movie.ShowTimes);
+            if (showTimes[selectedTime]) {
+              showTimes[selectedTime] = newSeatString;
+              movie.ShowTimes = JSON.stringify(showTimes);
+              return true;
+            }
+          }
+          else
+            return false;
+        }
+      }
+
+
+    private coupons: Coupon[] = [
+        new Coupon('30DD82FA-D8FF-4CE6-8473-232BC57C0D66', 'HOLIDAY100', 100.00),
+        new Coupon('945A0001-1ABC-415F-A049-8F2DC895B6C3', 'SAVE50', 50.00),
+        new Coupon('A838ACA6-713D-4D78-8AE3-876A9B00D8DD', 'NEWYEAR50', 50.00),
+        new Coupon('ED28FB1A-AE98-4D54-8058-C7DD0885C927', 'FLASHSALE150', 150.00)
+    ];
+
+    getCoupon(couponCode: string): number {
+        const coupon = this.coupons.find(c => c.CouponCode === couponCode);
+        return coupon ? coupon.DiscountAmount : 0;
+    }
+    
 }

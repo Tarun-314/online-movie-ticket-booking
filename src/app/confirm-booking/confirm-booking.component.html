@@ -2,50 +2,50 @@
 <div class="ticket my-5">
     <div class="left">
         <div class="image">
-            <img src="https://cdn.statically.io/gh/vamsivardhanalajangi/online-movie-ticket-booking/5b926d38/images/Devara.jpg" alt="Movie Image">
+            <img src="{{bookingData.moviePoster}}" alt="Movie Image">
         </div>
     </div>
     <div class="ticket-info">
         <p class="date">
-            <span>TUESDAY</span>
-            <span class="date_format">29th Sep</span>
+            <span>{{bookingData.selectedDate | date:"EEEE" |uppercase}}</span>
+            <span class="date_format">{{bookingData.selectedDate | date:"dd MMM" |uppercase}}</span>
         </p>
         <div class="show-name">
-            <h1>Devara</h1>
+            <h1>{{bookingData.movieName}}</h1>
         </div>
         <div class="show-name">
-            <h2>Screen 1</h2>
+            <h2>Screen {{bookingData.screenNumber}}</h2>
         </div>
         <div class="seats">
-            <p>A,B,C</p>
+            <p>Seat(s): {{bookingData.seats}}</p>
         </div>
-        <p class="location">
-            <a href="https://maps.app.goo.gl/GgGWgknnRBTBcuC49" target="_blank">Location</a>
-            <span class="separator"><i class="far fa-smile"></i></span>
-            <span>Amount:250 Rs</span>
-        </p>
+        <div class="location d-flex justify-content-between">
+            <p><i class="fa fa-map-marker text-danger"></i> {{bookingData.theatreArea}}</p>
+            <p><span class="text-info">Amount Paid:</span> Rs. {{bookingData.amount}}</p>
+        </div>
     </div>
     <div class="right">
         <div class="right-info-container">
             <p class="admit-one">
-                <span>MOVIE WATCH</span>
-                <span>MOVIE WATCH</span>
-                <span>MOVIE WATCH</span>
+                <span>BOOK MOVIE</span>
+                <span>BOOK MOVIE</span>
+                <span>BOOK MOVIE</span>
             </p>
             <div class="show-name">
-                <h1>Theatre: Sandhya 30MM</h1>
+                <h1>Theatre: {{bookingData.movieName}}</h1>
             </div>
             <div class="time">
-                <p>6:00 AM <span>TO</span> 9:00 AM</p>
+                <p>Show Time: {{bookingData.selectedTime}}</p>
             </div>
             <div class="barcode">
                 <img [src]="qrCodeUrl" alt="QR code">
             </div>
-            <p class="ticket-number">Booking ID : {{ bookingId }}</p>
+            <p class="ticket-number mt-3 mb-1">Booking ID : {{ bookingId }}</p>
+            <p class="text-secondary">Payment Method : {{ bookingData.paymentMethod }}</p>
             <p class="admit-one">
-                <span>MOVIE WATCH</span>
-                <span>MOVIE WATCH</span>
-                <span>MOVIE WATCH</span>
+                <span>BOOK MOVIE</span>
+                <span>BOOK MOVIE</span>
+                <span>BOOK MOVIE</span>
             </p>
         </div>
     </div>

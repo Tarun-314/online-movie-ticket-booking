@@ -84,14 +84,14 @@
             <tbody>
 
               <tr *ngFor="let p of user_purchase_history">
-                <td>{{p.Movie}}</td>
-                <td>{{p.Multiplex}}</td>
+                <td>{{p.MovieName}}</td>
+                <td>{{p.TheatreName}}</td>
                 <td>{{p.BookingDate | date: "dd MMM yyyy"}}</td>
                 <td>{{p.ShowTime}}</td>
                 <td>{{p.Seats}}</td>
-                <td>{{p.Amount}}</td>
+                <td>{{p.TotalPrice}}</td>
                 <td>{{p.TransactionID}}</td>
-                <td>{{p.PaymentMode}}</td>
+                <td>{{p.PaymentMethod}}</td>
               </tr>
               
             </tbody>

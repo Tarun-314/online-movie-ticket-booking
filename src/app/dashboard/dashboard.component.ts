@@ -1,7 +1,9 @@
-import { Component, AfterViewChecked, OnInit } from '@angular/core';
+import { Component, AfterViewChecked, OnInit, OnDestroy } from '@angular/core';
 import { TheatreMovieWithName, UMovie, UTheatre, UserWithBookingCount } from '../models/dashboard-model';
 import { DashboardService } from '../services/dashboard-services';
 import { finalize } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Bookings, LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
 
 declare var $: any;
 
@@ -10,7 +12,8 @@ declare var $: any;
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit,AfterViewChecked {
+
+export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
   
   constructor(private service:DashboardService){}
   
@@ -41,6 +44,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked {
     }
   }
 
+
   MultiplexButtonClick() {
     if (this.isMultiplexEmpty) {
       this.addTheatre();
@@ -62,8 +66,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked {
       this.UpdateMlinkedmovie();
     }
   }
-  ngOnInit(): void {
-   
+  ngOnInit(): void {   
     this.GetMovies();
     this.GetTheatres();
     this.GetLinkedMovies();
@@ -328,4 +331,10 @@ export class DashboardComponent implements OnInit,AfterViewChecked {
       }
     });
   }
+
+  ngOnDestroy(): void {
+    $('.modal').modal('hide');
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open');
+  }  
 }

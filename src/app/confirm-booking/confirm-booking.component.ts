@@ -1,19 +1,48 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import html2canvas from 'html2canvas';
 import QRCode from 'qrcode';
+import { DataService } from '../services/data-services';
 
 @Component({
   selector: 'app-confirm-booking',
   templateUrl: './confirm-booking.component.html',
   styleUrls: ['./confirm-booking.component.css']
 })
-export class ConfirmBookingComponent implements OnInit{
-
-  bookingId: string = '#20030220';
+export class ConfirmBookingComponent implements OnInit {
+  bookingId: string = '';
   qrCodeUrl: string = '';
+  bookingData:any;
 
+  constructor(private router:Router, private dataService:DataService){}
   ngOnInit() {
+    this.retrieveStateData();
     this.generateQRCode();
+    this.generateBookingId();
+  }
+
+  retrieveStateData() {
+    this.bookingData = history.state;
+    console.log('Retrieved State Data:', this.bookingData);
+  
+    if (!this.bookingData.theatreID || 
+        !this.bookingData.theatreName || 
+        !this.bookingData.movieName || 
+        !this.bookingData.moviePoster || 
+        !this.bookingData.language || 
+        !this.bookingData.selectedDate || 
+        !this.bookingData.selectedTime || 
+        !this.bookingData.seats || 
+        !this.bookingData.amount || 
+        !this.bookingData.seatString ||
+        !this.bookingData.paymentMethod ||
+        !this.bookingData.transactionId
+      ) {
+      this.router.navigate(['/error']);
+    } else {
+      this.bookingId = this.bookingData.transactionId; 
+      this.dataService.setSeatString(this.bookingData.theatreID, this.bookingData.movieName, this.bookingData.selectedDate, this.bookingData.selectedTime, this.bookingData.seatString);
+    }
   }
 
   generateQRCode() {
@@ -25,6 +54,12 @@ export class ConfirmBookingComponent implements OnInit{
       this.qrCodeUrl = url;
     });
   }
+
+  generateBookingId() {
+    // Implement your booking ID generation logic here
+    this.bookingId = 'BOOK' + Math.random().toString(36).substr(2, 9).toUpperCase();
+  }
+
 
   downloadImage() {
     const ticketElement = document.querySelector('.ticket') as HTMLElement;

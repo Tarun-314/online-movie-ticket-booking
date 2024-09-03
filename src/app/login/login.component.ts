@@ -9,6 +9,7 @@ export class LoginComponent {
   isForgotPassword: boolean = false;
   securityQuestion: string ='';
   securityAnswer: string='';
+  passwordMismatch = false;
   toggleView() {
     this.isForgotPassword = !this.isForgotPassword;
   }
@@ -25,6 +26,15 @@ export class LoginComponent {
       console.log('Form Submitted', form.value);
     } else {
       console.log('Form is invalid');
+    }
+  }
+
+  checkPasswordMatch() {
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+    const confirmPassword = (document.getElementById('confirmPassword') as HTMLInputElement).value;
+
+    if (password && confirmPassword) {
+      this.passwordMismatch = password !== confirmPassword;
     }
   }
 }

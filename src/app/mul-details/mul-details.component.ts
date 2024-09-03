@@ -1,6 +1,6 @@
-import { Component, Renderer2, OnInit } from '@angular/core';
+import { Component, Renderer2, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Multiplex } from '../models/data-model';
+import { LinkedMovies, Multiplex } from '../models/data-model';
 import { DataService } from '../services/data-services';
 
 declare var $: any;
@@ -10,11 +10,26 @@ declare var $: any;
   templateUrl: './mul-details.component.html',
   styleUrls: ['./mul-details.component.css']
 })
-export class MulDetailsComponent implements OnInit {
+export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   id:string;
   multiplex:Multiplex;
   isMulPresent:boolean = false;
+  linkedMovies:LinkedMovies[] = [];
+  isDateSelected:boolean = false;
+  searchLM:string='';
+  seatString:string = "00000000000000000000000000000000000000000000000000000000000000000000000000000000";
+  selectedDate: string | null = null;
+  selectedTime: string | null = null;
+  movieName: string='';
+  moviePoster: string='';
+  movieLang: string='';
+  selectedSeats: string='';
+  totalPrice: string='';
+  screenNumber: string='';
+
+  private eventListeners: (() => void)[] = [];
+
   constructor(private renderer: Renderer2, private router:Router, private route:ActivatedRoute, private dataService:DataService) {}
 
   ngOnInit() {
@@ -30,10 +45,18 @@ export class MulDetailsComponent implements OnInit {
         this.router.navigate(['/error']);
       }
     });    
+  }
 
+  ngAfterViewInit() {
     this.generateDateButtons();
-    this.setupSeatMatrix();
     this.setupDateAndTimeSelection();
+  }
+
+  ngOnDestroy() {
+    this.eventListeners.forEach(unlisten => unlisten());
+    $('#selectionModal').modal('hide');
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open');
   }
 
   getStars(rating: number): string[] {
@@ -55,8 +78,8 @@ export class MulDetailsComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  generateDateButtons() {
-    const dateContainer = this.renderer.selectRootElement('.row > .col-md-8 .d-flex', true);
+  generateDateButtons(): void {
+    const dateContainer = this.renderer.selectRootElement('#date-container', true);
     const today = new Date();
     
     // Clear existing buttons
@@ -77,12 +100,30 @@ export class MulDetailsComponent implements OnInit {
         this.renderer.setAttribute(button, 'data-date', formattedDate);
         this.renderer.setProperty(button, 'textContent', displayDate);
         
+        const listener2 = this.renderer.listen(button, 'click', () => this.onDateClick(formattedDate));
+        this.eventListeners.push(listener2);
+        
         this.renderer.appendChild(dateContainer, button);
     }
   }
 
+  onDateClick(date: string): void {
+    this.linkedMovies = this.dataService.getLinkedMoviesByIDDate(this.id,date);
+  }
+
+  getShowTimes(jsonString: string): string[] {
+  const jsonObject = JSON.parse(jsonString);
+  return Object.keys(jsonObject);
+  }
+
+  filterLinkedMovies(): LinkedMovies[] {
+    return this.linkedMovies.filter(lm =>
+      lm.MovieName.toLowerCase().startsWith(this.searchLM.toLowerCase())
+    );
+  }
+
   setupSeatMatrix() {
-    const seatString = "000101010000000000010101000000000000000000000000"; 
+    
     const seatMatrixContainer = this.renderer.selectRootElement('.seat-grid', true);
   
     const seatRows = [
@@ -103,7 +144,7 @@ export class MulDetailsComponent implements OnInit {
       matrixHTML += `<div class="seat-row" data-price="${row.price}"><div class="seat-label">${row.label}</div>`;
       
       for (let i = 0; i < row.count; i++) {
-        const seatStatus = seatString[seatStringIndex++];
+        const seatStatus = this.seatString[seatStringIndex++];
         const seatClass = seatStatus === '1' ? 'occupied' : 'free';
         matrixHTML += `<div class="seat ${seatClass}" data-seat-number="${row.label}${i + 1}">${i + 1}</div>`;
       }
@@ -115,7 +156,7 @@ export class MulDetailsComponent implements OnInit {
   
     // Generate seat matrix on modal load
     $('#selectionModal').on('show.bs.modal', () => {
-      this.generateSeatMatrix(seatString);
+      this.generateSeatMatrix(this.seatString);
     });
   
     // Event listener for seat selection
@@ -166,32 +207,59 @@ export class MulDetailsComponent implements OnInit {
     document.getElementById('selectedSeats')!.textContent = selectedSeatsArray.join(', ') || 'None';
     document.getElementById('totalPrice')!.textContent = totalPrice.toString();
     (document.getElementById('checkoutButton') as HTMLButtonElement).disabled = selectedSeats.length === 0;
-  }
+    
+    this.selectedSeats = document.getElementById('selectedSeats')!.textContent;
+    this.totalPrice = document.getElementById('totalPrice')!.textContent;
 
+    // Update seat string
+    let seatStringArray = this.seatString.split('');
+    selectedSeatsArray.forEach(seat => {
+      const row = seat.charAt(0);
+      const number = parseInt(seat.slice(1)) - 1;
+      const rowIndex = row.charCodeAt(0) - 'A'.charCodeAt(0);
+      const seatIndex = rowIndex * 10 + number;
+      seatStringArray[seatIndex] = '1';
+    });
+    this.seatString = seatStringArray.join('');
+  }
+  
+  checkOut() {
+    $('#selectionModal').modal('hide');
+  
+    const stateData = {
+      theatreID: this.multiplex.TheatreID,
+      theatreName: this.multiplex.Name,
+      theatreArea: this.multiplex.Area,
+      movieName: this.movieName,
+      moviePoster: this.moviePoster,
+      language: this.movieLang,
+      selectedDate: this.selectedDate,
+      selectedTime: this.selectedTime,
+      seats: this.selectedSeats,
+      amount: this.totalPrice,
+      seatString: this.seatString,
+      screenNumber: this.screenNumber
+    };
+  
+    this.router.navigate(['/payment'], { state: stateData });
+  }
+  
   setupDateAndTimeSelection() {
-    let selectedDate: string | null = null;
-    let selectedTime: string | null = null;
     let currentCard: HTMLElement | null = null;
   
-    // Set a default date on page load
-    const defaultDate = document.querySelector('#date-2024-08-15');
-    if (defaultDate) {
-      selectedDate = defaultDate.getAttribute('data-date');
-      defaultDate.classList.add('active');
-    }
+    const listener = this.renderer.listen(document, 'click', (event: Event) => {
+      const target = event.target as HTMLElement;
   
-    // Handle date selection
-    document.querySelectorAll('.btn[data-date]').forEach(button => {
-      button.addEventListener('click', function () {
+      // Handle date selection
+      if (target.matches('.btn[data-date]')) {
         document.querySelectorAll('.btn[data-date]').forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-        selectedDate = this.getAttribute('data-date');
-      });
-    });
+        target.classList.add('active');
+        this.selectedDate = target.getAttribute('data-date');
+        this.isDateSelected=true;
+      }
   
-    // Handle time selection
-    document.querySelectorAll('.multiplex-card button[data-time]').forEach(button => {
-      button.addEventListener('click', function () {
+      // Handle time selection
+      if (target.matches('.multiplex-card button[data-time]')) {
         // Reset previously selected card's time
         if (currentCard) {
           currentCard.querySelectorAll('button[data-time]').forEach(btn => btn.classList.remove('active'));
@@ -199,82 +267,56 @@ export class MulDetailsComponent implements OnInit {
         }
   
         // Select new card
-        const card = this.closest('.multiplex-card') as HTMLElement;
+        const card = target.closest('.multiplex-card') as HTMLElement;
         const confirmButton = card.querySelector('.confirm-selection') as HTMLElement;
   
-        if (this.classList.contains('active')) {
-          this.classList.remove('active');
-          selectedTime = null;
+        if (target.classList.contains('active')) {
+          target.classList.remove('active');
+          this.selectedTime = null;
           confirmButton.style.display = 'none';
           currentCard = null;
         } else {
-          this.classList.add('active');
-          selectedTime = this.getAttribute('data-time');
+          target.classList.add('active');
+          this.selectedTime = target.getAttribute('data-time');
           confirmButton.style.display = 'block';
           currentCard = card;
         }
-      });
-    });
-  
-    // Handle confirm selection
-    document.querySelectorAll('.confirm-selection').forEach(button => {
-      button.addEventListener('click', function () {
-        if (!selectedDate) {
-          alert('Please select a date.');
-          return;
-        }
-  
-        if (selectedTime && currentCard) {
-          const multiplexName = currentCard.querySelector('.card-title')?.textContent;
-          const area = currentCard.querySelector('.card-subtitle')?.textContent;
-  
-          document.getElementById('selectedMultiplexName')!.textContent = multiplexName || '';
-          document.getElementById('selectedArea')!.textContent = area || '';
-          document.getElementById('selectedDate')!.textContent = 'Date: ' + selectedDate;
-          document.getElementById('selectedTime')!.textContent = 'Show Time: ' + selectedTime;
-          $('#selectionModal').modal('show');
-        } else {
-          alert('Please select a show time.');
-        }
-      });
-    });
-  
-    // Handle seat selection
-    document.querySelectorAll('.seat').forEach(seat => {
-      seat.addEventListener('click', function () {
-        if (!this.classList.contains('occupied')) {
-          this.classList.toggle('selected');
-          updateSeatSelection();
-        }
-      });
-    });
-  
-    // Function to update seat selection
-    const updateSeatSelection = () => {
-      const selectedSeats = document.querySelectorAll('.seat.selected');
-      let seatCount = selectedSeats.length;
-      let totalPrice = 0;
-      let seatNumbers: string[] = [];
-  
-      selectedSeats.forEach(seat => {
-        const row = seat.parentElement as HTMLElement;
-        const price = parseInt(row.getAttribute('data-price') || '0');
-        totalPrice += price;
-        seatNumbers.push(`${row.querySelector('.seat-label')?.textContent}${seat.getAttribute('data-seat-number')}`);
-      });
-  
-      document.getElementById('selectedSeats')!.textContent = seatNumbers.join(', ');
-      document.getElementById('totalPrice')!.textContent = totalPrice.toString();
-  
-      // Enable/disable the checkout button based on seat selection
-      const checkoutButton = document.getElementById('checkoutButton') as HTMLButtonElement;
-      if (checkoutButton) {
-        checkoutButton.disabled = seatCount === 0;
       }
-    };
+  
+      // Handle confirm selection
+      if (target.matches('.confirm-selection')) {
+        // if (!selectedDate) {
+        //   alert('Please select a date.');
+        //   return;
+        // }
+
+  
+        if (this.selectedTime && currentCard) {
+          this.movieName = currentCard.querySelector('.card-title')?.textContent;
+          this.moviePoster = currentCard.querySelector('.movie-card-img')?.getAttribute('src');
+          this.screenNumber = currentCard.querySelector('.screenNumber')?.textContent;
+          const area = currentCard.querySelector('.card-subtitle')?.textContent;
+          this.movieLang = currentCard.querySelector('.movieLang')?.textContent;
+  
+          document.getElementById('selectedMultiplexName')!.textContent = this.movieName || '';
+          document.getElementById('selectedArea')!.textContent = area || '';
+          document.getElementById('selectedDate')!.textContent = 'Date: ' + this.selectedDate;
+          document.getElementById('selectedTime')!.textContent = 'Show Time: ' + this.selectedTime;
+          $('#selectionModal').modal('show');
+
+          this.seatString = this.dataService.getSeatString(this.multiplex.TheatreID,this.movieName,this.selectedDate,this.selectedTime);
+          this.setupSeatMatrix();
+        } 
+        // else {
+        //   alert('Please select a show time.');
+        // }
+      }
+    });
+
+    this.eventListeners.push(listener);
   
     // Reset seats and price when the modal is closed
-    $('#selectionModal').on('hidden.bs.modal', function () {
+    $('#selectionModal').on('hidden.bs.modal', () => {
       document.querySelectorAll('.seat.selected').forEach(seat => {
         seat.classList.remove('selected');
       });
@@ -290,15 +332,8 @@ export class MulDetailsComponent implements OnInit {
         currentCard.querySelectorAll('button[data-time]').forEach(btn => btn.classList.remove('active'));
         (currentCard.querySelector('.confirm-selection') as HTMLElement)!.style.display = 'none';
       }
-      selectedTime = null;
+      this.selectedTime = null;
       currentCard = null;
     });
   }
-  
 }
-
-
-
-
-
-

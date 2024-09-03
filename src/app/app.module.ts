@@ -26,6 +26,8 @@ import { LikesPipe } from './pipes/likes.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { ShowTimesPipe } from './pipes/show-times.pipe';
 import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { AlertComponent } from './alert/alert.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common
     ConfirmBookingComponent,
     LikesPipe,
     TruncatePipe,
-    ShowTimesPipe
+    ShowTimesPipe,
+    AlertComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
