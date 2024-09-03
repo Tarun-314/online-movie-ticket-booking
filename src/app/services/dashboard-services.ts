@@ -43,4 +43,86 @@ export class DashboardService{
         headers: this.getHeaders()
       });
     }
+
+    // Function to update a movie
+    public updateMovie(updatedMovie: UMovie): Observable<string> {
+      return this.http.put<string>(`${this.baseUrl}/UpdateMovie`, updatedMovie, {
+        headers: this.getHeaders()
+      });
+    }
+
+    // Function to update a theatre
+    public updateTheatre(updatedTheatre: UTheatre): Observable<string> {
+      return this.http.put<string>(`${this.baseUrl}/UpdateTheatre`, updatedTheatre, {
+        headers: this.getHeaders()
+      });
+    }
+
+    // Function to update a theatre movie
+    public updateTheatreMovie(updatedTheatreMovie: TheatreMovieWithName): Observable<string> {
+      return this.http.put<string>(`${this.baseUrl}/UpdateTheatreMovie`, updatedTheatreMovie, {
+        headers: this.getHeaders()
+      });
+    }
+    deleteMovie(movieId: string): Observable<string> {
+      const url = `${this.baseUrl}/DeleteMovie/${movieId}`;
+      return this.http.delete<string>(url,{
+        headers: this.getHeaders()
+      });
+    }
+  
+    deleteTheatre(theatreId: string): Observable<string> {
+      const url = `${this.baseUrl}/DeleteTheatre/${theatreId}`;
+      return this.http.delete<string>(url,{
+        headers: this.getHeaders()
+      });
+    }
+  
+    deleteTheatreMovie(theatreMovieId: string): Observable<string> {
+      const url = `${this.baseUrl}/DeleteTheatreMovie/${theatreMovieId}`;
+      return this.http.delete<string>(url,{
+        headers: this.getHeaders()
+      });
+    }
+    insertMovie(movie: UMovie): Observable<string> {
+      const url = `${this.baseUrl}/InsertMovie`;
+      return this.http.post<string>(url, movie,{
+        headers: this.getHeaders()
+      });
+    }
+  
+    insertTheatre(theatre: UTheatre): Observable<string> {
+      const url = `${this.baseUrl}/InsertTheatre`;
+      return this.http.post<string>(url, theatre,{
+        headers: this.getHeaders()
+      });
+    }
+  
+    insertTheatreMovie(theatreMovie: TheatreMovieWithName): Observable<string> {
+      const url = `${this.baseUrl}/InsertTheatreMovie`;
+      return this.http.post<string>(url, theatreMovie, {
+        headers: this.getHeaders()
+      });
+    }
+    blockUser(userId: string): Observable<string> {
+      alert(userId)
+      const url = `${this.baseUrl}/BlockUser/${userId}`;
+      return this.http.post<string>(url,null,{
+        headers: this.getHeaders()
+      });
+    }
+  
+    unblockUser(userId: string): Observable<string> {
+      const url = `${this.baseUrl}/UnblockUser/${userId}`;
+      return this.http.post<string>(url,null,{
+        headers: this.getHeaders()
+      });
+    }
+  
+    deleteUser(userId: string): Observable<string> {
+      const url = `${this.baseUrl}/DeleteUser/${userId}`;
+      return this.http.delete<string>(url, {
+        headers: this.getHeaders()
+      });
+    }
 }
