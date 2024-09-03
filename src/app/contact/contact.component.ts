@@ -1,18 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 declare var emailjs: any;
 declare var bootstrap: any;
+declare var $: any;
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
-    emailjs.init("CIxDEI1DWUPlcMyIE"); // Replace with your actual EmailJS Public Key
+    emailjs.init("CIxDEI1DWUPlcMyIE"); 
     console.log("Connected to EmailJS");
   }
+
+  ngOnDestroy(): void {
+    $('.modal').modal('hide');
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open');
+  }  
 
   onSubmit(form: any) {
     if (form.invalid) {
@@ -20,13 +27,11 @@ export class ContactComponent implements OnInit {
       return;
     }
 
-    // Collect form data
     const name = form.value.name;
     const email = form.value.email;
     const phone = form.value.phone;
     const message = form.value.message;
 
-    // Create email template parameters
     const templateParams = {
       to_email: "shobithgampa1313@gmail.com",
       from_name: name,
@@ -41,7 +46,6 @@ export class ContactComponent implements OnInit {
       `
     };
 
-    // Send the email
     emailjs.send("service_bt6zsg7", "template_q8ndlce", templateParams)
       .then((response: any) => {
         console.log('Email sent successfully:', response);

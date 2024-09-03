@@ -30,130 +30,61 @@
     <div class="row my-4">
         <!-- Date Display -->
         <div class="col-md-8 d-flex align-items-center">
-            <div class="d-flex flex-wrap">
-                <button class="btn btn-outline-primary m-1" data-date="2024-08-15" id="date-2024-08-15">15 Aug</button>
-                <button class="btn btn-outline-primary m-1" data-date="2024-08-16" id="date-2024-08-16">16 Aug</button>
-                <button class="btn btn-outline-primary m-1" data-date="2024-08-17" id="date-2024-08-17">17 Aug</button>
-                <button class="btn btn-outline-primary m-1" data-date="2024-08-18" id="date-2024-08-18">18 Aug</button>
-                <button class="btn btn-outline-primary m-1" data-date="2024-08-19" id="date-2024-08-19">19 Aug</button>
-            </div>
-        </div>
+          <div class="d-flex flex-wrap" id="date-container">
+          </div>
+      </div>
         <div class="col-md-4 text-md-right mt-3 mt-md-0">
-          <input type="text" class="form-control" placeholder="Search Multiplex..">
+          <input type="text" [(ngModel)]="searchLM" class="form-control" placeholder="Search Multiplex..">
         </div>
     </div>
 </section>
 
 <!-- Multiplex Details Section -->
 <section class="container my-4 mb-4">
+
+    <div class="text-center mx-1 alert alert-info w-100" role="alert" *ngIf="!isDateSelected">
+      <h6 class="text-dark my-0">Please select a date..!</h6>
+    </div>
+
+    <div class="text-center mx-1 alert alert-danger w-100" role="alert" *ngIf="linkedMuls.length==0 && isDateSelected">
+      <h6 class="text-danger my-0">No movies are playing at selected date..!</h6>
+    </div>
+
+    <div class="text-center mx-1 alert alert-danger w-100" role="alert" *ngIf="filterLinkedMuls().length==0 && searchLM.length!=0 && isDateSelected">
+      <h6 class="text-danger my-0">Found no multiplexes on your search at the selected date..!</h6>
+    </div>
+
     <div class="row">
-      <!-- Multiplex Card 1 -->
-      <div class="col-md-6">
-        <div class="card mb-4 multiplex-card">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-md-6">
-                <h5 class="card-title">Multiplex Name 1</h5>
-                <h6 class="card-subtitle mb-2 text-muted"><i class="fa fa-map-marker text-danger"></i> Downtown</h6>
-                <div>
-                  <span class="badge badge-outline-info"> <i class="fa fa-ticket"></i> M-Ticket Available</span>
-                  <span class="badge badge-outline-warning ml-xs-2"><i class="fa fa-cutlery"></i> Food & Beverages Available</span>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="d-flex flex-wrap mt-2 mt-md-0">
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="09.30 AM">09.30 <span class="small">AM</span></button>
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="01.30 PM">01.30 <span class="small">PM</span></button>
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="06.00 PM">06.00 <span class="small">PM</span></button>
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="09.00 PM">09.00 <span class="small">PM</span></button>
-                </div>
-                <button class="btn btn-outline-info btn-sm m-1 confirm-selection" style="display: none;">Confirm Selection</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-            <!-- Multiplex Card 1 -->
-            <div class="col-md-6">
-                <div class="card mb-4 multiplex-card">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-md-6">
-                        <h5 class="card-title">Multiplex Name 2</h5>
-                        <h6 class="card-subtitle mb-2 text-muted"><i class="fa fa-map-marker text-danger"></i> Downtown</h6>
-                        <div>
-                          <span class="badge badge-outline-info"> <i class="fa fa-ticket"></i> M-Ticket Available</span>
-                          <span class="badge badge-outline-warning ml-xs-2"><i class="fa fa-cutlery"></i> Food & Beverages Available</span>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="d-flex flex-wrap mt-2 mt-md-0">
-                          <button class="btn btn-sm btn-outline-success rounded m-1" data-time="09.30 AM">09.30 <span class="small">AM</span></button>
-                          <button class="btn btn-sm btn-outline-success rounded m-1" data-time="01.30 PM">01.30 <span class="small">PM</span></button>
-                          <button class="btn btn-sm btn-outline-success rounded m-1" data-time="06.00 PM">06.00 <span class="small">PM</span></button>
-                          <button class="btn btn-sm btn-outline-success rounded m-1" data-time="09.00 PM">09.00 <span class="small">PM</span></button>
-                        </div>
-                        <button class="btn btn-outline-info btn-sm m-1 confirm-selection" style="display: none;">Confirm Selection</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+   <!-- Multiplex Card -->
+<div class="col-12 col-md-6" *ngFor="let lm of filterLinkedMuls()">
+  <div class="card mb-4 multiplex-card">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-12 col-md-5 mb-3 mb-md-0">
+          <h5 class="card-title">{{lm.TheatreName}}</h5>
+          <h3 class="d-none theatreID">{{lm.TheatreID}}</h3>
+          <h6 class="card-subtitle mb-2 text-muted"><i class="fa fa-map-marker text-danger"></i> <span class="TheatreArea">{{lm.Area}}</span></h6>
+          <h6 class="small mb-2 text-muted"><i class="fa fa-television text-primary"></i> Screen No: <span class="screenNumber">{{lm.ScreenNumber}}</span></h6>
+          <div>
+            <span class="badge badge-outline-info mr-2"><i class="fa fa-ticket"></i> M-Ticket Available</span>
+            <span class="badge badge-outline-warning"><i class="fa fa-cutlery"></i> Food & Beverages Available</span>
+          </div>
+        </div>
+        <div class="col-12 col-md-7">
+          <div class="d-flex justify-content-center justify-content-md-end mt-2 mt-md-0">
+            <div class="d-flex flex-wrap">
+              <button *ngFor="let st of getShowTimes(lm.ShowTimes)" class="btn btn-sm btn-outline-success rounded mx-1 my-1" [attr.data-time]="st">{{st}}</button>
+            </div>
+          </div>
+          <button class="btn btn-outline-info btn-sm m-1 confirm-selection w-100" style="display: none;">Confirm Selection</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-                    <!-- Multiplex Card 1 -->
-      <div class="col-md-6">
-        <div class="card mb-4 multiplex-card">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-md-6">
-                <h5 class="card-title">Multiplex Name 3</h5>
-                <h6 class="card-subtitle mb-2 text-muted"><i class="fa fa-map-marker text-danger"></i> Downtown</h6>
-                <div>
-                  <span class="badge badge-outline-info"> <i class="fa fa-ticket"></i> M-Ticket Available</span>
-                  <span class="badge badge-outline-warning ml-xs-2"><i class="fa fa-cutlery"></i> Food & Beverages Available</span>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="d-flex flex-wrap mt-2 mt-md-0">
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="09.30 AM">09.30 <span class="small">AM</span></button>
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="01.30 PM">01.30 <span class="small">PM</span></button>
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="06.00 PM">06.00 <span class="small">PM</span></button>
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="09.00 PM">09.00 <span class="small">PM</span></button>
-                </div>
-                <button class="btn btn-outline-info btn-sm m-1 confirm-selection" style="display: none;">Confirm Selection</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Multiplex Card 2 -->
-      <div class="col-md-6">
-        <div class="card mb-4 multiplex-card">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-md-6">
-                <h5 class="card-title">Multiplex Name 4</h5>
-                <h6 class="card-subtitle mb-2 text-muted"><i class="fa fa-map-marker text-danger"></i> Midtown</h6>
-                <div>
-                  <span class="badge badge-outline-info"> <i class="fa fa-ticket"></i> M-Ticket Available</span>
-                  <span class="badge badge-outline-warning ml-xs-2"><i class="fa fa-cutlery"></i> Food & Beverages Available</span>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="d-flex flex-wrap mt-2 mt-md-0">
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="10.00 AM">10.00 <span class="small">AM</span></button>
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="02.00 PM">02.00 <span class="small">PM</span></button>
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="07.00 PM">07.00 <span class="small">PM</span></button>
-                  <button class="btn btn-sm btn-outline-success rounded m-1" data-time="10.00 PM">10.00 <span class="small">PM</span></button>
-                </div>
-                <button class="btn btn-outline-info btn-sm m-1 confirm-selection" style="display: none;">Confirm Selection</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   </section>
   
@@ -313,26 +244,40 @@
             <p>Selected Seat(s): <span id="selectedSeats" class="text-secondary small">None</span></p>
             <p>Total Price: <span id="totalPrice" class="text-secondary small">0</span> <span class="small text-secondary">INR</span></p>
           </div>
-          <!-- Right Side: Price Labels -->
-          <div class="col-sm-8 d-flex align-items-center justify-content-center justify-content-md-end">
-            <div class="d-flex align-items-center mb-2">
-              <div class="seat" style="background-color: #c5cfdd;"></div>
-              <p class="mr-2 ml-1 mb-0 text-secondary mytext">Silver (Rs.100)</p>
+            <!-- Right Side: Price Labels -->
+            <div class="col-sm-7 d-flex align-items-center justify-content-end">
+              <div class="row">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                  <div class="d-flex align-items-center mb-2">
+                    <div class="seat" style="background-color: #c5cfdd;"></div>
+                    <p class="mr-2 ml-1 mb-0 text-secondary mytext">Silver (Rs.100)</p>
+                  </div>
+                  <div class="d-flex align-items-center mb-2">
+                    <div class="seat" style="background-color: #ecd86b;"></div>
+                    <p class="mr-2 mb-0 ml-1 text-secondary mytext">Gold (Rs.150)</p>
+                  </div>
+                  <div class="d-flex align-items-center mb-2">
+                    <div class="seat" style="background-color: #95cddf;"></div>
+                    <p class="mb-0 ml-1 text-secondary mytext">Platinum (Rs.200)</p>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                  <div class="d-flex align-items-center mb-2">
+                    <div class="seat" style="background-color: #3d3c3c;"></div>
+                    <p class="mb-0 ml-1 mr-2 text-secondary mytext">Sold</p>
+                  </div>
+                  <div class="d-flex align-items-center mb-2">
+                    <div class="seat" style="background-color: rgb(253, 124, 124);"></div>
+                    <p class="mb-0 ml-1 text-secondary mytext">Selected</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="d-flex align-items-center mb-2">
-              <div class="seat" style="background-color: #ecd86b;"></div>
-              <p class="mr-2 mb-0 ml-1 text-secondary mytext">Gold (Rs.150)</p>
-            </div>
-            <div class="d-flex align-items-center mb-2">
-              <div class="seat" style="background-color: #95cddf;"></div>
-              <p class="mb-0 ml-1 text-secondary mytext">Platinum (Rs.200)</p>
-            </div>
-          </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-danger btn-sm rounded" data-dismiss="modal">Close</button>
-        <button class="btn btn-outline-success btn-sm rounded" id="checkoutButton" disabled>Checkout <i class="fa fa-sign-out"></i></button>
+        <button class="btn btn-outline-success btn-sm rounded" id="checkoutButton" disabled (click)="checkOut()">Checkout <i class="fa fa-sign-out"></i></button>
       </div>
     </div>
   </div>

@@ -155,68 +155,143 @@ export class User {
   }
 }
 
-export class PurchaseHistory {
-  Movie: string;
-  Multiplex: string;
+export class Bookings {
+  BookingID: string;
+  UserID: string;
+  MovieID: string;
+  MovieName: string;
+  TheatreID: string;
+  TheatreName: string;
   BookingDate: Date;
+  ShowDate: Date;
   ShowTime: string;
+  ScreenNumber: number;
+  NumberOfSeats: number;
   Seats: string;
-  Amount: string;
+  TotalPrice: number;
   TransactionID: string;
-  PaymentMode: string;
+  Status: string;
+  PaymentMethod: string;
 
   constructor(
-    Movie: string,
-    Multiplex: string,
+    BookingID: string,
+    UserID: string,
+    MovieID: string,
+    MovieName: string,
+    TheatreID: string,
+    TheatreName: string,
     BookingDate: Date,
+    ShowDate: Date,
     ShowTime: string,
+    ScreenNumber: number,
+    NumberOfSeats: number,
     Seats: string,
-    Amount: string,
+    TotalPrice: number,
     TransactionID: string,
-    PaymentMode: string
+    Status: string,
+    PaymentMethod: string
   ) {
-    this.Movie = Movie;
-    this.Multiplex = Multiplex;
+    this.BookingID = BookingID;
+    this.UserID = UserID;
+    this.MovieID = MovieID;
+    this.MovieName = MovieName;
+    this.TheatreID = TheatreID;
+    this.TheatreName = TheatreName;
     this.BookingDate = BookingDate;
+    this.ShowDate = ShowDate;
     this.ShowTime = ShowTime;
+    this.ScreenNumber = ScreenNumber;
+    this.NumberOfSeats = NumberOfSeats;
     this.Seats = Seats;
-    this.Amount = Amount;
+    this.TotalPrice = TotalPrice;
     this.TransactionID = TransactionID;
-    this.PaymentMode = PaymentMode;
+    this.Status = Status;
+    this.PaymentMethod = PaymentMethod;
   }
 }
 
 
+
 export class LinkedMovies {
-  TheatreMovieID: string;
   TheatreID: string;
   TheatreName: string;
+  Area: string;
   MovieID: string;
   MovieName: string;
+  MoviePoster: string;
+  Language: string;
+  ReleaseDate: Date;
+  Likes: number;
+  Ratings: number;
   ScreenNumber: number;
   ShowDate: Date;
   ShowTimes: string; 
   AvailableSeats: string;
 
   constructor(
-    TheatreMovieID: string,
     TheatreID: string,
     TheatreName: string,
+    Area: string,
     MovieID: string,
     MovieName: string,
+    MoviePoster: string,
+    Language: string,
+    ReleaseDate: Date,
+    Likes: number,
+    Ratings: number,
     ScreenNumber: number,
     ShowDate: Date,
     ShowTimes: string,
     AvailableSeats: string
   ) {
-    this.TheatreMovieID = TheatreMovieID;
     this.TheatreID = TheatreID;
     this.TheatreName = TheatreName;
+    this.Area = Area;
     this.MovieID = MovieID;
     this.MovieName = MovieName;
+    this.MoviePoster = MoviePoster;
+    this.Language = Language;
+    this.ReleaseDate = ReleaseDate;
+    this.Likes = Likes;
+    this.Ratings = Ratings,
     this.ScreenNumber = ScreenNumber;
     this.ShowDate = ShowDate;
     this.ShowTimes = ShowTimes;
     this.AvailableSeats = AvailableSeats;
   }
 }
+
+export class Coupon {
+  constructor(
+    public CouponID: string,
+    public CouponCode: string,
+    public DiscountAmount: number
+  ) {}
+}
+
+export class Payment {
+  PaymentID: string;
+  BookingID: string;
+  Amount: number;
+  PaymentDate: Date;
+  PaymentMethod: string;
+  TransactionID: string;
+
+  constructor(
+    PaymentID: string,
+    BookingID: string,
+    Amount: number,
+    PaymentDate: Date,
+    PaymentMethod: string,
+    TransactionID: string
+  ) {
+    this.PaymentID = PaymentID;
+    this.BookingID = BookingID;
+    this.Amount = Amount;
+    this.PaymentDate = PaymentDate;
+    this.PaymentMethod = PaymentMethod;
+    this.TransactionID = TransactionID;
+  }
+}
+
+

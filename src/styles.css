@@ -239,15 +239,18 @@
 }
 
 .seat {
-    width: 16px;
-    height: 16px;
-    background-color: #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    line-height: 22px;
-    font-size: 8px;
+  width: 16px;
+  height: 16px;
+  background-color: #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 
 .seat.selected {
     background-color: rgb(253, 124, 124) !important;
@@ -375,3 +378,4 @@ font-size: 0.875rem !important; /* Smaller font size for the label */
 td{
   font-size: 14px !important;
 }
+
