@@ -10,11 +10,6 @@ import { DataService } from '../services/data-services';
   styleUrls: ['./confirm-booking.component.css']
 })
 export class ConfirmBookingComponent implements OnInit {
-  @ViewChild('ticket', { static: true }) ticketElement: ElementRef;
-  
-  qrCodeUrl: string;
-  bookingId: string;
-
   bookingId: string = '';
   qrCodeUrl: string = '';
   bookingData:any;
