@@ -1,6 +1,5 @@
 import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from '../services/data-services';
-import { LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Bookings, LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
 
