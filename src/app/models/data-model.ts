@@ -117,6 +117,22 @@ export class Review {
   }
 }
 
+export class LoggedInUser {
+  constructor(
+    public email: string,
+    public id: string,
+    public token: string,
+    public tokenExpirationDate: Date
+  ) {}
+
+  get validToken() {
+    if (!this.tokenExpirationDate || new Date() > this.tokenExpirationDate) {
+      return null;
+    }
+    return this.token;
+  }
+}
+
 
 export class User {
   UserID: string;

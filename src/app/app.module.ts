@@ -25,6 +25,8 @@ import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.compo
 import { LikesPipe } from './pipes/likes.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { ShowTimesPipe } from './pipes/show-times.pipe';
+import { AlertComponent } from './alert/alert.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { ShowTimesPipe } from './pipes/show-times.pipe';
     ConfirmBookingComponent,
     LikesPipe,
     TruncatePipe,
-    ShowTimesPipe
+    ShowTimesPipe,
+    AlertComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
