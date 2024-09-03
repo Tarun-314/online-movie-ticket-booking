@@ -14,7 +14,7 @@
           <div class="form-row">
             <div class="form-group px-sm-4 my-1 col-md-6">
               <label for="name" class="font-weight-bold text-secondary">Name</label>
-              <input type="text" class="form-control form-control-sm text-capitalize" id="name" name="name" ngModel
+              <input type="text" class="form-control form-control-sm text-capitalize" id="name" name="name" [(ngModel)]="Mmultiplex.name"
                      required minlength="3" placeholder="Enter theatre name">
               <div *ngIf="multiplexForm.controls.name?.touched || multiplexForm.controls.name?.dirty" class="text-danger mt-2">
                 <div *ngIf="multiplexForm.controls.name?.errors?.required" class="small">Name is required.</div>
@@ -23,7 +23,7 @@
             </div>
             <div class="form-group px-sm-4 my-1 col-md-6">
               <label for="area" class="font-weight-bold text-secondary">Area</label>
-              <input type="text" class="form-control form-control-sm" id="area" name="area" ngModel
+              <input type="text" class="form-control form-control-sm" id="area" name="area" [(ngModel)]="Mmultiplex.area"
                      required placeholder="Enter area">
               <div *ngIf="multiplexForm.controls.area?.touched || multiplexForm.controls.area?.dirty" class="text-danger mt-2">
                 <div *ngIf="multiplexForm.controls.area?.errors?.required" class="small">Area is required.</div>
@@ -33,7 +33,7 @@
           <div class="form-row">
             <div class="form-group px-sm-4 my-1 col-md-6">
               <label for="location" class="font-weight-bold text-secondary">Location</label>
-              <input type="text" class="form-control form-control-sm " id="location" name="location" ngModel
+              <input type="text" class="form-control form-control-sm " id="location" name="location" [(ngModel)]="Mmultiplex.location"
                      required placeholder="Enter location">
               <div *ngIf="multiplexForm.controls.location?.touched || multiplexForm.controls.location?.dirty" class="text-danger mt-2">
                 <div *ngIf="multiplexForm.controls.location?.errors?.required" class="small">Location is required.</div>
@@ -41,7 +41,7 @@
             </div>
             <div class="form-group px-sm-4 my-1 col-md-6">
               <label for="ratings" class="font-weight-bold text-secondary">Ratings</label>
-              <input type="number" step="0.1" min="0" max="5" class="form-control form-control-sm" id="ratings" name="ratings" ngModel
+              <input type="number" step="0.1" min="0" max="5" class="form-control form-control-sm" id="ratings" name="ratings" [(ngModel)]="Mmultiplex.ratings"
                      required placeholder="Enter ratings">
               <div *ngIf="multiplexForm.controls.ratings?.touched || multiplexForm.controls.ratings?.dirty" class="text-danger mt-2">
                 <div *ngIf="multiplexForm.controls.ratings?.errors?.required" class="small">Ratings are required.</div>
@@ -53,7 +53,7 @@
           <div class="form-row">
             <div class="form-group px-sm-4 my-1 col-md-6">
               <label for="screens" class="font-weight-bold text-secondary">Screens</label>
-              <input type="number" class="form-control form-control-sm" id="screens" name="screens" ngModel
+              <input type="number" class="form-control form-control-sm" id="screens" name="screens" [(ngModel)]="Mmultiplex.screens"
                      required placeholder="Enter number of screens">
               <div *ngIf="multiplexForm.controls.screens?.touched || multiplexForm.controls.screens?.dirty" class="text-danger mt-2">
                 <div *ngIf="multiplexForm.controls.screens?.errors?.required" class="small">Number of screens is required.</div>
@@ -61,7 +61,7 @@
             </div>
             <div class="form-group px-sm-4 my-1 col-md-6">
               <label for="image" class="font-weight-bold text-secondary">Image</label>
-              <input type="text" class="form-control form-control-sm" id="image" name="image" ngModel
+              <input type="text" class="form-control form-control-sm" id="image" name="image" [(ngModel)]="Mmultiplex.image"
                      placeholder="Enter Image CDN">
               <div *ngIf="multiplexForm.controls.image?.touched || multiplexForm.controls.image?.dirty" class="text-danger mt-2">
                 <!-- Optionally add validation for image if needed -->
@@ -71,20 +71,21 @@
           <div class="modal-footer">
             <button type="reset" class="btn btn-outline-warning btn-sm mr-1"> <i class="fa fa-undo"></i> </button>
             <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-outline-primary btn-sm" [disabled]="!multiplexForm.form.valid">Add Multiplex</button>
+            <button type="button" class="btn btn-outline-primary btn-sm" [disabled]="!multiplexForm.form.valid" (click)="MultiplexButtonClick()" data-dismiss="modal">{{ isMultiplexEmpty ? 'Add Multiplex' : 'Update Multiplex' }}</button>
           </div>
         </form>        
       </div>
     </div>
   </div>
 </div>
+
   <!-- Multiplexes table -->
   <section class="container">
     <div class="card my-5 shadow-lg border-light no-hover-effect">
     <div class="card-body mx-4">
       <div class="d-sm-flex align-items-center justify-content-center my-4 my-lg-0 mt-lg-2 text-center">
         <h4 class="text-primary my-2 mr-sm-3"><i class="fa fa-television"></i> Multiplex List</h4>
-        <button class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#manageMultiplexModal">Add Multiplex</button>
+        <button class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#manageMultiplexModal" (click)="UnLinkMmultiplex()">Add Multiplex</button>
       </div>
         <div class="table-responsive">
           <table id="Table" class="table table-md table-striped">
@@ -102,17 +103,17 @@
             <tbody>
 
               <tr *ngFor="let m of multiplexes">
-                <td>{{m.Name}}</td>
-                <td>{{m.Area}}</td>
-                <td>{{m.Ratings}}</td>
-                <td>{{m.Screens}}</td>
-                <td>{{m.TotalSeats}}</td>
-                <td>{{m.UpdatedAt | date:"dd MMM yyyy"}}</td>
+                <td>{{m.name}}</td>
+                <td>{{m.area}}</td>
+                <td>{{m.ratings}}</td>
+                <td>{{m.screens}}</td>
+                <td>{{m.totalSeats}}</td>
+                <td>{{m.updatedAt | date:"dd MMM yyyy"}}</td>
                 <td>
-                  <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#manageMultiplexModal">
+                  <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#manageMultiplexModal" (click)="LinkMmultiplex(m)">
                     <i class="fa fa-edit"></i>
                   </button>
-                  <button class="btn btn-outline-danger btn-sm rounded" title="Delete">
+                  <button class="btn btn-outline-danger btn-sm rounded" title="Delete" (click)="DeleteTheatre(m.theatreId)">
                     <i class="fa fa-trash-o"></i>
                   </button>
                 </td>
@@ -141,7 +142,7 @@
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="title" class="font-weight-bold text-secondary">Title</label>
-                <input type="text" class="form-control form-control-sm text-capitalize" id="title" name="title" ngModel
+                <input type="text" class="form-control form-control-sm text-capitalize" id="title" name="title" [(ngModel)]="Mmovie.title"
                        required minlength="1" placeholder="Enter movie title">
                 <div *ngIf="movieForm.controls.title?.touched || movieForm.controls.title?.dirty" class="text-danger mt-2">
                   <div *ngIf="movieForm.controls.title?.errors?.required" class="small">Title is required.</div>
@@ -150,7 +151,7 @@
               </div>
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="genre" class="font-weight-bold text-secondary">Genre</label>
-                <input type="text" class="form-control form-control-sm text-capitalize" id="genre" name="genre" ngModel
+                <input type="text" class="form-control form-control-sm text-capitalize" id="genre" name="genre" [(ngModel)]="Mmovie.genre"
                        required placeholder="Enter genre">
                 <div *ngIf="movieForm.controls.genre?.touched || movieForm.controls.genre?.dirty" class="text-danger mt-2">
                   <div *ngIf="movieForm.controls.genre?.errors?.required" class="small">Genre is required.</div>
@@ -160,7 +161,7 @@
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="duration" class="font-weight-bold text-secondary">Duration (Mins)</label>
-                <input type="number" class="form-control form-control-sm" id="duration" name="duration" ngModel
+                <input type="number" class="form-control form-control-sm" id="duration" name="duration" [(ngModel)]="Mmovie.duration"
                        required min="1" placeholder="Enter duration">
                 <div *ngIf="movieForm.controls.duration?.touched || movieForm.controls.duration?.dirty" class="text-danger mt-2">
                   <div *ngIf="movieForm.controls.duration?.errors?.required" class="small">Duration is required.</div>
@@ -169,7 +170,7 @@
               </div>
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="release-date" class="font-weight-bold text-secondary">Release Date</label>
-                <input type="date" class="form-control form-control-sm" id="release-date" name="release-date" ngModel
+                <input type="date" class="form-control form-control-sm" id="release-date" name="release-date" [(ngModel)]="Mmovie.releaseDate"
                        required placeholder="Enter release date">
                 <div *ngIf="movieForm.controls['release-date']?.touched || movieForm.controls['release-date']?.dirty" class="text-danger mt-2">
                   <div *ngIf="movieForm.controls['release-date']?.errors?.required" class="small">Release date is required.</div>
@@ -179,7 +180,7 @@
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="rating" class="font-weight-bold text-secondary">Rating</label>
-                <input type="number" step="0.1" min="0" max="10" class="form-control form-control-sm" id="rating" name="rating" ngModel
+                <input type="number" step="0.1" min="0" max="10" class="form-control form-control-sm" id="rating" name="rating" [(ngModel)]="Mmovie.rating"
                        required placeholder="Enter rating">
                 <div *ngIf="movieForm.controls.rating?.touched || movieForm.controls.rating?.dirty" class="text-danger mt-2">
                   <div *ngIf="movieForm.controls.rating?.errors?.required" class="small">Rating is required.</div>
@@ -189,7 +190,7 @@
               </div>
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="likes" class="font-weight-bold text-secondary">Likes</label>
-                <input type="number" class="form-control form-control-sm" id="likes" name="likes" ngModel
+                <input type="number" class="form-control form-control-sm" id="likes" name="likes" [(ngModel)]="Mmovie.likes"
                        required min="0" step="1" placeholder="Enter number of likes">
                 <div *ngIf="movieForm.controls.likes?.touched || movieForm.controls.likes?.dirty" class="text-danger mt-2">
                   <div *ngIf="movieForm.controls.likes?.errors?.required" class="small">Number of likes is required.</div>
@@ -200,7 +201,7 @@
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="description" class="font-weight-bold text-secondary">Description</label>
-                <textarea class="form-control form-control-sm" id="description" name="description" ngModel
+                <textarea class="form-control form-control-sm" id="description" name="description" [(ngModel)]="Mmovie.description"
                           rows="1" placeholder="Enter description" required></textarea>
                 <div *ngIf="movieForm.controls.description?.touched || movieForm.controls.description?.dirty" class="text-danger mt-2">
                   <div *ngIf="movieForm.controls.description?.errors?.required" class="small">Description is required.</div>
@@ -208,7 +209,7 @@
               </div>
               <div class="form-group px-sm-4 col-md-6">
                 <label for="casting" class="font-weight-bold text-secondary">Casting</label>
-                <input type="text" class="form-control form-control-sm text-capitalize" id="casting" name="casting" ngModel
+                <input type="text" class="form-control form-control-sm text-capitalize" id="casting" name="casting" [(ngModel)]="Mmovie.casting"
                        required placeholder="Enter casting">
                 <div *ngIf="movieForm.controls.casting?.touched || movieForm.controls.casting?.dirty" class="text-danger mt-2">
                   <div *ngIf="movieForm.controls.casting?.errors?.required" class="small">Casting is required.</div>
@@ -218,7 +219,7 @@
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="trailer" class="font-weight-bold text-secondary">Trailer</label>
-                <input type="text" class="form-control form-control-sm" id="trailer" name="trailer" ngModel
+                <input type="text" class="form-control form-control-sm" id="trailer" name="trailer" [(ngModel)]="Mmovie.trailer"
                        placeholder="Enter trailer URL">
                 <div *ngIf="movieForm.controls.trailer?.touched || movieForm.controls.trailer?.dirty" class="text-danger mt-2">
                   <!-- Link to added -->
@@ -226,7 +227,7 @@
               </div>
               <div class="form-group px-sm-4 my-1 col-md-6">
                 <label for="language" class="font-weight-bold text-secondary">Language</label>
-                <input type="text" class="form-control form-control-sm text-capitalize" id="language" name="language" ngModel
+                <input type="text" class="form-control form-control-sm text-capitalize" id="language" name="language" [(ngModel)]="Mmovie.language"
                        required placeholder="Enter language">
                 <div *ngIf="movieForm.controls.language?.touched || movieForm.controls.language?.dirty" class="text-danger mt-2">
                   <div *ngIf="movieForm.controls.language?.errors?.required" class="small">Language is required.</div>
@@ -236,7 +237,7 @@
             <div class="form-row">
               <div class="form-group px-sm-4 my-1 col-md-12">
                 <label for="image" class="font-weight-bold text-secondary">Image</label>
-                <input type="text" class="form-control form-control-sm" id="image" name="image" ngModel
+                <input type="text" class="form-control form-control-sm" id="image" name="image" [(ngModel)]="Mmovie.image"
                        placeholder="Enter image URL">
                 <div *ngIf="movieForm.controls.image?.touched || movieForm.controls.image?.dirty" class="text-danger mt-2">
                   <div *ngIf="!movieForm.controls.image?.value"  class="small">Link not entered.</div>
@@ -246,7 +247,7 @@
             <div class="modal-footer">
               <button type="reset" class="btn btn-outline-warning btn-sm mr-1"> <i class="fa fa-undo"></i> </button>
               <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-outline-primary btn-sm" [disabled]="!movieForm.form.valid">Add Movie</button>
+              <button type="submit" class="btn btn-outline-primary btn-sm" data-dismiss="modal" [disabled]="!movieForm.form.valid" (click)="MovieButtonClick()" >{{isMovieEmpty?'Add Movie':'Update Movie'}}</button>
             </div>
           </form>
         </div>
@@ -260,7 +261,7 @@
     <div class="card-body mx-4">
       <div class="d-sm-flex align-items-center justify-content-center text-center my-4 my-lg-0 mt-lg-2 ">
         <h4 class="text-primary my-2 mr-sm-3"><i class="fa fa-film"></i> Movie List</h4>
-        <button class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#manageMovieModal">Add Movie</button>
+        <button class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#manageMovieModal" (click)="UnLinkMmovie()">Add Movie</button>
       </div>
         <div class="table-responsive">
           <table id="Table2" class="table table-md table-striped">
@@ -280,19 +281,19 @@
             <tbody>
 
               <tr *ngFor="let mov of movies">
-                <td>{{mov.Title}}</td>
-                <td>{{mov.Genre}}</td>
-                <td>{{mov.Duration}} mins</td>
-                <td>{{mov.ReleaseDate | date:"dd MMM, yyyy"}}</td>
-                <td>{{mov.Rating}}</td>
-                <td>{{mov.Likes | likes}}</td>
-                <td>{{mov.Casting}}</td>
-                <td>{{mov.Language}}</td>
+                <td>{{mov.title}}</td>
+                <td>{{mov.genre}}</td>
+                <td>{{mov.duration}} mins</td>
+                <td>{{mov.releaseDate | date:"dd MMM, yyyy"}}</td>
+                <td>{{mov.rating}}</td>
+                <td>{{mov.likes | likes}}</td>
+                <td>{{mov.casting}}</td>
+                <td>{{mov.language}}</td>
                 <td>
-                  <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#manageMovieModal">
+                  <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#manageMovieModal" (click)="LinkMmovie(mov)">
                     <i class="fa fa-edit"></i>
                   </button>
-                  <button class="btn btn-outline-danger btn-sm rounded" title="Delete">
+                  <button class="btn btn-outline-danger btn-sm rounded" title="Delete" (click)="DeleteMovie(mov.movieId)">
                     <i class="fa fa-trash-o"></i>
                   </button>
                 </td>
@@ -320,10 +321,9 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="theatre-id" class="font-weight-bold text-secondary">Theatre</label>
-                <select id="theatre-id" class="form-control form-control-sm" ngModel name="theatreId" #theatreId="ngModel" required>
+                <select id="theatre-id" class="form-control form-control-sm" [(ngModel)]="Mlinkedmovie.theatreId" name="theatreId" #theatreId="ngModel" required>
                   <option value="" disabled selected>Select Theatre</option>
-                  <option value="1">Cinema Palace</option>
-                  <option value="2">Inox PVR</option>
+                  <option *ngFor="let theatre of multiplexes" [value]="theatre.theatreId">{{ theatre.name }}</option>
                 </select>
                 <div *ngIf="theatreId.invalid && (theatreId.dirty || theatreId.touched || linkMovieForm.submitted)" class="text-danger">
                   <small *ngIf="theatreId.errors?.['required']">Theatre is required.</small>
@@ -331,10 +331,9 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="movie-id" class="font-weight-bold text-secondary">Movie</label>
-                <select id="movie-id" class="form-control form-control-sm" ngModel name="movieId" #movieId="ngModel" required>
+                <select id="movie-id" class="form-control form-control-sm" [(ngModel)]="Mlinkedmovie.movieId" name="movieId" #movieId="ngModel" required>
                   <option value="" disabled selected>Select Movie</option>
-                  <option value="1">Tholi Prema</option>
-                  <option value="2">Another Movie</option>
+                  <option *ngFor="let movie of movies" [value]="movie.movieId">{{ movie.title }}</option>
                 </select>
                 <div *ngIf="movieId.invalid && (movieId.dirty || movieId.touched || linkMovieForm.submitted)" class="text-danger">
                   <small *ngIf="movieId.errors?.['required']">Movie is required.</small>
@@ -344,7 +343,7 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="screen-number" class="font-weight-bold text-secondary">Screen Number</label>
-                <input type="number" class="form-control form-control-sm" id="screen-number" placeholder="Enter screen number" ngModel name="screenNumber" #screenNumber="ngModel" required min="1">
+                <input type="number" class="form-control form-control-sm" id="screen-number" placeholder="Enter screen number" [(ngModel)]="Mlinkedmovie.screenNumber" name="screenNumber" #screenNumber="ngModel" required min="1">
                 <div *ngIf="screenNumber.invalid && (screenNumber.dirty || screenNumber.touched || linkMovieForm.submitted)" class="text-danger">
                   <small *ngIf="screenNumber.errors?.['required']">Screen number is required.</small>
                   <small *ngIf="screenNumber.errors?.['min']">Screen number must be at least 1.</small>
@@ -352,7 +351,7 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="show-date" class="font-weight-bold text-secondary">Show Date</label>
-                <input type="date" class="form-control form-control-sm" id="show-date" placeholder="Enter show date" ngModel name="showDate" #showDate="ngModel" required>
+                <input type="date" class="form-control form-control-sm" id="show-date" placeholder="Enter show date" [(ngModel)]="Mlinkedmovie.showDate" name="showDate" #showDate="ngModel" required>
                 <div *ngIf="showDate.invalid && (showDate.dirty || showDate.touched || linkMovieForm.submitted)" class="text-danger">
                   <small *ngIf="showDate.errors?.['required']">Show date is required.</small>
                 </div>
@@ -366,7 +365,7 @@
                     class="form-control form-control-sm" 
                     id="show-code" 
                     placeholder="Enter show time(s) (e.g., 06:30 AM, 09:00 PM)" 
-                    ngModel 
+                    [(ngModel)]="Mlinkedmovie.showTimes" 
                     name="showTime" 
                     #showTime="ngModel" 
                     required
@@ -381,7 +380,7 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="available-seats" class="font-weight-bold text-secondary">Available Seats</label>
-                <input type="number" class="form-control form-control-sm" id="available-seats" placeholder="Enter available seats" ngModel name="availableSeats" #availableSeats="ngModel" required min="1">
+                <input type="text" class="form-control form-control-sm" id="available-seats" placeholder="Enter available seats" [(ngModel)]="Mlinkedmovie.availableSeats" name="availableSeats" #availableSeats="ngModel" required min="1">
                 <div *ngIf="availableSeats.invalid && (availableSeats.dirty || availableSeats.touched || linkMovieForm.submitted)" class="text-danger">
                   <small *ngIf="availableSeats.errors?.['required']">Available seats are required.</small>
                   <small *ngIf="availableSeats.errors?.['min']">Available seats must be at least 1.</small>
@@ -391,7 +390,7 @@
             <div class="modal-footer">
               <button type="reset" class="btn btn-outline-warning btn-sm mr-1"> <i class="fa fa-undo"></i> </button>
               <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-outline-primary btn-sm" [disabled]="linkMovieForm.invalid"git >Link Movie</button>
+              <button type="submit" class="btn btn-outline-primary btn-sm" [disabled]="linkMovieForm.invalid" data-dismiss="modal" (click)="LinkedMovieButtonClick()">{{isLinkedMoveEmpty?'Link Movie':'Update Link Movie'}}</button>
             </div>
           </form>
         </div>
@@ -404,7 +403,7 @@
       <div class="card-body mx-4">
         <div class="d-sm-flex align-items-center justify-content-center text-center my-4 my-lg-0 mt-lg-1 ">
           <h4 class="text-primary my-2 mr-sm-3 text-center"><i class="fa fa-link" aria-hidden="true"></i> Linked Movies</h4>
-          <button class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#linkMovieModal"> Add</button>  
+          <button class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#linkMovieModal" (click)="UnLinkMlinkedmovie()"> Add</button>  
         </div>
         <div class="table-responsive">
           <table id="Table3" class="table table-md table-striped">
@@ -422,17 +421,17 @@
             <tbody>
 
               <tr *ngFor="let lm of linkedMovies">
-                <td>{{lm.TheatreName}}</td>
-                <td>{{lm.MovieName}}</td>
-                <td>{{lm.ScreenNumber}}</td>
-                <td>{{lm.ShowDate | date:"dd MMM yyyy"}}</td>
-                <td>{{lm.ShowTimes | showTimes}}</td>
-                <td>{{lm.AvailableSeats}}</td>
+                <td>{{lm.theatreName}}</td>
+                <td>{{lm.movieName}}</td>
+                <td>{{lm.screenNumber}}</td>
+                <td>{{lm.showDate | date:"dd MMM yyyy"}}</td>
+                <td>{{lm.showTimes}}</td>
+                <td>{{lm.availableSeats}}</td>
                 <td>
-                  <button class="btn btn-outline-primary btn-sm mr-1 rounded" title="Update" data-toggle="modal" data-target="#linkMovieModal">
+                  <button class="btn btn-outline-primary btn-sm mr-1 rounded" (click)="LinkMlinkedmovie(lm)" title="Update" data-toggle="modal" data-target="#linkMovieModal">
                     <i class="fa fa-edit"></i>
                   </button>
-                  <button class="btn btn-outline-danger btn-sm rounded" title="Delete">
+                  <button class="btn btn-outline-danger btn-sm rounded" title="Delete" (click)="DeleteTheatreMovie(lm.theatreMovieId)">
                     <i class="fa fa-trash-o"></i>
                   </button>
                 </td>
@@ -468,18 +467,22 @@
             <tbody>
             
               <tr *ngFor="let user of users">
-                <td>{{user.UserID}}</td>
-                <td>{{user.FullName}}</td>
-                <td>{{user.Email}}</td>
-                <td>{{user.PhoneNumber}}</td>
-                <td>{{user.Role}}</td>
-                <td>{{user.Bookings}}</td>
-                <td>{{user.UpdatedAt | date: "dd MMM yyyy"}}</td>
+                <td>{{user.userId}}</td>
+                <td>{{user.fullName}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.phoneNumber}}</td>
+                <td>{{user.role}}</td>
+                <td>{{user.bookingCount}}</td>
+                <td>{{user.updatedAt | date: "dd MMM yyyy"}}</td>
                 <td>
-                  <button class="btn btn-outline-warning btn-sm mr-1 rounded" title="Block" data-toggle="modal" data-target="#editUserModal">
-                    <i class="fa fa-ban"></i>
+                  <button 
+                    class="btn btn-outline-warning btn-sm mr-1 rounded" 
+                    [ngClass]="{'btn-outline-danger': user.role=='User', 'btn-outline-warning': !(user.role=='User')}"
+                    [title]="user.role!='User' ? 'Unblock' : 'Block'"
+                    (click)="toggleUserStatus(user)">
+                    <i class="fa" [ngClass]="user.role!='User' ? 'fa-unlock' : 'fa-lock'"></i>
                   </button>
-                  <button class="btn btn-outline-danger btn-sm rounded" title="Delete">
+                  <button class="btn btn-outline-danger btn-sm rounded" title="Delete" (click)="deleteUser(user.userId)">
                     <i class="fa fa-trash-o"></i>
                   </button>
                 </td>

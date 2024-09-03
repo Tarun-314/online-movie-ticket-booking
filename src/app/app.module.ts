@@ -25,6 +25,7 @@ import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.compo
 import { LikesPipe } from './pipes/likes.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { ShowTimesPipe } from './pipes/show-times.pipe';
+import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { AlertComponent } from './alert/alert.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
@@ -58,7 +59,8 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
