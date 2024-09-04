@@ -89,3 +89,5 @@ export interface BookingDetails {
     transactionID: string;
     paymentMethod: string;
 }
+
+
