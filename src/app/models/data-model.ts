@@ -117,23 +117,6 @@ export class Review {
   }
 }
 
-export class LoggedInUser {
-  constructor(
-    public email: string,
-    public id: string,
-    public token: string,
-    public tokenExpirationDate: Date
-  ) {}
-
-  get validToken() {
-    if (!this.tokenExpirationDate || new Date() > this.tokenExpirationDate) {
-      return null;
-    }
-    return this.token;
-  }
-}
-
-
 export class User {
   UserID: string;
   FullName: string;
@@ -310,4 +293,25 @@ export class Payment {
   }
 }
 
+
+export class LoggedInUser {
+  constructor(
+    public email: string,
+    public role: string,
+    public name: string,
+    public token: string,
+    public tokenExpirationDate: Date,
+    public SecurityQuestion?:string,
+    public SecurityAnswer?:string,
+    public passwordHash?: string,
+    public phoneNumber?: string,
+  ) {}
+
+  get validToken() {
+    if (!this.tokenExpirationDate || new Date() > this.tokenExpirationDate) {
+      return false;
+    }
+    return true;
+  }
+}
 

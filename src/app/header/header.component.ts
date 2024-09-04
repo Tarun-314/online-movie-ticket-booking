@@ -1,30 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from '../services/data-services';
-import { User } from '../models/data-model';
+import { LoggedInUser, User } from '../models/data-model';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../services/auth-services';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   Cities: string[] = [];
   selectedCity: string = '';
-  user:User;
+  user:LoggedInUser;
   citySubscription: Subscription;
 
-  constructor(private dataService: DataService, private router:Router) {
+  isAuthenticated:boolean =  false;
+  mySub:Subscription;
+
+  constructor(private dataService: DataService, private router:Router, private authService:AuthService) {
     this.Cities = dataService.getCities();
     this.selectedCity=this.Cities[0];
-    try{
-      this.user=this.dataService.getUserDetails();
-    }
-    catch(e)
-    {
-      this.router.navigate(['/error']);
-    }
   }
 
   ngOnInit()
@@ -32,6 +29,24 @@ export class HeaderComponent implements OnInit {
     this.citySubscription = this.dataService.selectedCity$.subscribe(city => {
       this.selectedCity=city;
     });
+
+    this.mySub = this.authService.userSub.subscribe
+    (user => {
+        this.isAuthenticated=!!user;
+        if(this.isAuthenticated)
+        {
+          try{
+            this.dataService.setUser(user);
+            console.log(user);
+          }
+          catch(e)
+          {
+            this.router.navigate(['/error']);
+          }
+        }
+      });
+
+      this.user = this.dataService.getUserDetails();
   }
 
   selectCity(city: string): void {
@@ -44,5 +59,15 @@ export class HeaderComponent implements OnInit {
     } else {
       
     }
+  }
+
+  ngOnDestroy(): void {
+    this.mySub.unsubscribe();
+  }
+
+  onLogout()
+  {
+    this.authService.logout();
+    this.isAuthenticated=false;
   }
 }

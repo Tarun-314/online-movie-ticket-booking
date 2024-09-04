@@ -1,4 +1,4 @@
-<header class="bg-dark text-white py-2 sticky-top">
+<header *ngIf="isAuthenticated" class="bg-dark text-white py-2 sticky-top">
   <nav class="navbar navbar-expand-lg navbar-dark">
     <a class="navbar-brand" routerLink="/home">Movie<span class="text-warning">Book</span></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,16 +24,16 @@
         <!-- User Menu -->
         <div class="dropdown mb-2 mb-sm-0 flex-fill mx-1">
           <button class="btn btn-outline-secondary text-white dropdown-toggle w-100" type="button" id="userMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="https://cdn-icons-png.flaticon.com/512/3048/3048127.png" alt="User" class="rounded-circle mr-2" style="width: 30px; height: 30px;"> {{user.FullName}}
+            <img src="https://cdn-icons-png.flaticon.com/512/3048/3048127.png" alt="User" class="rounded-circle mr-2" style="width: 30px; height: 30px;"> {{user.name}}
           </button>
           <div class="dropdown-menu" aria-labelledby="userMenuButton">
             <a class="dropdown-item" routerLink="/profile" routerLinkActive="hactive">
               <i class="fa fa-user-circle-o"></i> Profile
             </a>
-            <a class="dropdown-item" routerLink="/dashboard" routerLinkActive="hactive">
+            <a *ngIf="user.role=='Admin'" class="dropdown-item" routerLink="/dashboard" routerLinkActive="hactive">
               <i class="fa fa-dashboard"></i> Dashboard
             </a>
-            <a class="dropdown-item text-danger" href="#">
+            <a class="dropdown-item text-danger" href="#" (click)="onLogout()">
               <i class="fa fa-sign-out"></i> Sign Out
             </a>
           </div>

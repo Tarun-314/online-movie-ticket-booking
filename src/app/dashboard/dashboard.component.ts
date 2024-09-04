@@ -1,5 +1,5 @@
 import { Component, AfterViewChecked, OnInit, OnDestroy } from '@angular/core';
-import { TheatreMovieWithName, UMovie, UTheatre, UserWithBookingCount } from '../models/dashboard-model';
+import { BookingDetails, TheatreMovieWithName, UMovie, UTheatre, UserWithBookingCount } from '../models/dashboard-model';
 import { DashboardService } from '../services/dashboard-services';
 import { finalize } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -27,11 +27,13 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
   movies:UMovie[]=[];
   linkedMovies:TheatreMovieWithName[]=[];
   users:UserWithBookingCount[]=[];
+  BookingHistory:BookingDetails[]=[];
   // Flags to check if data has been loaded
   multiplexesLoaded: boolean = false;
   moviesLoaded: boolean = false;
   linkedMoviesLoaded: boolean = false;
   usersLoaded: boolean = false;
+  bookingLoaded:boolean=false;
 
 
   toggleUserStatus(selectedUser:UserWithBookingCount): void {
@@ -71,7 +73,9 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
     this.GetTheatres();
     this.GetLinkedMovies();
    this.GetUsers();
+   this.GetBookings();
   }
+
   ngAfterViewChecked(): void {
     if (this.multiplexesLoaded) {
       this.initializeDataTable('#Table');
@@ -88,6 +92,10 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
     if (this.usersLoaded) {
       this.initializeDataTable('#Table4');
       this.usersLoaded = false;
+    }
+    if(this.bookingLoaded){
+      this.initializeDataTable('#Table5');
+      this.bookingLoaded=false;
     }
   }
   initializeDataTable(tableId: string): void {
@@ -204,6 +212,17 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
       next:(data: UserWithBookingCount[]) => {
         this.users = data;
         this.usersLoaded=true;
+      },
+      error:(error) => {
+        console.error('Error fetching users:', error);
+      }
+    });
+  }
+  GetBookings() {
+    this.service.getBookings().subscribe({
+      next:(data: BookingDetails[]) => {
+        this.BookingHistory = data;
+        this.bookingLoaded=true;
       },
       error:(error) => {
         console.error('Error fetching users:', error);

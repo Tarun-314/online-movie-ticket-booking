@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { City, Coupon, LinkedMovies, Movie, Multiplex, Bookings, Review, User, Payment } from "../models/data-model";
+import { City, Coupon, LinkedMovies, Movie, Multiplex, Bookings, Review, User, Payment, LoggedInUser } from "../models/data-model";
 
 @Injectable({providedIn:'root'})
 export class DataService
@@ -243,18 +243,7 @@ export class DataService
         this.reviews.push(Rev);
     }
 
-    private user:User = new User(
-        '0DF0AFEC-B326-4ED3-8094-7BE78F1EDC11',
-        'Sarah Brown',
-        'hash5',
-        'sarahbrown@example.com',
-        '5678901234',
-        '0',
-        'first_pet',
-        'harry',
-        'User',
-        new Date('2024-08-24T08:39:13')
-    );
+    private user:LoggedInUser;
 
     private users:User[] = [
         {
@@ -336,9 +325,14 @@ export class DataService
         return this.users;
     }
     
-    getUserDetails():User
+    getUserDetails():LoggedInUser
     {
         return this.user;
+    }
+
+    setUser(user:LoggedInUser)
+    {
+        this.user=user;
     }
 
     private user_purchases: Bookings[] = [

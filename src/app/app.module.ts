@@ -28,6 +28,7 @@ import { ShowTimesPipe } from './pipes/show-times.pipe';
 import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { AlertComponent } from './alert/alert.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     TruncatePipe,
     ShowTimesPipe,
     AlertComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

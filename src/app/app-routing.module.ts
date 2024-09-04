@@ -15,23 +15,26 @@ import { LoginComponent } from './login/login.component';
 import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.component';
 import { FormsModule } from '@angular/forms';
 import { IdGuard } from './guards/IdGuard';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { AuthGuard } from './guards/AuthGuard';
 
 const routes: Routes = [
-  {path: 'home',component: HomeComponent},
-  {path: 'login',component: LoginComponent},
-  { path: 'mul-details/:id', component: MulDetailsComponent, canActivate:[IdGuard] },
-  { path: 'mov-details/:id', component: MovDetailsComponent, canActivate:[IdGuard] },
-  { path: 'ticket-booking/:id', component: TicketBookingComponent, canActivate:[IdGuard]  },
-  { path: 'ticket-confirm', component: ConfirmBookingComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'payment', component: PaymentComponent },
-  { path: 'about', component: AboutComponent },
+  {path: 'home',component: HomeComponent, canActivate:[AuthGuard]},
+  {path: 'auth',component: LoginComponent},
+  {path: 'forgot',component: ForgotPasswordComponent},
+  { path: 'mul-details/:id', component: MulDetailsComponent, canActivate:[IdGuard, AuthGuard] },
+  { path: 'mov-details/:id', component: MovDetailsComponent, canActivate:[IdGuard, AuthGuard] },
+  { path: 'ticket-booking/:id', component: TicketBookingComponent, canActivate:[IdGuard, AuthGuard]  },
+  { path: 'ticket-confirm', component: ConfirmBookingComponent, canActivate:[AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate:[AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard] },
+  { path: 'payment', component: PaymentComponent, canActivate:[AuthGuard] },
+  { path: 'about', component: AboutComponent, canActivate:[AuthGuard] },
   { path: 'contact', component: ContactComponent },
-  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent, canActivate:[AuthGuard]},
   { path: 'error', component: ErrorComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }, // Default route
-  { path: '**', component: ErrorComponent }, // Wildcard route for 404
+  { path: '', redirectTo: 'home', pathMatch: 'full' }, 
+  { path: '**', component: ErrorComponent }, 
 ];
 
 
