@@ -14,9 +14,9 @@ export class MoviesComponent {
   constructor(private dataService:DataService)
   {}
 
-  ngOnInit()
+  async ngOnInit()
   {
-    this.dataService.fetchAndAssignMovies();
+    await this.dataService.fetchAndAssignMovies();
     this.dataService.movies$.subscribe(flag => {
       this.movies = this.dataService.getMovies();
     });

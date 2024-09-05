@@ -28,6 +28,7 @@ export class ConfirmBookingComponent implements OnInit {
     if (!this.bookingData.theatreID || 
         !this.bookingData.theatreName || 
         !this.bookingData.movieName || 
+        !this.bookingData.movieId ||
         !this.bookingData.moviePoster || 
         !this.bookingData.language || 
         !this.bookingData.selectedDate || 
@@ -41,7 +42,7 @@ export class ConfirmBookingComponent implements OnInit {
       this.router.navigate(['/error']);
     } else {
       this.bookingId = this.bookingData.transactionId; 
-      this.dataService.setSeatString(this.bookingData.theatreID, this.bookingData.movieName, this.bookingData.selectedDate, this.bookingData.selectedTime, this.bookingData.seatString);
+      //this.dataService.setSeatString(this.bookingData.theatreID, this.bookingData.movieName, this.bookingData.selectedDate, this.bookingData.selectedTime, this.bookingData.seatString);
     }
   }
 

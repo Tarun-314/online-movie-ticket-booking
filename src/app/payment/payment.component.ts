@@ -58,6 +58,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
         !this.bookingData.theatreName || 
         !this.bookingData.theatreArea || 
         !this.bookingData.movieName || 
+        !this.bookingData.movieId ||
         !this.bookingData.moviePoster || 
         !this.bookingData.language || 
         !this.bookingData.selectedDate || 

@@ -1,5 +1,5 @@
 import { Component, Renderer2, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { LinkedMovies, Movie } from '../models/data-model';
+import { LinkedMovies2, Movie } from '../models/data-model';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { DataService } from '../services/data-services';
 
@@ -18,7 +18,7 @@ export class TicketBookingComponent implements OnInit, AfterViewInit, OnDestroy 
   isMovPresent:boolean = false;
   genres: string[];
   isDateSelected:boolean = false;
-  linkedMuls:LinkedMovies[] = [];
+  linkedMuls:LinkedMovies2[] = [];
   searchLM:string ='';
   searchDate:string='';
 
@@ -32,6 +32,7 @@ export class TicketBookingComponent implements OnInit, AfterViewInit, OnDestroy 
   theatreName: string='';
   screenNumber: string='';
   theatreArea: string='';
+  selectedCity: string='';
 
   private eventListeners: (() => void)[] = [];
 
@@ -39,9 +40,10 @@ export class TicketBookingComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnInit() {
 
-    this.route.params.subscribe((params: Params) => {
+    this.route.params.subscribe(async(params: Params) => {
       this.id = params['id'];
       if (this.id) {
+        await this.dataService.fetchAndAssignMovies();
         this.movie = this.dataService.getMovieById(this.id);
 
         if(this.movie)
@@ -57,7 +59,15 @@ export class TicketBookingComponent implements OnInit, AfterViewInit, OnDestroy 
     });    
 
     this.dataService.selectedCity$.subscribe(city =>{
-      this.linkedMuls = this.dataService.getLinkedMulsByIDDateCity(this.id,this.searchDate);
+      this.selectedCity=city;
+      this.dataService.getLinkedMulsByIDDateCityAPI(this.id,this.selectedDate,this.selectedCity).subscribe({
+        next:(data: LinkedMovies2[]) => {
+          this.linkedMuls = data;
+        },
+        error:(error) => {
+          console.error('Error fetching linkedmuls:', error);
+        }
+      });
     });
   }
   
@@ -110,7 +120,14 @@ export class TicketBookingComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   onDateClick(date: string): void {
-    this.linkedMuls = this.dataService.getLinkedMulsByIDDateCity(this.id,date);
+    this.dataService.getLinkedMulsByIDDateCityAPI(this.id,date,this.selectedCity).subscribe({
+      next:(data: LinkedMovies2[]) => {
+        this.linkedMuls = data;
+      },
+      error:(error) => {
+        console.error('Error fetching linkedmuls:', error);
+      }
+    });
     this.searchDate=date;
   }
 
@@ -119,9 +136,9 @@ export class TicketBookingComponent implements OnInit, AfterViewInit, OnDestroy 
   return Object.keys(jsonObject);
   }
 
-  filterLinkedMuls(): LinkedMovies[] {
+  filterLinkedMuls(): LinkedMovies2[] {
     return this.linkedMuls.filter(lm =>
-      lm.TheatreName.toLowerCase().startsWith(this.searchLM.toLowerCase())
+      lm.name.toLowerCase().startsWith(this.searchLM.toLowerCase())
     );
   }
 
@@ -226,6 +243,20 @@ export class TicketBookingComponent implements OnInit, AfterViewInit, OnDestroy 
  
   }
 
+
+  getSeatString(multiplexID: string, selectedTime: string): string {
+
+    for (const muls of this.linkedMuls) {
+        if (muls.theatreId === multiplexID) {
+            const showTimes = JSON.parse(muls.showTimes);
+            if (showTimes[selectedTime]) {
+                return showTimes[selectedTime];
+            }
+        }
+    }
+    return "00000000000000000000000000000000000000000000000000000000000000000000000000000000";
+}
+
   checkOut() {
     $('#selectionModal').modal('hide');
   
@@ -234,6 +265,7 @@ export class TicketBookingComponent implements OnInit, AfterViewInit, OnDestroy 
       theatreName: this.theatreName,
       theatreArea: this.theatreArea,
       movieName: this.movie.Title,
+      movieId: this.movie.MovieID,
       moviePoster: this.movie.Image,
       language: this.movie.Language,
       selectedDate: this.selectedDate,
@@ -307,7 +339,7 @@ export class TicketBookingComponent implements OnInit, AfterViewInit, OnDestroy 
           document.getElementById('selectedTime')!.textContent = 'Show Time: ' + this.selectedTime;
           $('#selectionModal').modal('show');
 
-          this.seatString = this.dataService.getSeatString(this.theatreID,this.movie.Title,this.selectedDate,this.selectedTime);
+          this.seatString = this.getSeatString(this.theatreID,this.selectedTime);
           this.setupSeatMatrix();
         } 
         // else {

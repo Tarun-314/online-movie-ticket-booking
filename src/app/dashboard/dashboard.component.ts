@@ -247,7 +247,6 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
     });
   }
   DeleteMovie(movieId: string): void {
-    alert("in delete function");
     this.service.deleteMovie(movieId).pipe(
       finalize(() => {
         this.GetMovies();
@@ -279,7 +278,6 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
     this.service.deleteTheatreMovie(theatreMovieId).pipe(
       finalize(() => {
         this.GetLinkedMovies();
-        
       })
     ).subscribe({
       next:(response:DataTransferObject) => {
@@ -368,6 +366,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
       next: (response:DataTransferObject) => {
         console.log('User deleted:', response);
         this.showCrudModal('Deleted User','Users');
+        this.GetUsers();
       },
       error: (err) => {
         this.showCrudModal('Failed to Delete User','Users');

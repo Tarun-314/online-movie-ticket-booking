@@ -35,8 +35,8 @@ const routes: Routes = [
   { path: 'privacy-policy', component: PrivacyPolicyComponent, canActivate:[AuthGuard]},
   { path: 'error', component: ErrorComponent },
   { path: 'statistics', component: StatisticsComponent},
-  { path: '', redirectTo: 'home', pathMatch: 'full' }, // Default route
-  { path: '**', component: ErrorComponent }, // Wildcard route for 404
+  { path: '', redirectTo: 'home', pathMatch: 'full' }, 
+  { path: '**', component: ErrorComponent }
 ];
 
 
