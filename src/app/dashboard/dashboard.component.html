@@ -78,7 +78,6 @@
     </div>
   </div>
 </div>
-
   <!-- Multiplexes table -->
   <section class="container">
     <div class="card my-5 shadow-lg border-light no-hover-effect">
@@ -254,7 +253,6 @@
       </div>
     </div>
   </div>
-  
   <!-- Movie table -->
   <section class="container">
     <div class="card my-5 shadow-lg border-light no-hover-effect">
@@ -419,7 +417,6 @@
               </tr>
             </thead>
             <tbody>
-
               <tr *ngFor="let lm of linkedMovies">
                 <td>{{lm.theatreName}}</td>
                 <td>{{lm.movieName}}</td>
@@ -436,13 +433,13 @@
                   </button>
                 </td>
               </tr>
-
             </tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
+
   <!-- User Details Table -->
   <div class="container my-5">
     <div class="card shadow-lg border-light no-hover-effect">
@@ -467,7 +464,7 @@
             <tbody>
             
               <tr *ngFor="let user of users">
-                <td>{{user.userId}}</td>
+                <td class="small">{{user.userId}}</td>
                 <td>{{user.fullName}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.phoneNumber}}</td>
@@ -487,14 +484,13 @@
                   </button>
                 </td>
               </tr>
-
             </tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
-
+  <!-- Booking Table -->
   <div class="container my-5">
     <div class="card shadow-lg border-light no-hover-effect">
       <div class="card-body mx-4">
@@ -513,14 +509,14 @@
                 <th>Show Time</th>
                 <th>Seat(s)</th>
                 <th>Amount</th>
-                <th>Transaction ID</th>
+                <th>Booking ID</th>
                 <th>Payment Mode</th>
               </tr>
             </thead>
             <tbody>
             
               <tr *ngFor="let p of BookingHistory">
-                <td>{{p.userID}}</td>
+                <td class="small">{{p.userID}}</td>
                 <td>{{p.movieName}}</td>
                 <td>{{p.theatreName}}</td>
                 <td>{{p.bookingDate | date: "dd MMM yyyy"}}</td>
@@ -528,10 +524,9 @@
                 <td>{{p.showTime}}</td>
                 <td>{{p.seats}}</td>
                 <td>{{p.totalPrice}}</td>
-                <td>{{p.transactionID}}</td>
+                <td class="small">{{p.transactionID}}</td>
                 <td>{{p.paymentMethod}}</td>
               </tr>
-
             </tbody>
           </table>
         </div>
@@ -539,5 +534,17 @@
     </div>
   </div>
 
-  
+
+<div class="toast-backdrop"></div>
+<div class="toast" data-autohide="false">
+  <div class="toast-header">
+    <strong class="mr-auto text-primary">{{tableName}}</strong>
+    <!-- <small class="text-muted">5 mins ago</small> -->
+    <a class="ml-2 mb-1 close" data-dismiss="toast">&times;</a>
+  </div>
+  <div class="toast-body">
+    {{crudMessage}}
+  </div>
+</div>
+
   

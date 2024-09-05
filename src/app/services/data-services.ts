@@ -223,6 +223,21 @@ export class DataService
         return this.movies;
     }
 
+    getDefaultMovies(): Movie[] {
+        const sortedMovies = this.movies.sort((a, b) => {
+          const dateA = new Date(a.ReleaseDate);
+          const dateB = new Date(b.ReleaseDate);
+          return dateB.getTime() - dateA.getTime(); // Sort in descending order
+        });
+      
+        return sortedMovies.slice(0, 4); // Return only the top 4 movies
+    }  
+
+    getMoviesByName(search: string): Movie[] {
+        return this.movies.filter(movie => movie.Title.toLowerCase().startsWith(search.toLowerCase()));
+    }
+      
+
     private reviews: Review[] = [
         new Review('0DFFA809-CAE2-4C33-A9F1-1370DAC12BFA','2BC57594-3F0D-473E-B2D4-6829F4B8290D','User A','31BD7D4C-B4C4-44D3-9B96-F37720B1F95E', 4, 'A beautiful story of self-discovery.', new Date('2024-08-24T14:52:27')),
         new Review('0E07FEF1-377C-448C-B5CB-96C0F7AEB647','0EC74B46-6419-4049-A24E-7B1E0DF6616E','User B','31BD7D4C-B4C4-44D3-9B96-F37720B1F95E', 4.5, 'Mind-blowing visuals and action.', new Date('2024-08-24T14:45:44')),
