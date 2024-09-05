@@ -33,20 +33,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.mySub = this.authService.userSub.subscribe
     (user => {
         this.isAuthenticated=!!user;
-        if(this.isAuthenticated)
+        if(!!user)
         {
-          try{
-            this.dataService.setUser(user);
-            console.log(user);
-          }
-          catch(e)
-          {
-            this.router.navigate(['/error']);
-          }
+            this.user=user; 
         }
       });
-
-      this.user = this.dataService.getUserDetails();
   }
 
   selectCity(city: string): void {

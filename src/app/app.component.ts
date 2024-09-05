@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './services/auth-services';
+import { DataService } from './services/data-services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,8 @@ import { AuthService } from './services/auth-services';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router, private authService:AuthService) {}
+  mySub:Subscription;
+  constructor(private router: Router, private authService:AuthService, private dataService:DataService) {}
 
   ngOnInit() {
     this.router.events.pipe(
@@ -20,5 +23,12 @@ export class AppComponent implements OnInit {
 
     this.authService.autoLogin();
 
+    this.mySub = this.authService.userSub.subscribe
+    (user => {
+        if(!!user)
+        {
+          this.dataService.setUser(user);
+        }
+      });  
   }
 }

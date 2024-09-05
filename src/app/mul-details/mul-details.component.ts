@@ -33,9 +33,10 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private renderer: Renderer2, private router:Router, private route:ActivatedRoute, private dataService:DataService) {}
 
   ngOnInit() {
-    this.route.params.subscribe((params: Params) => {
+    this.route.params.subscribe(async (params: Params) => {
       this.id = params['id'];
       if (this.id) {
+        await this.dataService.fetchAndAssignTheaters(); // Ensure movies are fetched first
         this.multiplex = this.dataService.getMultiplexById(this.id);
         if(this.multiplex)
           this.isMulPresent=true;

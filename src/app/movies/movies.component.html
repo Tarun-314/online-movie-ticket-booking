@@ -10,7 +10,9 @@
         </div>
       </div>
       <div class="row">
-
+        <div class="text-center mx-3 alert alert-danger w-100" role="alert" *ngIf="filterMovies().length==0">
+          <h6 class="text-danger my-0">No records found..!</h6>
+        </div>
         <a *ngFor="let mov of filterMovies() | slice:0:8" routerLink="/mov-details/{{mov.MovieID}}" class="col-md-3 movie-item">
           <div class="card">
             <img src="{{mov.Image}}" class="card-img avail-img" alt="{{mov.Title}}">

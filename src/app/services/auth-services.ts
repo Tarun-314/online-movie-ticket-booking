@@ -24,7 +24,15 @@ export class AuthService {
     return this.http
       .post<AuthResponseData>(
         'https://localhost:7263/Register',
-        { fullName, passwordHash, email, phoneNumber, securityQuestion, securityAnswer }
+        { 
+          "userId":"string",
+          "fullName":fullName,
+          "passwordHash":passwordHash,
+          "email":email,
+          "phoneNumber":phoneNumber,
+          "securityQuestion":securityQuestion,
+           "securityAnswer":securityAnswer 
+        }
       ).pipe(
         catchError(this.errorHandler),
         tap(respData => {
@@ -47,7 +55,6 @@ export class AuthService {
   }
 
   forgot(useremail: string, security_question: string, security_answer: string) {
-    console.log(useremail + " "+security_question+" "+security_answer);
     return this.http
       .post<AuthResponseData>(
         'https://localhost:7263/forgotpassword',
