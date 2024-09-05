@@ -50,10 +50,10 @@
                 </div>
                 <!-- Card Payment -->
                 <div class="card">
-                    <div class="card-header" id="cardHeading">
+                    <div class="card-header card-header2" id="cardHeading">
                         <h5 class="card-title">Credit/Debit Card</h5>
                     </div>
-                    <div class="card-body" id="cardDetails">
+                    <div class="card-body card-body2" id="cardDetails">
                         <form #paymentForm="ngForm">
                             <!-- Card Number -->
                             <div class="form-group">
@@ -133,10 +133,10 @@
                 </div>
                 <!-- UPI Payment -->
                 <div class="card">
-                    <div class="card-header" id="upiHeading">
+                    <div class="card-header card-header2" id="upiHeading">
                         <h5 class="card-title">UPI Payment</h5>
                     </div>
-                    <div class="card-body" id="upiDetails">
+                    <div class="card-body card-body2" id="upiDetails">
                         <form #upiForm="ngForm">
                             <div class="form-group">
                                 <label for="upiId">UPI ID</label>
@@ -162,10 +162,10 @@
                 </div>
                 <!-- Scan and Pay -->
                 <div class="card">
-                    <div class="card-header" id="scanAndPay">
+                    <div class="card-header card-header2" id="scanAndPay">
                         <h5 class="card-title">Scan & Pay</h5>
                     </div>
-                    <div class="card-body text-center" >
+                    <div class="card-body card-body2 text-center" >
                         <div id="scanQr">
 
                         </div>
@@ -177,10 +177,10 @@
                 </div>
                 <!-- Online Payment -->
                 <div class="card">
-                    <div class="card-header" id="onlineHeading">
+                    <div class="card-header card-header2" id="onlineHeading">
                         <h5 class="card-title">Online Wallet</h5>
                     </div>
-                    <div class="card-body" id="onlineDetails">
+                    <div class="card-body card-body2" id="onlineDetails">
                         <div class="payment-methods">
                             <div class="row">
                                 <div class="col-6 mb-2">
@@ -208,7 +208,7 @@
                             </div>
                         </div>
                         <div class="text-center">
-                            <button type="button" class="btn btn-outline-primary btn-block proceed-to-pay mt-1" (click)="onPay(selectedMethod)">Pay Now</button>
+                            <button type="button" class="btn btn-outline-primary btn-block proceed-to-pay mt-1" (click)="onPay(selectedMethod)" [disabled]="selectedMethod==''">Pay Now</button>
                         </div>
                     </div>
                 </div>

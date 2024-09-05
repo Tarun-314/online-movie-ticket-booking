@@ -29,6 +29,7 @@ import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common
 import { AlertComponent } from './alert/alert.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
     AlertComponent,
     LoadingSpinnerComponent,
     StatisticsComponent
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

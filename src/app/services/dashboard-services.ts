@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BookingDetails, TheatreMovieWithName, UMovie, UTheatre, UserWithBookingCount } from '../models/dashboard-model';
+import { DataService } from './data-services';
 
 @Injectable({providedIn:'root'})
 export class DashboardService{
+    private token ;
+    constructor(private http: HttpClient, private dataService: DataService) { 
+      this.token = this.dataService.getUserDetails().token;
+    }
    
-    private baseUrl = 'https://localhost:7263/Admin'; // Replace with your actual API base URL
-    private token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2RUQ3MDM2Qy1ERDY3LTQ1QTktQUVDMS03NEQzRTI3QzA2NzQiLCJpc3MiOiJNb3ZpZUJvb2siLCJhdWQiOlsiTW92aWVCb29rLmNvbSIsIk1vdmllQm9vay5jb20iXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3Mjc2OTk5OTl9.gSpNluj_gncZ1cc22Loym3_5u9blIAKfdwOP5Z1cDls';
-    constructor(private http: HttpClient) { }
+    private baseUrl = 'https://localhost:7263/Admin';
     
     private getHeaders(): HttpHeaders {
         return new HttpHeaders({
@@ -111,6 +114,7 @@ export class DashboardService{
         headers: this.getHeaders()
       });
     }
+    
     blockUser(userId: string): Observable<string> {
       const url = `${this.baseUrl}/BlockUser/${userId}`;
       return this.http.post<string>(url,null,{

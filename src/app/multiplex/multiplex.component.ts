@@ -17,12 +17,15 @@ export class MultiplexComponent implements OnInit, OnDestroy{
   constructor(private dataService:DataService)
   {}
 
-  ngOnInit()
-  {
+  ngOnInit(): void {
     this.citySubscription = this.dataService.selectedCity$.subscribe(city => {
-      this.multiplexes = this.dataService.getMultiplexByCity(city);
+      this.dataService.fetchAndAssignTheaters();
+      this.dataService.multiplexes$.subscribe(flag => {
+        this.multiplexes = this.dataService.getMultiplexByCity(city);
+      });
     });
   }
+
 
   getStars(rating: number): string[] {
     const fullStars = Math.floor(rating);

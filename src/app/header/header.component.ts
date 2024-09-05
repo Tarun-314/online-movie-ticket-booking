@@ -1,25 +1,27 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from '../services/data-services';
-import { Movie, User } from '../models/data-model';
+import { Movie, User, LoggedInUser } from '../models/data-model';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../services/auth-services';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   Cities: string[] = [];
   selectedCity: string = '';
-  user: User;
+
+  user:LoggedInUser;
   citySubscription: Subscription;
   searchedMovies: Movie[] = [];
   searchMovie: string = '';
   isDropdownOpen: boolean = false;
   noMoviesFound: boolean = false;
 
-  constructor(private dataService: DataService, private router: Router) {
+  constructor(private dataService: DataService, private router: Router, private authService:AuthService) {
     this.Cities = dataService.getCities();
     this.selectedCity = this.Cities[0];
     try {
@@ -37,12 +39,22 @@ export class HeaderComponent implements OnInit {
         this.noMoviesFound = false;
       }
     });
-  }
+  isAuthenticated:boolean =  false;
+  mySub:Subscription;
 
   ngOnInit() {
     this.citySubscription = this.dataService.selectedCity$.subscribe(city => {
       this.selectedCity = city;
     });
+
+    this.mySub = this.authService.userSub.subscribe
+    (user => {
+        this.isAuthenticated=!!user;
+        if(!!user)
+        {
+            this.user=user; 
+        }
+      });
   }
 
   onSearch(): void {
@@ -87,5 +99,15 @@ export class HeaderComponent implements OnInit {
     if (currentRoute.includes('/mul-details')) {
       this.router.navigate(['/home']);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.mySub.unsubscribe();
+  }
+
+  onLogout()
+  {
+    this.authService.logout();
+    this.isAuthenticated=false;
   }
 }

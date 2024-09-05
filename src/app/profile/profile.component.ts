@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { DataService } from '../services/data-services';
-import { Bookings, User } from '../models/data-model';
+import { Bookings, LoggedInUser, User } from '../models/data-model';
 
 declare var $: any;
 
@@ -12,13 +12,14 @@ declare var $: any;
 export class ProfileComponent implements OnInit{
 
   constructor(private dataService:DataService){}
-  user:User;
+  user:LoggedInUser;
   user_purchase_history:Bookings[];
 
   ngOnInit()
   {
     this.user = this.dataService.getUserDetails();
-    this.user_purchase_history=this.dataService.getUserPurchaseHistory(this.user.UserID);
+    //this.user_purchase_history=this.dataService.getUserPurchaseHistory();
+    //const passwordHash = CryptoJS.MD5(form.value.password).toString();
   }
 
   ngAfterViewInit(): void {

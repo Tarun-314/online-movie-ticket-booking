@@ -5,9 +5,12 @@ import { Router } from '@angular/router';
 import { LoggedInUser } from '../models/data-model';
 
 export interface AuthResponseData {
-  data: string;
-  message: string;
+  email:string;
+  role:string;
+  name:string;
+  token:string;
   isSuccess: boolean;
+  message:string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -21,42 +24,57 @@ export class AuthService {
     return this.http
       .post<AuthResponseData>(
         'https://localhost:7263/Register',
-        {
-          fullName,
-          passwordHash,
-          email,
-          phoneNumber,
-          securityQuestion,
-          securityAnswer
+        { 
+          "userId":"string",
+          "fullName":fullName,
+          "passwordHash":passwordHash,
+          "email":email,
+          "phoneNumber":phoneNumber,
+          "securityQuestion":securityQuestion,
+           "securityAnswer":securityAnswer 
         }
       ).pipe(
         catchError(this.errorHandler),
         tap(respData => {
-          this.authHandler(email, respData.data, respData.data, 3600); // Assuming token expiry is 1 hour
+          this.authHandler(email, respData.role, respData.name, respData.token, 3600); // 60 mins
         })
       );
   }
 
-  login(username: string, password: string, token: string) {
+  login(useremail: string, password: string) {
     return this.http
       .post<AuthResponseData>(
         'https://localhost:7263/login',
-        {
-          username,
-          password,
-          token
+        { useremail, password, token: 'string', sercurityQuestion: 'string' }
+      ).pipe(
+        catchError(this.errorHandler),
+        tap(respData => {
+          this.authHandler(useremail, respData.role, respData.name, respData.token, 3600); // 60 mins
+        })
+      );
+  }
+
+  forgot(useremail: string, security_question: string, security_answer: string) {
+    return this.http
+      .post<AuthResponseData>(
+        'https://localhost:7263/forgotpassword',
+        { 
+          "useremail": useremail,
+          "password": security_answer,
+          "token": "string",
+          "sercurityQuestion": security_question
         }
       ).pipe(
         catchError(this.errorHandler),
         tap(respData => {
-          this.authHandler(username, respData.data, respData.data, 3600); // Assuming token expiry is 1 hour
+          this.authHandler(useremail, respData.role, respData.name, respData.token, 3600); // 60 mins
         })
       );
   }
 
   logout() {
+    console.log('Logging out');
     this.userSub.next(null);
-    this.router.navigate(['/login']);
     localStorage.removeItem('userData');
 
     if (this.tokenExpiryTimer) {
@@ -64,51 +82,71 @@ export class AuthService {
     }
 
     this.tokenExpiryTimer = null;
+    this.router.navigate(['/auth']);
   }
 
   autoLogin() {
     const userData = JSON.parse(localStorage.getItem('userData'));
     if (!userData) return;
-    const loadedUser = new LoggedInUser(userData.email, userData.id, userData.token, new Date(userData.tokenExpirationDate));
+    const loadedUser = new LoggedInUser(userData.email, userData.role, userData.name, userData.token, new Date(userData.tokenExpirationDate));
 
     if (loadedUser.validToken) {
       const expireIn = new Date(userData.tokenExpirationDate).getTime() - new Date().getTime();
+      console.log('Token expires in:', expireIn, 'milliseconds');
       this.autoLogout(expireIn);
       this.userSub.next(loadedUser);
     }
   }
 
   autoLogout(expiryTimer: number) {
+    if (this.tokenExpiryTimer) {
+      clearTimeout(this.tokenExpiryTimer);
+    }
+    console.log('Setting autoLogout timer for:', expiryTimer, 'milliseconds');
     this.tokenExpiryTimer = setTimeout(() => {
       this.logout();
     }, expiryTimer);
   }
 
-  private authHandler(email: string, id: string, token: string, expireIn: number) {
+  private authHandler(email: string, role:string, name: string, token: string, expireIn: number) {
     const expiryDate = new Date(new Date().getTime() + expireIn * 1000);
-    const user = new LoggedInUser(email, id, token, expiryDate);
+    const user = new LoggedInUser(email, role, name, token, expiryDate);
+    console.log('Storing user data:', user);
     this.userSub.next(user);
     this.autoLogout(expireIn * 1000);
-    localStorage.setItem('userData', JSON.stringify(user));
+
+    try {
+      localStorage.setItem('userData', JSON.stringify(user));
+      console.log('User data stored in localStorage:', localStorage.getItem('userData'));
+    } catch (error) {
+      console.error('Error storing user data in localStorage:', error);
+    }
   }
 
   private errorHandler(responseError: HttpErrorResponse) {
     let errorMsg = "An unexpected error occurred.";
-    if (!responseError.error || !responseError.error.error) return throwError(errorMsg);
-
-    switch (responseError.error.error.message) {
-      case 'EMAIL_EXISTS':
-        errorMsg = "Entered email already exists.";
-        break;
-      case 'INVALID_CREDENTIALS':
-        errorMsg = "Invalid credentials. Please try again.";
-        break;
-      case 'BLOCKED_USER':
-        errorMsg = "User Blocked. Please contact administrator.";
-        break;
-      case 'REG_FAILED':
-        errorMsg = "Bad Request. Please try again.";
-        break;
+    console.log(responseError);
+    if (responseError.error) {
+      switch (responseError.error.message) {
+        case 'EMAIL_EXISTS':
+          errorMsg = "Entered email already exists.";
+          break;
+        case 'INVALID_CREDENTIALS':
+          errorMsg = "Invalid credentials. Please try again.";
+          break;
+        case 'BLOCKED_USER':
+          errorMsg = "User Blocked. Please contact administrator.";
+          break;
+        case 'REG_FAILED':
+          errorMsg = "Bad Request. Please try again.";
+          break;
+        case 'LOGIN_EXPIRED':
+          errorMsg = "Login Expired. Please login again.";
+          break;
+        default:
+          errorMsg = "Unexpected error. Please try again.";
+          break;
+      }
     }
     return throwError(errorMsg);
   }
