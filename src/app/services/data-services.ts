@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
-import { City, Coupon, LinkedMovies, Movie, Multiplex, Bookings, Review, User, Payment, LoggedInUser } from "../models/data-model";
+import { City, Coupon, LinkedMovies, Movie, Multiplex, Bookings, Review, User, Payment, LoggedInUser, IUser, DataTransferObject, BookingHistory } from "../models/data-model";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({providedIn:'root'})
 export class DataService
 {
+    private baseurl="https://localhost:7263"; 
+    private getHeaders(): HttpHeaders {
+        return new HttpHeaders({
+          'Authorization': `Bearer ${this.user.token}`,
+          'Content-Type': 'application/json'
+        });
+      }
+
     private selectedCitySubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
     selectedCity$: Observable<string> = this.selectedCitySubject.asObservable();
   
@@ -308,6 +316,19 @@ export class DataService
     //     return this.users;
     // }
     
+    setUserProfile(user:IUser):Observable<DataTransferObject>{
+        return this.htttp.put<DataTransferObject>(`${this.baseurl}/UpdateUser`,user,{
+            headers:this.getHeaders()
+        });
+    }
+
+    getUserProfile():Observable<IUser>
+    {
+        return this.htttp.get<IUser>(`${this.baseurl}/GetUserById`,{
+            headers:this.getHeaders()
+        });
+    }
+
     getUserDetails():LoggedInUser
     {
         return this.user;
@@ -358,9 +379,11 @@ export class DataService
       ];
       
       
-    getUserPurchaseHistory(id: string): Bookings[] 
+    getUserPurchaseHistory():Observable<BookingHistory[]>
     {
-        return this.user_purchases.filter(purchase => purchase.UserID === id);
+        return this.htttp.get<BookingHistory[]>(`${this.baseurl}/GetBookingsByUserId`,{
+            headers:this.getHeaders()
+        });
     }
       
 

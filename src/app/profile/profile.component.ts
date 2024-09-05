@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { DataService } from '../services/data-services';
-import { Bookings, LoggedInUser, User } from '../models/data-model';
-
+import { BookingHistory, Bookings, DataTransferObject, IUser, LoggedInUser, User } from '../models/data-model';
+import * as CryptoJS from 'crypto-js';
 declare var $: any;
 
 @Component({
@@ -11,18 +11,56 @@ declare var $: any;
 })
 export class ProfileComponent implements OnInit{
 
+
   constructor(private dataService:DataService){}
-  user:LoggedInUser;
-  user_purchase_history:Bookings[];
+  user:IUser;
+  user_purchase_history:BookingHistory[];
 
   ngOnInit()
   {
-    this.user = this.dataService.getUserDetails();
-    //this.user_purchase_history=this.dataService.getUserPurchaseHistory();
-    //const passwordHash = CryptoJS.MD5(form.value.password).toString();
+    this.GetUser();
+    this.GetBookings();
   }
 
-  ngAfterViewInit(): void {
+  GetBookings(){
+    this.dataService.getUserPurchaseHistory().subscribe({
+      next:(data:BookingHistory[])=>{
+        this.user_purchase_history=data;
+        console.log("booking history");
+        this.DataTableInitiate();
+      },error:(err)=>{
+        console.log(err);
+      }
+    })
+  }
+
+  UpdateUser() {
+    this.user.passwordHash=CryptoJS.MD5(this.user.passwordHash).toString();
+    this.dataService.setUserProfile(this.user).subscribe({
+      next:(res:DataTransferObject)=>{
+        console.log(res.message);
+        this.user.passwordHash="";
+      },error:(msg)=>{
+        console.log(msg);
+        this.user_purchase_history=[];
+      }
+    })
+  }
+  
+  GetUser(){
+    this.dataService.getUserProfile().subscribe({
+      next:(user:IUser)=>{
+        console.log(user.passwordHash);
+        this.user=user;
+        console.log(this.user);
+        this.user.passwordHash="";
+      },
+      error:(msg)=>{
+        console.log(msg);
+      }
+    });
+  }
+  DataTableInitiate(): void {
     $(document).ready(function() {
       $('#Table5').DataTable({
         paging: true,

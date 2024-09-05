@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BookingDetails, TheatreMovieWithName, UMovie, UTheatre, UserWithBookingCount } from '../models/dashboard-model';
+import { DataTransferObject } from '../models/data-model';
 import { DataService } from './data-services';
 
 @Injectable({providedIn:'root'})
@@ -55,83 +56,82 @@ export class DashboardService{
     }
 
     // Function to update a movie
-    public updateMovie(updatedMovie: UMovie): Observable<string> {
-      return this.http.put<string>(`${this.baseUrl}/UpdateMovie`, updatedMovie, {
+    public updateMovie(updatedMovie: UMovie): Observable<DataTransferObject> {
+      return this.http.put<DataTransferObject>(`${this.baseUrl}/UpdateMovie`, updatedMovie, {
         headers: this.getHeaders()
       });
     }
 
     // Function to update a theatre
-    public updateTheatre(updatedTheatre: UTheatre): Observable<string> {
-      return this.http.put<string>(`${this.baseUrl}/UpdateTheatre`, updatedTheatre, {
+    public updateTheatre(updatedTheatre: UTheatre): Observable<DataTransferObject> {
+      return this.http.put<DataTransferObject>(`${this.baseUrl}/UpdateTheatre`, updatedTheatre, {
         headers: this.getHeaders()
       });
     }
 
     // Function to update a theatre movie
-    public updateTheatreMovie(updatedTheatreMovie: TheatreMovieWithName): Observable<string> {
-      return this.http.put<string>(`${this.baseUrl}/UpdateTheatreMovie`, updatedTheatreMovie, {
+    public updateTheatreMovie(updatedTheatreMovie: TheatreMovieWithName): Observable<DataTransferObject> {
+      return this.http.put<DataTransferObject>(`${this.baseUrl}/UpdateTheatreMovie`, updatedTheatreMovie, {
         headers: this.getHeaders()
       });
     }
-    deleteMovie(movieId: string): Observable<string> {
+    deleteMovie(movieId: string): Observable<DataTransferObject> {
       const url = `${this.baseUrl}/DeleteMovie/${movieId}`;
-      return this.http.delete<string>(url,{
+      return this.http.delete<DataTransferObject>(url,{
         headers: this.getHeaders()
       });
     }
   
-    deleteTheatre(theatreId: string): Observable<string> {
+    deleteTheatre(theatreId: string): Observable<DataTransferObject> {
       const url = `${this.baseUrl}/DeleteTheatre/${theatreId}`;
-      return this.http.delete<string>(url,{
+      return this.http.delete<DataTransferObject>(url,{
         headers: this.getHeaders()
       });
     }
   
-    deleteTheatreMovie(theatreMovieId: string): Observable<string> {
+    deleteTheatreMovie(theatreMovieId: string): Observable<DataTransferObject> {
       const url = `${this.baseUrl}/DeleteTheatreMovie/${theatreMovieId}`;
-      return this.http.delete<string>(url,{
+      return this.http.delete<DataTransferObject>(url,{
         headers: this.getHeaders()
       });
     }
-    insertMovie(movie: UMovie): Observable<string> {
+    insertMovie(movie: UMovie): Observable<DataTransferObject> {
       const url = `${this.baseUrl}/InsertMovie`;
-      return this.http.post<string>(url, movie,{
+      return this.http.post<DataTransferObject>(url, movie,{
         headers: this.getHeaders()
       });
     }
   
-    insertTheatre(theatre: UTheatre): Observable<string> {
+    insertTheatre(theatre: UTheatre): Observable<DataTransferObject> {
       const url = `${this.baseUrl}/InsertTheatre`;
-      return this.http.post<string>(url, theatre,{
+      return this.http.post<DataTransferObject>(url, theatre,{
         headers: this.getHeaders()
       });
     }
   
-    insertTheatreMovie(theatreMovie: TheatreMovieWithName): Observable<string> {
+    insertTheatreMovie(theatreMovie: TheatreMovieWithName): Observable<DataTransferObject> {
       const url = `${this.baseUrl}/InsertTheatreMovie`;
-      return this.http.post<string>(url, theatreMovie, {
+      return this.http.post<DataTransferObject>(url, theatreMovie, {
         headers: this.getHeaders()
       });
     }
-    
-    blockUser(userId: string): Observable<string> {
+    blockUser(userId: string): Observable<DataTransferObject> {
       const url = `${this.baseUrl}/BlockUser/${userId}`;
-      return this.http.post<string>(url,null,{
+      return this.http.post<DataTransferObject>(url,null,{
         headers: this.getHeaders()
       });
     }
   
-    unblockUser(userId: string): Observable<string> {
+    unblockUser(userId: string): Observable<DataTransferObject> {
       const url = `${this.baseUrl}/UnblockUser/${userId}`;
-      return this.http.post<string>(url,null,{
+      return this.http.post<DataTransferObject>(url,null,{
         headers: this.getHeaders()
       });
     }
   
-    deleteUser(userId: string): Observable<string> {
+    deleteUser(userId: string): Observable<DataTransferObject> {
       const url = `${this.baseUrl}/DeleteUser/${userId}`;
-      return this.http.delete<string>(url, {
+      return this.http.delete<DataTransferObject>(url, {
         headers: this.getHeaders()
       });
     }

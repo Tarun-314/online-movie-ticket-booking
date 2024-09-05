@@ -2,8 +2,8 @@ import { Component, AfterViewChecked, OnInit, OnDestroy } from '@angular/core';
 import { BookingDetails, TheatreMovieWithName, UMovie, UTheatre, UserWithBookingCount } from '../models/dashboard-model';
 import { DashboardService } from '../services/dashboard-services';
 import { finalize } from 'rxjs';
-// import { FormBuilder, FormGroup } from '@angular/forms';
-// import { Bookings, LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Bookings, DataTransferObject, LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
 
 declare var $: any;
 
@@ -150,7 +150,9 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         this.showCrudModal('Multiplex updated successfully','Multiplex List');
       })
     ).subscribe({
-      
+      next:(response:DataTransferObject)=>{
+
+      },
       error:(msg)=>{
         this.showCrudModal('Failed to update multiplex','Multiplex List');
       }
@@ -165,8 +167,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         this.showCrudModal('Updated movie Details','Movie List');
       })
     ).subscribe({
-      next:(res)=>{
-
+      next:(response:DataTransferObject)=>{
       },
       error:(msg)=>{
         this.showCrudModal('Failed to update Movie','Movie List');
@@ -181,6 +182,9 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         this.showCrudModal('Updated Linked Movies Table','Linked Movies');
       })
     ).subscribe({
+      next:(response:DataTransferObject)=>{
+
+      },
       error:(msg)=>{
         this.showCrudModal('Error while updating Details','Linked Movies');
       }
@@ -249,7 +253,8 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         this.GetMovies();
       })
     ).subscribe({
-      next:(response:string) => {
+      next:(response:DataTransferObject) => {
+      console.log('Movie deleted:', response);
       this.showCrudModal('Successfully Deleted Movie','Movie List');
      },error:(error) => {
       this.showCrudModal('Error occured while deleting Movie','Movie List');
@@ -262,7 +267,8 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         this.GetTheatres();
       })
     ).subscribe({
-      next:(response:string) => {
+      next:(response:DataTransferObject) => {
+      console.log('Theatre deleted:', response);
       this.showCrudModal('Successfully Deleted Theatre','Multiplex List');
     }, error:(error) => {
       this.showCrudModal('Error occured while deleting Theatre','Multiplex List');
@@ -276,7 +282,8 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      next:(response:string) => {
+      next:(response:DataTransferObject) => {
+      console.log('TheatreMovie deleted:', response);
       this.showCrudModal('Successfully Deleted TheatreMovie','Linked Movies');
     },error:(error) => {
       this.showCrudModal('Error occured while deleting TheatreMovie','Linked Movies');
@@ -289,7 +296,8 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      next: (response:string) => {
+      next: (response:DataTransferObject) => {
+        console.log('Movie inserted:', response);
         this.showCrudModal('Added Movie Successfully','Movie List');
       },
       error: (err) => {
@@ -305,7 +313,8 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      next: (response:string) => {
+      next: (response:DataTransferObject) => {
+        console.log('Theatre inserted:', response);
         this.showCrudModal('Added Theatre Successfully','Multiplex List');
       },
       error: (err) => {
@@ -321,7 +330,8 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      next: (response:string) => {
+      next: (response:DataTransferObject) => {
+        console.log('TheatreMovie inserted:', response);
         this.showCrudModal('Linked Movie to Theatre Successfully','Linked Movies');
       },
       error: (err) => {
@@ -331,7 +341,8 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
   }
   blockUser(userId: string): void {
     this.service.blockUser(userId).subscribe({
-      next: (response:any) => {
+      next: (response:DataTransferObject) => {
+        console.log('User blocked:', response);
         this.showCrudModal('Blocked User Successfully','Users');
       },
       error: (err) => {
@@ -342,7 +353,8 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
 
   unblockUser(userId: string): void {
     this.service.unblockUser(userId).subscribe({
-      next: (response:any) => {
+      next: (response:DataTransferObject) => {
+        console.log('User unblocked:', response);
         this.showCrudModal('UnBlocked User Successfully','Users');
       },
       error: (err) => {
@@ -353,7 +365,8 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
 
   deleteUser(userId: string): void {
     this.service.deleteUser(userId).subscribe({
-      next: (response:string) => {
+      next: (response:DataTransferObject) => {
+        console.log('User deleted:', response);
         this.showCrudModal('Deleted User','Users');
       },
       error: (err) => {
