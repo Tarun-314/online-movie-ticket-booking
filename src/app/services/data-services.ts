@@ -164,6 +164,19 @@ export class DataService
         });
     }
 
+    getDefaultMovies(): Movie[] {
+        const sortedMovies = this.movies.sort((a, b) => {
+          const dateA = new Date(a.ReleaseDate);
+          const dateB = new Date(b.ReleaseDate);
+          return dateB.getTime() - dateA.getTime(); // Sort in descending order
+        });
+      
+        return sortedMovies.slice(0, 4); // Return only the top 4 movies
+    }  
+
+    getMoviesByName(search: string): Movie[] {
+        return this.movies.filter(movie => movie.Title.toLowerCase().startsWith(search.toLowerCase()));
+    }
 
     public fetchAndAssignReviews(movieID: string): Promise<void> {
         return new Promise((resolve, reject) => {

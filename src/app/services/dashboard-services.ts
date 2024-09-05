@@ -116,7 +116,6 @@ export class DashboardService{
     }
     
     blockUser(userId: string): Observable<string> {
-      alert(userId)
       const url = `${this.baseUrl}/BlockUser/${userId}`;
       return this.http.post<string>(url,null,{
         headers: this.getHeaders()

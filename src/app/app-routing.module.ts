@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { ConfirmBookingComponent } from './confirm-booking/confirm-booking.component';
 import { FormsModule } from '@angular/forms';
 import { IdGuard } from './guards/IdGuard';
+import { StatisticsComponent } from './statistics/statistics.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { AuthGuard } from './guards/AuthGuard';
 
@@ -33,8 +34,9 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent, canActivate:[AuthGuard]},
   { path: 'error', component: ErrorComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }, 
-  { path: '**', component: ErrorComponent }, 
+  { path: 'statistics', component: StatisticsComponent},
+  { path: '', redirectTo: 'home', pathMatch: 'full' }, // Default route
+  { path: '**', component: ErrorComponent }, // Wildcard route for 404
 ];
 
 
