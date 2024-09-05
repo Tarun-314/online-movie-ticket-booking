@@ -28,6 +28,7 @@ import { ShowTimesPipe } from './pipes/show-times.pipe';
 import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { AlertComponent } from './alert/alert.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
@@ -56,6 +57,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     ShowTimesPipe,
     AlertComponent,
     LoadingSpinnerComponent,
+    StatisticsComponent,
     ForgotPasswordComponent
   ],
   imports: [

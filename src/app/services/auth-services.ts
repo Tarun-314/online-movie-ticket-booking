@@ -24,14 +24,14 @@ export class AuthService {
     return this.http
       .post<AuthResponseData>(
         'https://localhost:7263/Register',
-        {
+        { 
           "userId":"string",
           "fullName":fullName,
           "passwordHash":passwordHash,
           "email":email,
           "phoneNumber":phoneNumber,
           "securityQuestion":securityQuestion,
-           "securityAnswer":securityAnswer
+           "securityAnswer":securityAnswer 
         }
       ).pipe(
         catchError(this.errorHandler),

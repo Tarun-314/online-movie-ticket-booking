@@ -81,7 +81,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     return transactionId;
   }
   
-  selectedMethod: string;
+  selectedMethod: string='';
 
   onSelect(method: string) {
     this.selectedMethod = method;
@@ -122,10 +122,10 @@ export class PaymentComponent implements OnInit, OnDestroy {
   setupEventListeners() {
     // Toggle the card details display
     const listen1 = this.renderer.listen('document', 'click', (event) => {
-      const cardHeader = event.target.closest('.card-header');
+      const cardHeader = event.target.closest('.card-header2');
       if (cardHeader) {
         const cardDetails = cardHeader.nextElementSibling as HTMLElement;
-        document.querySelectorAll('.card-body').forEach(body => {
+        document.querySelectorAll('.card-body2').forEach(body => {
           if (body !== cardDetails) {
             body.classList.remove('show');
             (body as HTMLElement).style.maxHeight = '0';

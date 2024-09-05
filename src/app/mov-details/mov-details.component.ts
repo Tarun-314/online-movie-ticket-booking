@@ -3,6 +3,8 @@ import { Movie, Review } from '../models/data-model';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { DataService } from '../services/data-services';
 import { NgForm } from '@angular/forms';
+import { concatMap, of } from 'rxjs';
+
 declare var $: any;
 
 @Component({
@@ -19,30 +21,52 @@ export class MovDetailsComponent implements OnInit, AfterViewInit {
   reviews:Review[];
   rating=3;
   comment='';
-  username:string='loggedin_User';
+  username:string;
   msg='';
+  isSuccess:boolean;
+  canAddReview:boolean = false;
   @ViewChild('f') rform:NgForm;
 
   constructor(private route:ActivatedRoute, private router:Router, private dataService:DataService){}
 
   ngOnInit() {
+    this.route.params.subscribe(async (params: Params) => {
+        this.id = params['id'];
+        if (this.id) {
+            try {
+                await this.dataService.fetchAndAssignMovies(); // Ensure movies are fetched first
+                this.movie = this.dataService.getMovieById(this.id);
+                if (this.movie) {
+                    this.isMovPresent = true;
+                    await this.dataService.fetchAndAssignReviews(this.id);
+                    this.dataService.reviews$.subscribe(flag => {
+                        this.reviews = this.dataService.getReviews(this.id);
+                    });
 
-    this.route.params.subscribe((params: Params) => {
-      this.id = params['id'];
-      if (this.id) {
-        this.movie = this.dataService.getMovieById(this.id);
-        this.reviews = this.dataService.getReviews(this.id);
+                    this.dataService.canAddReview(this.id).subscribe({
+                      next:(data:boolean) => {
+                       this.canAddReview=data;
+                      },
+                      error:(error) => {
+                        this.canAddReview=false;
+                        console.log(error);
+                      }
+                    });
 
-        if(this.movie)
-          this.isMovPresent=true;
-        else
-          this.router.navigate(['/error']);
-      } else {
-        this.router.navigate(['/error']);
-      }
-    });    
-
-  }
+                } else {
+                    this.router.navigate(['/error']);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                this.router.navigate(['/error']);
+            }
+        } else {
+            this.router.navigate(['/error']);
+        }
+    });
+    this.username=this.dataService.getUserDetails().name;
+}
+  
 
   ngAfterViewInit() {
     $('#trailerModal').on('hide.bs.modal', function () {
@@ -53,27 +77,39 @@ export class MovDetailsComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    try {
-      // Add the review
-      this.dataService.addReview({
-        ReviewID: '',
-        UserID: '',
-        UserName: this.username,
-        MovieID: this.movie.MovieID,
-        Rating: this.rating,
-        Comment: this.comment,
-        ReviewDate: new Date()
-      });
+    const rev: Review = new Review(
+      '', // ReviewID
+      '', // UserID
+      this.username, // UserName
+      this.movie.MovieID, // MovieID
+      Number(this.rating), // Rating
+      this.comment, // Comment
+      new Date() // ReviewDate
+  );
   
-      this.msg = 'Review added successfully!';
+
+    try {
+       this.dataService.postReview(rev).subscribe({
+        next:(data:any) => {
+          this.msg = 'Review added successfully.';
+          this.dataService.pushReview(rev);
+          this.reviews = this.dataService.getReviews(this.movie.MovieID);
+        },
+        error:(error) => {
+          if(error.message="DUP")
+            this.msg="Your review is already added."
+          else
+            this.msg="Failed. Review is not added.";
+          console.log(error);
+        }
+      });
       
-      this.reviews = this.dataService.getReviews(this.movie.MovieID);
       
       this.rating = 3;
       this.comment = '';
       this.rform.reset();
+      this.msg='';
     } catch (e) {
-      // Handle the error
       this.msg = `Error: ${e.message}`;
     }
   }

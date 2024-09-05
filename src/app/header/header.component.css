@@ -112,6 +112,7 @@ header {
   border-radius: 0.5rem !important;
   padding: 0 !important;
   margin-top: 0.5rem !important;
+  width: 100% !important;
 }
 
 .dropdown-toggle {

@@ -16,7 +16,10 @@ export class MoviesComponent {
 
   ngOnInit()
   {
-    this.movies = this.dataService.getMovies();
+    this.dataService.fetchAndAssignMovies();
+    this.dataService.movies$.subscribe(flag => {
+      this.movies = this.dataService.getMovies();
+    });
   }
 
   filterMovies(): Movie[] {

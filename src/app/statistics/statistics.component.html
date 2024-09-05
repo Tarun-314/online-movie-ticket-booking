@@ -1,0 +1,43 @@
+<!-- movie-dashboard.component.html -->
+<div class="container">
+    <h1>Movie Dashboard</h1>
+    <div class="dashboard">
+      <div class="content">
+        <div class="section">
+          <h2>Movies in a Week</h2>
+          <!-- Add UI elements to display movies in a week for a specific multiplex -->
+        </div>
+  
+        <div class="section">
+          <h2>Total Ticket Sales of a Movie in a Month</h2>
+          <!-- Add UI elements to display total ticket sales of a movie in a specific month -->
+        </div>
+  
+        <div class="section">
+          <h2>Sales Made Movie-wise in a Quarter</h2>
+          <!-- Add UI elements to display sales made movie-wise in a quarter -->
+        </div>
+  
+        <div class="section">
+          <h2>Movie of the Month</h2>
+          <!-- Add UI elements to display the movie of the month -->
+        </div>
+  
+        <div class="section">
+          <h2>Disaster of the Month</h2>
+          <!-- Add UI elements to display the disaster of the month -->
+        </div>
+      </div>
+  
+      <div class="options-bar">
+        <h3>Options</h3>
+        <!-- Add options here -->
+        <button (click)="getMoviesInWeek(multiplexId, week)">Movies in a Week</button>
+        <button (click)="getTotalTicketSales(movieId, month)">Total Ticket Sales</button>
+        <button (click)="getSalesInQuarter(quarter, year)">Sales in a Quarter</button>
+        <button (click)="getMovieOfTheMonth(month)">Movie of the Month</button>
+        <button (click)="getDisasterOfTheMonth(month)">Disaster of the Month</button>
+      </div>
+    </div>
+  </div>
+  

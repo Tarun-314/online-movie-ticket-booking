@@ -15,7 +15,7 @@ export class UTheatre {
     location: string = "";
     ratings: number = 0;
     screens?: number;
-    totalSeats: number = 0;
+    totalSeats: number = 80;
     image: string = "";
     updatedAt?: Date;
 }
