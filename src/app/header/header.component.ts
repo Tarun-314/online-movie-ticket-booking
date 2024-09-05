@@ -1,6 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from '../services/data-services';
-import { Movie, User, LoggedInUser } from '../models/data-model';
+import { Movie, LoggedInUser } from '../models/data-model';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth-services';
@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.noMoviesFound = false;
       }
     });
+  }
   isAuthenticated:boolean =  false;
   mySub:Subscription;
 

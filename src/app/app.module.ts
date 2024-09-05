@@ -57,7 +57,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     ShowTimesPipe,
     AlertComponent,
     LoadingSpinnerComponent,
-    StatisticsComponent
+    StatisticsComponent,
     ForgotPasswordComponent
   ],
   imports: [
