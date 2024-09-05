@@ -116,6 +116,33 @@ export class Review {
     this.ReviewDate = ReviewDate;
   }
 }
+export class IUser {
+  userId!: string;
+  fullName!: string;
+  passwordHash!: string;
+  email!: string;
+  phoneNumber!: string;
+  securityQuestion?: string;
+  securityAnswer?: string;
+}
+export class DataTransferObject {
+  data!: string;
+  message!: string;
+  isSuccess!: boolean;
+  value!: number;
+}
+export class BookingHistory {
+  userId!: string;
+  movieName!: string;
+  theatreName!: string;
+  bookingDate?: Date;   
+  showDate!: Date;       
+  showTime!: string;
+  seats!: string;
+  totalPrice!: number;   
+  transactionId!: string;
+  paymentMethod!: string;
+}
 
 export class User {
   UserID: string;

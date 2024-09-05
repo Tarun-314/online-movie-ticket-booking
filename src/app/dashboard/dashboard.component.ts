@@ -3,7 +3,7 @@ import { BookingDetails, TheatreMovieWithName, UMovie, UTheatre, UserWithBooking
 import { DashboardService } from '../services/dashboard-services';
 import { finalize } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Bookings, LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
+import { Bookings, DataTransferObject, LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
 
 declare var $: any;
 
@@ -139,7 +139,9 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      
+      next:(response:DataTransferObject)=>{
+
+      },
       error:(msg)=>{
 
       }
@@ -153,8 +155,8 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         this.GetMovies(); // This will always be executed
       })
     ).subscribe({
-      next:(res)=>{
-        
+      next:(response:DataTransferObject)=>{
+
       },
       error:(msg)=>{
         
@@ -168,6 +170,9 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         this.GetLinkedMovies(); // This will always be executed
       })
     ).subscribe({
+      next:(response:DataTransferObject)=>{
+
+      },
       error:(msg)=>{
 
       }
@@ -237,7 +242,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      next:(response:string) => {
+      next:(response:DataTransferObject) => {
       console.log('Movie deleted:', response);
      },error:(error) => {
       console.error('Error deleting movie:', error);
@@ -251,7 +256,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      next:(response:string) => {
+      next:(response:DataTransferObject) => {
       console.log('Theatre deleted:', response);
     }, error:(error) => {
       console.error('Error deleting theatre:', error);
@@ -265,7 +270,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      next:(response:string) => {
+      next:(response:DataTransferObject) => {
       console.log('TheatreMovie deleted:', response);
     },error:(error) => {
       console.error('Error deleting TheatreMovie:', error);
@@ -278,7 +283,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      next: (response:string) => {
+      next: (response:DataTransferObject) => {
         console.log('Movie inserted:', response);
       },
       error: (err) => {
@@ -294,7 +299,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      next: (response:string) => {
+      next: (response:DataTransferObject) => {
         console.log('Theatre inserted:', response);
       },
       error: (err) => {
@@ -310,7 +315,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
         
       })
     ).subscribe({
-      next: (response:string) => {
+      next: (response:DataTransferObject) => {
         console.log('TheatreMovie inserted:', response);
       },
       error: (err) => {
@@ -320,7 +325,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
   }
   blockUser(userId: string): void {
     this.service.blockUser(userId).subscribe({
-      next: (response:any) => {
+      next: (response:DataTransferObject) => {
         console.log('User blocked:', response);
       },
       error: (err) => {
@@ -331,7 +336,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
 
   unblockUser(userId: string): void {
     this.service.unblockUser(userId).subscribe({
-      next: (response:any) => {
+      next: (response:DataTransferObject) => {
         console.log('User unblocked:', response);
       },
       error: (err) => {
@@ -342,7 +347,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
 
   deleteUser(userId: string): void {
     this.service.deleteUser(userId).subscribe({
-      next: (response:string) => {
+      next: (response:DataTransferObject) => {
         console.log('User deleted:', response);
       },
       error: (err) => {
