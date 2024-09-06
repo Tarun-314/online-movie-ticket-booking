@@ -1,9 +1,10 @@
-import { Component, AfterViewChecked, OnInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewChecked, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { BookingDetails, TheatreMovieWithName, UMovie, UTheatre, UserWithBookingCount } from '../models/dashboard-model';
 import { DashboardService } from '../services/dashboard-services';
 import { finalize } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { Bookings, DataTransferObject, LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
+import { DataService } from '../services/data-services';
 
 declare var $: any;
 
@@ -14,9 +15,10 @@ declare var $: any;
 })
 export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit, OnDestroy{
   crudMessage: string = '';
-  constructor(private service:DashboardService){}
+  constructor(private service:DashboardService, private dataService:DataService){}
   
   Mmultiplex:UTheatre=new UTheatre();
+  selectedMultiplexes:UTheatre[]=[];
   isMultiplexEmpty: boolean = true;
   Mmovie:UMovie=new UMovie();
   isMovieEmpty: boolean = true;
@@ -34,6 +36,7 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
   usersLoaded: boolean = false;
   bookingLoaded:boolean=false;
   tableName:string='';
+  selectedCity:string='';
 
   private showCrudModal(message: string,name: string): void {
     this.crudMessage = message;
@@ -46,11 +49,11 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
     });
   }
 
-  LinkedMovieButtonClick() {
+  LinkedMovieButtonClick(form:NgForm) {
     if (this.isLinkedMoveEmpty) {
-      this.addTheatreMovie();
+      this.addTheatreMovie(form);
     } else {
-      this.UpdateMlinkedmovie();
+      this.UpdateMlinkedmovie(form);
     }
   }
 
@@ -58,6 +61,11 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
     this.GetLinkedMovies();
     this.GetMovies();
     this.GetTheatres(); 
+
+    this.dataService.selectedCity$.subscribe(city =>{
+      this.selectedCity=city;
+      this.selectedMultiplexes = this.multiplexes.filter(multiplex => multiplex.area === this.selectedCity);
+    });
   }
 
   ngAfterViewChecked(){
@@ -88,18 +96,18 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
     this.isLinkedMoveEmpty=true;
   }
 
-  UpdateMlinkedmovie(){
+  UpdateMlinkedmovie(form:NgForm){
     this.service.updateTheatreMovie(this.Mlinkedmovie).subscribe({
         next:(response:DataTransferObject)=>{
-          
-          this.GetLinkedMovies(); // This will always be executed
           this.showCrudModal('Updated Linked Movies Table','Linked Movies');
+          this.GetLinkedMovies();
+          form.reset();
       },
       error:(msg)=>{
         this.showCrudModal('Error while updating Details','Linked Movies');
+        form.reset();
       }
     })
-    
   }
 
   GetTheatres(){
@@ -107,12 +115,14 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
       next:(data: UTheatre[]) => {
         this.multiplexes = data;
         this.multiplexesLoaded=true;
+        this.selectedMultiplexes = this.multiplexes.filter(multiplex => multiplex.area === this.selectedCity);
       },
       error:(error) => {
         console.error('Error fetching theaters:', error);
       }
     });
   }
+
   GetMovies(){
     this.service.getAllMovies().subscribe({
       next:(data: UMovie[]) => {
@@ -124,6 +134,7 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
       }
     });
   }
+
   GetLinkedMovies(){
     this.service.getAllTheatreMovies().subscribe({
       next:(data: TheatreMovieWithName[]) => {
@@ -147,15 +158,17 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
     }});
   }
 
-  addTheatreMovie(): void {
+  addTheatreMovie(form:NgForm): void {
     this.service.insertTheatreMovie(this.Mlinkedmovie).subscribe({
         next: (response:DataTransferObject) => {
           console.log('TheatreMovie inserted:', response);
-          this.GetLinkedMovies();
           this.showCrudModal('Linked Movie to Theatre Successfully','Linked Movies');
+          this.GetLinkedMovies();
+          form.reset();
       },
       error: (err) => {
-        this.showCrudModal('Error occured while Linking','Linked Movies');
+        this.showCrudModal(err.error.message,'Linked Movies');
+        form.reset();
       }
     });
   }

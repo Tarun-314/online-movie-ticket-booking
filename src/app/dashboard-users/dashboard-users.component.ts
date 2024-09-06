@@ -117,6 +117,7 @@ export class DashboardUsersComponent implements AfterViewChecked, OnInit, OnDest
   deleteUser(userId: string): void {
     this.service.deleteUser(userId).subscribe({
       next: (response:DataTransferObject) => {
+        this.GetUsers();
         console.log('User deleted:', response);
         this.showCrudModal('Deleted User','Users');
       },

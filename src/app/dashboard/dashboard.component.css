@@ -18,7 +18,7 @@
 }
 
 .small {
-  font-size: 10px !important;
+  font-size: 12px !important;
 }
 
 a {
@@ -29,14 +29,12 @@ a {
   display: flex;
   justify-content: center;
   width: 100%;
-  padding-top: 30px;
 }
 
 .nav-link {
   border-radius: 5px !important;
-  padding: 10px 20px;
-  margin: 2px 7px;
   background-color: #f3f5f7;
+  padding: 7px 10px;
   transition: background-color color 0.5s ease-in;
 }
 
@@ -48,4 +46,12 @@ a {
   background-color: rgb(69, 77, 85) !important; /* Bootstrap primary color */
   color: white !important;
   font-weight: 700 !important;
+}
+
+.sticky {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 79.48px; /* Adjust this value based on the height of your header navbar */
+  background-color: #f8f9fa; /* Same as bg-light */
+  z-index: 1; /* Ensure it stays above other content */
 }
