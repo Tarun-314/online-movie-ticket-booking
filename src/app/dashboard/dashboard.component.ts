@@ -109,6 +109,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
       this.bookingLoaded=false;
     }
   }
+
   initializeDataTable(tableId: string): void {
     $(tableId).DataTable({
       retrieve: true,
@@ -119,6 +120,7 @@ export class DashboardComponent implements OnInit,AfterViewChecked, OnDestroy {
       lengthChange: true
     });
   }
+  
   LinkMmultiplex(multiplex:UTheatre){
     this.Mmultiplex={...multiplex};
     this.isMultiplexEmpty=false;

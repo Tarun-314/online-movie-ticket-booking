@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +30,11 @@ import { AlertComponent } from './alert/alert.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { DashboardMovieListComponent } from './dashboard-movie-list/dashboard-movie-list.component';
+import { DashboardLinkedMoviesComponent } from './dashboard-linked-movies/dashboard-linked-movies.component';
+import { DashboardUsersComponent } from './dashboard-users/dashboard-users.component';
+import { DashboardUserBookingsComponent } from './dashboard-user-bookings/dashboard-user-bookings.component';
+import { DashboardMultiplexListComponent } from './dashboard-multiplex-list/dashboard-multiplex-list.component';
 
 @NgModule({
   declarations: [
@@ -58,12 +63,17 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     AlertComponent,
     LoadingSpinnerComponent,
     StatisticsComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    DashboardMultiplexListComponent,
+    DashboardMovieListComponent,
+    DashboardLinkedMoviesComponent,
+    DashboardUsersComponent,
+    DashboardUserBookingsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
+    FormsModule, 
     HttpClientModule
   ],
   providers: [],
