@@ -1,5 +1,5 @@
-import { Component, Renderer2, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Renderer2, OnInit, OnDestroy } from '@angular/core';
+import {  Router } from '@angular/router';
 import { DataService } from '../services/data-services';
 import { NgForm } from '@angular/forms';
 import QRCode from 'qrcode';
@@ -15,7 +15,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   couponApplied: boolean = false;
   discountedAmount: number = 0;
   upiUrl = 'upi://pay?pa=7093794029@ybl&pn=Vamsi&cu=INR&am=0';
-  
+  cannotApply:boolean = false;
 
   constructor(private renderer: Renderer2, private router: Router, private dataService: DataService) {}
 
@@ -35,7 +35,9 @@ export class PaymentComponent implements OnInit, OnDestroy {
     this.dataService.getCoupon(couponForm.value.code.toUpperCase()).subscribe({
       next:(amt:number)=>{
         this.couponDiscount=amt;
-        if (this.couponDiscount > 0) {
+        if(this.bookingData.amount-amt < 0)
+            this.cannotApply=true;
+        else if (this.couponDiscount > 0) {
           this.couponApplied = true;
           this.discountedAmount = this.bookingData.amount - this.couponDiscount;
           this.upiUrl = 'upi://pay?pa=7093794029@ybl&pn=Vamsi&cu=INR&am='+this.discountedAmount;
@@ -53,6 +55,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   resetCouponState() {
     this.couponDiscount = 0;
     this.couponApplied = false;
+    this.cannotApply = false;
     this.discountedAmount = this.bookingData.amount;
   }
 

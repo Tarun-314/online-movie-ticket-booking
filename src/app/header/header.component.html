@@ -55,7 +55,7 @@
             <a *ngIf="user.role=='Admin'" class="dropdown-item" routerLink="/dashboard" routerLinkActive="hactive">
               <i class="fa fa-dashboard"></i> Dashboard
             </a>
-            <a class="dropdown-item" routerLink="/statistics" routerLinkActive="hactive">
+            <a *ngIf="user.role=='Admin'" class="dropdown-item" routerLink="/statistics" routerLinkActive="hactive">
               <i class="fa fa-bar-chart"></i> Statistics
             </a>
             <a class="dropdown-item text-danger" href="#" (click)="onLogout()">

@@ -43,6 +43,7 @@
                                 </div>
                               </div>
                               <span *ngIf="couponDiscount === -1 && code.touched && code.valid" class="text-danger small">Sorry, this coupon doesn't exist</span>
+                              <span *ngIf="cannotApply && code.touched && code.valid" class="text-danger small">Sorry, this coupon is cannot applicable</span>
                               <span *ngIf="couponApplied && couponDiscount > 0 && code.touched && code.valid" class="text-success small">Coupon Applied Successfully. You saved: Rs. {{couponDiscount}}</span>
                             </div>
                           </form>

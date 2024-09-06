@@ -222,7 +222,14 @@ export class TicketBookingComponent implements OnInit, AfterViewInit, OnDestroy 
   updateSeatSelection() {
     const selectedSeats = document.querySelectorAll('.seat.selected');
     const selectedSeatsArray = Array.from(selectedSeats).map(seat => seat.getAttribute('data-seat-number'));
-    const totalPrice = selectedSeats.length * 100; // Update according to your logic
+    
+    let totalPrice = 0;
+    selectedSeats.forEach(seat => {
+      const parentRow = seat.closest('.seat-row');
+      const seatPrice = parentRow ? parseInt(parentRow.getAttribute('data-price') || '0', 10) : 0;
+      totalPrice += seatPrice;
+    });
+
     document.getElementById('selectedSeats')!.textContent = selectedSeatsArray.join(', ') || 'None';
     document.getElementById('totalPrice')!.textContent = totalPrice.toString();
     (document.getElementById('checkoutButton') as HTMLButtonElement).disabled = selectedSeats.length === 0;

@@ -321,5 +321,11 @@ export class DataService
     getCoupon(couponCode: string): Observable<number> {
         return this.http.get<number>(`${this.baseUrl}/Coupon/${couponCode}`,{headers:this.getHeaders()});
     }
+
+    confirmBooking(bookingData:any):Observable<DataTransferObject>
+    {
+        console.log(bookingData);
+        return this.http.post<DataTransferObject>(`${this.baseUrl}/AddBooking/`,bookingData,{headers:this.getHeaders()});
+    }
     
 }

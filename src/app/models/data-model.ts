@@ -132,7 +132,7 @@ export class DataTransferObject {
   value!: number;
 }
 export class BookingHistory {
-  userId!: string;
+  userID!: string;
   movieName!: string;
   theatreName!: string;
   bookingDate?: Date;   
@@ -140,7 +140,7 @@ export class BookingHistory {
   showTime!: string;
   seats!: string;
   totalPrice!: number;   
-  transactionId!: string;
+  transactionID!: string;
   paymentMethod!: string;
 }
 

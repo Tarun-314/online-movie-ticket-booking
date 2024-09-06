@@ -1,7 +1,8 @@
 import { Component, Renderer2, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Params, Router } from '@angular/router';
 import { LinkedMovies, Multiplex } from '../models/data-model';
 import { DataService } from '../services/data-services';
+import { Subscription } from 'rxjs';
 
 declare var $: any;
 
@@ -30,6 +31,7 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   movieID:string='';
 
   private eventListeners: (() => void)[] = [];
+  private navigationSubscription: Subscription;
 
   constructor(private renderer: Renderer2, private router:Router, private route:ActivatedRoute, private dataService:DataService) {}
 
@@ -46,7 +48,15 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         this.router.navigate(['/error']);
       }
-    });    
+    }); 
+    
+    this.navigationSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        if (event.navigationTrigger === 'popstate' && event.restoredState) {
+          this.router.navigate([this.router.url]);
+        }
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -59,6 +69,10 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     $('#selectionModal').modal('hide');
     $('.modal-backdrop').remove();
     $('body').removeClass('modal-open');
+
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
   }
 
   getStars(rating: number): string[] {
@@ -209,10 +223,19 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.setProperty(seatMatrixContainer, 'innerHTML', matrixHTML);
   }
   
+
   updateSeatSelection() {
     const selectedSeats = document.querySelectorAll('.seat.selected');
     const selectedSeatsArray = Array.from(selectedSeats).map(seat => seat.getAttribute('data-seat-number'));
-    const totalPrice = selectedSeats.length * 100; // Update according to your logic
+
+    let totalPrice = 0;
+    selectedSeats.forEach(seat => {
+      const parentRow = seat.closest('.seat-row');
+      const seatPrice = parentRow ? parseInt(parentRow.getAttribute('data-price') || '0', 10) : 0;
+      totalPrice += seatPrice;
+    });
+  
+
     document.getElementById('selectedSeats')!.textContent = selectedSeatsArray.join(', ') || 'None';
     document.getElementById('totalPrice')!.textContent = totalPrice.toString();
     (document.getElementById('checkoutButton') as HTMLButtonElement).disabled = selectedSeats.length === 0;

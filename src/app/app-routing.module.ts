@@ -18,6 +18,7 @@ import { IdGuard } from './guards/IdGuard';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { AuthGuard } from './guards/AuthGuard';
+import { AdminGuard } from './guards/AdminGuard';
 
 const routes: Routes = [
   {path: 'home',component: HomeComponent, canActivate:[AuthGuard]},
@@ -28,13 +29,13 @@ const routes: Routes = [
   { path: 'ticket-booking/:id', component: TicketBookingComponent, canActivate:[IdGuard, AuthGuard]  },
   { path: 'ticket-confirm', component: ConfirmBookingComponent, canActivate:[AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate:[AuthGuard] },
-  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard, AdminGuard] },
   { path: 'payment', component: PaymentComponent, canActivate:[AuthGuard] },
   { path: 'about', component: AboutComponent, canActivate:[AuthGuard] },
   { path: 'contact', component: ContactComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent, canActivate:[AuthGuard]},
   { path: 'error', component: ErrorComponent },
-  { path: 'statistics', component: StatisticsComponent},
+  { path: 'statistics', component: StatisticsComponent, canActivate:[AuthGuard, AdminGuard]},
   { path: '', redirectTo: 'home', pathMatch: 'full' }, 
   { path: '**', component: ErrorComponent }
 ];

@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit{
     this.dataService.getUserPurchaseHistory().subscribe({
       next:(data:BookingHistory[])=>{
         this.user_purchase_history=data;
-        console.log("booking history");
+        console.log(data);
         this.bookingdata=true;
       },error:(err)=>{
         console.log(err);
