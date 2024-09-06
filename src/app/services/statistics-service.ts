@@ -1,24 +1,33 @@
 // services/movie-statistics.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TheatreMovieWithName } from '../models/service-model';
 import { MovieSales } from '../models/service-model';
 import { Movie } from '../models/service-model';
+import { DataService } from './data-services';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class MovieStatisticsService {
-  private apiUrl = 'http://your-api-url/Statistics';
 
-  constructor(private http: HttpClient) { }
+  private token ;
+    constructor(private http: HttpClient, private dataService: DataService) { 
+      this.token = this.dataService.getUserDetails().token;
+    }
+    private apiUrl = 'https://localhost:7263/Statistics';
+    
+    private getHeaders(): HttpHeaders {
+        return new HttpHeaders({
+          'Authorization': `Bearer ${this.token}`,
+          'Content-Type': 'application/json'
+        });
+      }
 
-  getMoviesInWeek(multiplexName: string, startDate: string, endDate: string): Observable<TheatreMovieWithName[]> {
+  getMoviesInWeek(multiplexId: string, startDate: string, endDate: string): Observable<TheatreMovieWithName[]> {
     const params = new HttpParams()
       .set('startDate', startDate)
       .set('endDate', endDate);
-    return this.http.get<TheatreMovieWithName[]>(`${this.apiUrl}/week/${multiplexName}`, { params });
+    return this.http.get<TheatreMovieWithName[]>(`${this.apiUrl}/week/${multiplexId}`, { params });
   }
 
   getTotalTicketSales(movieName: string, month: string): Observable<number> {

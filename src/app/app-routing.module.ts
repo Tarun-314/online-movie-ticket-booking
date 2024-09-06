@@ -18,6 +18,11 @@ import { IdGuard } from './guards/IdGuard';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { AuthGuard } from './guards/AuthGuard';
+import { DashboardMultiplexListComponent } from './dashboard-multiplex-list/dashboard-multiplex-list.component';
+import { DashboardMovieListComponent } from './dashboard-movie-list/dashboard-movie-list.component';
+import { DashboardLinkedMoviesComponent } from './dashboard-linked-movies/dashboard-linked-movies.component';
+import { DashboardUsersComponent } from './dashboard-users/dashboard-users.component';
+import { DashboardUserBookingsComponent } from './dashboard-user-bookings/dashboard-user-bookings.component';
 
 const routes: Routes = [
   {path: 'home',component: HomeComponent, canActivate:[AuthGuard]},
@@ -28,7 +33,14 @@ const routes: Routes = [
   { path: 'ticket-booking/:id', component: TicketBookingComponent, canActivate:[IdGuard, AuthGuard]  },
   { path: 'ticket-confirm', component: ConfirmBookingComponent, canActivate:[AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate:[AuthGuard] },
-  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard], children: [
+    { path: '', redirectTo: 'multiplex-list', pathMatch: 'full' }, 
+    { path: 'multiplex-list', component: DashboardMultiplexListComponent },
+    { path: 'movie-list', component: DashboardMovieListComponent },
+    { path: 'linked-movies', component: DashboardLinkedMoviesComponent },
+    { path: 'users', component: DashboardUsersComponent },
+    { path: 'user-bookings', component: DashboardUserBookingsComponent }
+  ]} ,
   { path: 'payment', component: PaymentComponent, canActivate:[AuthGuard] },
   { path: 'about', component: AboutComponent, canActivate:[AuthGuard] },
   { path: 'contact', component: ContactComponent },

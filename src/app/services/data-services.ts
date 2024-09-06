@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({providedIn:'root'})
 export class DataService
 {
-    private baseurl="https://localhost:7263"; 
+    private baseUrl="https://localhost:7263"; 
     private getHeaders(): HttpHeaders {
         return new HttpHeaders({
           'Authorization': `Bearer ${this.user.token}`,
@@ -30,15 +30,6 @@ export class DataService
       this.selectedCity$.subscribe(city => {
         localStorage.setItem('selectedCity', city);
       });
-    }
-
-    private baseUrl:string = 'https://localhost:7263';
-
-    private getHeaders(): HttpHeaders {
-        return new HttpHeaders({
-        'Authorization': `Bearer ${this.user.token}`,
-        'Content-Type': 'application/json'
-        });
     }
   
     getCities(): string[] {
@@ -317,14 +308,14 @@ export class DataService
     // }
     
     setUserProfile(user:IUser):Observable<DataTransferObject>{
-        return this.htttp.put<DataTransferObject>(`${this.baseurl}/UpdateUser`,user,{
+        return this.http.put<DataTransferObject>(`${this.baseUrl}/UpdateUser`,user,{
             headers:this.getHeaders()
         });
     }
 
     getUserProfile():Observable<IUser>
     {
-        return this.htttp.get<IUser>(`${this.baseurl}/GetUserById`,{
+        return this.http.get<IUser>(`${this.baseUrl}/GetUserById`,{
             headers:this.getHeaders()
         });
     }
@@ -381,7 +372,7 @@ export class DataService
       
     getUserPurchaseHistory():Observable<BookingHistory[]>
     {
-        return this.htttp.get<BookingHistory[]>(`${this.baseurl}/GetBookingsByUserId`,{
+        return this.http.get<BookingHistory[]>(`${this.baseUrl}/GetBookingsByUserId`,{
             headers:this.getHeaders()
         });
     }
