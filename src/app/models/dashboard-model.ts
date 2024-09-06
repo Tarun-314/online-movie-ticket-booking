@@ -67,6 +67,7 @@ export class TheatreMovieWithName {
     showDate: Date = new Date();
     showTimes: string = "";
     availableSeats: string = "";
+    area:string="";
 }
 
 export class UserWithBookingCount {

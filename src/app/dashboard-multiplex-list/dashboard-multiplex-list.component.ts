@@ -2,7 +2,7 @@ import { Component, AfterViewChecked, OnInit, OnDestroy } from '@angular/core';
 import { BookingDetails, TheatreMovieWithName, UMovie, UTheatre, UserWithBookingCount } from '../models/dashboard-model';
 import { DashboardService } from '../services/dashboard-services';
 import { finalize } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { Bookings, DataTransferObject, LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
 
 declare var $: any;
@@ -46,11 +46,11 @@ export class DashboardMultiplexListComponent implements AfterViewChecked, OnInit
     });
   }
 
-  MultiplexButtonClick() {
+  MultiplexButtonClick(form:NgForm) {
     if (this.isMultiplexEmpty) {
-      this.addTheatre();
+      this.addTheatre(form);
     } else {
-      this.UpdateMmultiplex();
+      this.UpdateMmultiplex(form);
     }
   }
 
@@ -98,28 +98,30 @@ export class DashboardMultiplexListComponent implements AfterViewChecked, OnInit
     });
   }
 
-  addTheatre(): void {
+  addTheatre(form:NgForm): void {
     this.service.insertTheatre(this.Mmultiplex).pipe(
       finalize(() => {
         this.GetTheatres();
-        
       })
     ).subscribe({
       next: (response:DataTransferObject) => {
         console.log('Theatre inserted:', response);
         this.showCrudModal('Added Theatre Successfully','Multiplex List');
+        form.reset();
       },
       error: (err) => {
-        this.showCrudModal('Error occured while adding Theatre','Multiplex List');;
+        this.showCrudModal('Error occured while adding Theatre','Multiplex List');
+        form.reset();
       }
     });
   }
 
-  UpdateMmultiplex(){
+  UpdateMmultiplex(form:NgForm){
     this.service.updateTheatre(this.Mmultiplex).pipe(
       finalize(() => {
         this.GetTheatres();
         this.showCrudModal('Multiplex updated successfully','Multiplex List');
+        form.reset();
       })
     ).subscribe({
       next:(response:DataTransferObject)=>{
@@ -127,6 +129,7 @@ export class DashboardMultiplexListComponent implements AfterViewChecked, OnInit
       },
       error:(msg)=>{
         this.showCrudModal('Failed to update multiplex','Multiplex List');
+        form.reset();
       }
     });
   }

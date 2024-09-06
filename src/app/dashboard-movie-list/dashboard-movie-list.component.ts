@@ -2,7 +2,7 @@ import { Component, AfterViewChecked, OnInit, OnDestroy } from '@angular/core';
 import { BookingDetails, TheatreMovieWithName, UMovie, UTheatre, UserWithBookingCount } from '../models/dashboard-model';
 import { DashboardService } from '../services/dashboard-services';
 import { finalize } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { Bookings, DataTransferObject, LinkedMovies, Movie, Multiplex, User } from '../models/data-model';
 
 declare var $: any;
@@ -46,11 +46,11 @@ export class DashboardMovieListComponent implements AfterViewChecked, OnInit, On
     });
   }
 
-  MovieButtonClick() {
+  MovieButtonClick(form:NgForm) {
     if (this.isMovieEmpty) {
-      this.addMovie();
+      this.addMovie(form);
     } else {
-      this.UpdateMmovie();
+      this.UpdateMmovie(form);
     }
   }
 
@@ -86,18 +86,20 @@ export class DashboardMovieListComponent implements AfterViewChecked, OnInit, On
     this.isMovieEmpty=true;
   }
 
-  UpdateMmovie(){
+  UpdateMmovie(form:NgForm){
     
     this.service.updateMovie(this.Mmovie).pipe(
       finalize(() => {
         this.GetMovies(); // This will always be executed
         this.showCrudModal('Updated movie Details','Movie List');
+        form.reset();
       })
     ).subscribe({
       next:(response:DataTransferObject)=>{
       },
       error:(msg)=>{
         this.showCrudModal('Failed to update Movie','Movie List');
+        form.reset();
       }
     })
    
@@ -130,19 +132,20 @@ export class DashboardMovieListComponent implements AfterViewChecked, OnInit, On
     }});
   }
 
-  addMovie(): void {
+  addMovie(form:NgForm): void {
     this.service.insertMovie(this.Mmovie).pipe(
       finalize(() => {
         this.GetMovies();
-        
       })
     ).subscribe({
       next: (response:DataTransferObject) => {
         console.log('Movie inserted:', response);
         this.showCrudModal('Added Movie Successfully','Movie List');
+        form.reset();
       },
       error: (err) => {
         this.showCrudModal('Error occured while adding movie','Movie List');
+        form.reset();
       }
     });
   }

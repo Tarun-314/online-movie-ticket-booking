@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -35,6 +36,7 @@ import { DashboardLinkedMoviesComponent } from './dashboard-linked-movies/dashbo
 import { DashboardUsersComponent } from './dashboard-users/dashboard-users.component';
 import { DashboardUserBookingsComponent } from './dashboard-user-bookings/dashboard-user-bookings.component';
 import { DashboardMultiplexListComponent } from './dashboard-multiplex-list/dashboard-multiplex-list.component';
+
 
 @NgModule({
   declarations: [

@@ -5,7 +5,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="manageMultiplexModalLabel">Manage Multiplex</h5>
-          <a href="#" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <a href="#" type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="multiplexForm.reset()">
             <span aria-hidden="true">&times;</span>
           </a>
         </div>
@@ -70,8 +70,8 @@
             </div>
             <div class="modal-footer">
               <button type="reset" class="btn btn-outline-warning btn-sm mr-1"> <i class="fa fa-undo"></i> </button>
-              <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-outline-primary btn-sm" [disabled]="!multiplexForm.form.valid" (click)="MultiplexButtonClick()" data-dismiss="modal">{{ isMultiplexEmpty ? 'Add Multiplex' : 'Update Multiplex' }}</button>
+              <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal" (click)="multiplexForm.reset()">Cancel</button>
+              <button type="button" class="btn btn-outline-primary btn-sm" [disabled]="!multiplexForm.form.valid" (click)="MultiplexButtonClick(multiplexForm)" data-dismiss="modal">{{ isMultiplexEmpty ? 'Add Multiplex' : 'Update Multiplex' }}</button>
             </div>
           </form>        
         </div>

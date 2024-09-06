@@ -27,6 +27,7 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
   multiplexes:UTheatre[]=[];
   movies:UMovie[]=[];
   linkedMovies:TheatreMovieWithName[]=[];
+  selectedlinkedMovies:TheatreMovieWithName[]=[];
   users:UserWithBookingCount[]=[];
   BookingHistory:BookingDetails[]=[];
   // Flags to check if data has been loaded
@@ -56,6 +57,7 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
       this.UpdateMlinkedmovie(form);
     }
   }
+  
 
   ngOnInit(){  
     this.GetLinkedMovies();
@@ -65,6 +67,7 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
     this.dataService.selectedCity$.subscribe(city =>{
       this.selectedCity=city;
       this.selectedMultiplexes = this.multiplexes.filter(multiplex => multiplex.area === this.selectedCity);
+      this.selectedlinkedMovies = this.linkedMovies.filter(multiplex => multiplex.area === this.selectedCity);
     });
   }
 
@@ -140,6 +143,7 @@ export class DashboardLinkedMoviesComponent implements AfterViewChecked, OnInit,
       next:(data: TheatreMovieWithName[]) => {
         this.linkedMovies = data;
         this.linkedMoviesLoaded=true;
+        this.selectedlinkedMovies = this.linkedMovies.filter(multiplex => multiplex.area === this.selectedCity);
       },
       error:(error) => {
         console.error('Error fetching theatre movies:', error);
