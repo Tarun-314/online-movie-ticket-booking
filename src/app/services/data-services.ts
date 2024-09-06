@@ -318,17 +318,8 @@ export class DataService
     //     }
     //   }
 
-
-    private coupons: Coupon[] = [
-        new Coupon('30DD82FA-D8FF-4CE6-8473-232BC57C0D66', 'HOLIDAY100', 100.00),
-        new Coupon('945A0001-1ABC-415F-A049-8F2DC895B6C3', 'SAVE50', 50.00),
-        new Coupon('A838ACA6-713D-4D78-8AE3-876A9B00D8DD', 'NEWYEAR50', 50.00),
-        new Coupon('ED28FB1A-AE98-4D54-8058-C7DD0885C927', 'FLASHSALE150', 150.00)
-    ];
-
-    getCoupon(couponCode: string): number {
-        const coupon = this.coupons.find(c => c.CouponCode === couponCode);
-        return coupon ? coupon.DiscountAmount : 0;
+    getCoupon(couponCode: string): Observable<number> {
+        return this.http.get<number>(`${this.baseUrl}/Coupon/${couponCode}`,{headers:this.getHeaders()});
     }
     
 }

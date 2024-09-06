@@ -32,17 +32,22 @@ export class PaymentComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(couponForm: NgForm) {
-    this.couponDiscount = this.dataService.getCoupon(couponForm.value.code.toUpperCase());
-    if (this.couponDiscount > 0) {
-      this.couponApplied = true;
-      this.discountedAmount = this.bookingData.amount - this.couponDiscount;
-      this.upiUrl = 'upi://pay?pa=7093794029@ybl&pn=Vamsi&cu=INR&am='+this.discountedAmount;
-      this.generateQRCode();
-    } else {
-      this.couponApplied = false;
-      this.couponDiscount = -1; 
-      this.discountedAmount = this.bookingData.amount;
-    }
+    this.dataService.getCoupon(couponForm.value.code.toUpperCase()).subscribe({
+      next:(amt:number)=>{
+        this.couponDiscount=amt;
+        if (this.couponDiscount > 0) {
+          this.couponApplied = true;
+          this.discountedAmount = this.bookingData.amount - this.couponDiscount;
+          this.upiUrl = 'upi://pay?pa=7093794029@ybl&pn=Vamsi&cu=INR&am='+this.discountedAmount;
+          this.generateQRCode();
+        } else {
+          this.couponApplied = false;
+          this.couponDiscount = -1; 
+          this.discountedAmount = this.bookingData.amount;
+        }
+      }
+    });
+    
   }
 
   resetCouponState() {
