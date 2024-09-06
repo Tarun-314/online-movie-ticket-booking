@@ -23,6 +23,7 @@ import { DashboardMovieListComponent } from './dashboard-movie-list/dashboard-mo
 import { DashboardLinkedMoviesComponent } from './dashboard-linked-movies/dashboard-linked-movies.component';
 import { DashboardUsersComponent } from './dashboard-users/dashboard-users.component';
 import { DashboardUserBookingsComponent } from './dashboard-user-bookings/dashboard-user-bookings.component';
+import { AdminGuard } from './guards/AdminGuard';
 
 const routes: Routes = [
   {path: 'home',component: HomeComponent, canActivate:[AuthGuard]},
@@ -33,7 +34,7 @@ const routes: Routes = [
   { path: 'ticket-booking/:id', component: TicketBookingComponent, canActivate:[IdGuard, AuthGuard]  },
   { path: 'ticket-confirm', component: ConfirmBookingComponent, canActivate:[AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate:[AuthGuard] },
-  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard], children: [
+  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard, AdminGuard], children: [
     { path: '', redirectTo: 'multiplex-list', pathMatch: 'full' }, 
     { path: 'multiplex-list', component: DashboardMultiplexListComponent },
     { path: 'movie-list', component: DashboardMovieListComponent },
@@ -41,14 +42,15 @@ const routes: Routes = [
     { path: 'users', component: DashboardUsersComponent },
     { path: 'user-bookings', component: DashboardUserBookingsComponent }
   ]} ,
+
   { path: 'payment', component: PaymentComponent, canActivate:[AuthGuard] },
   { path: 'about', component: AboutComponent, canActivate:[AuthGuard] },
   { path: 'contact', component: ContactComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent, canActivate:[AuthGuard]},
   { path: 'error', component: ErrorComponent },
-  { path: 'statistics', component: StatisticsComponent},
-  { path: '', redirectTo: 'home', pathMatch: 'full' }, // Default route
-  { path: '**', component: ErrorComponent }, // Wildcard route for 404
+  { path: 'statistics', component: StatisticsComponent, canActivate:[AuthGuard, AdminGuard]},
+  { path: '', redirectTo: 'home', pathMatch: 'full' }, 
+  { path: '**', component: ErrorComponent }
 ];
 
 

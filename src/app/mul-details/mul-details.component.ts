@@ -1,7 +1,8 @@
 import { Component, Renderer2, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Params, Router } from '@angular/router';
 import { LinkedMovies, Multiplex } from '../models/data-model';
 import { DataService } from '../services/data-services';
+import { Subscription } from 'rxjs';
 
 declare var $: any;
 
@@ -27,8 +28,10 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedSeats: string='';
   totalPrice: string='';
   screenNumber: string='';
+  movieID:string='';
 
   private eventListeners: (() => void)[] = [];
+  private navigationSubscription: Subscription;
 
   constructor(private renderer: Renderer2, private router:Router, private route:ActivatedRoute, private dataService:DataService) {}
 
@@ -36,7 +39,7 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.route.params.subscribe(async (params: Params) => {
       this.id = params['id'];
       if (this.id) {
-        await this.dataService.fetchAndAssignTheaters(); // Ensure movies are fetched first
+        await this.dataService.fetchAndAssignTheaters();
         this.multiplex = this.dataService.getMultiplexById(this.id);
         if(this.multiplex)
           this.isMulPresent=true;
@@ -45,7 +48,15 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         this.router.navigate(['/error']);
       }
-    });    
+    }); 
+    
+    this.navigationSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        if (event.navigationTrigger === 'popstate' && event.restoredState) {
+          this.router.navigate([this.router.url]);
+        }
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -58,6 +69,10 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     $('#selectionModal').modal('hide');
     $('.modal-backdrop').remove();
     $('body').removeClass('modal-open');
+
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
   }
 
   getStars(rating: number): string[] {
@@ -109,7 +124,14 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onDateClick(date: string): void {
-    this.linkedMovies = this.dataService.getLinkedMoviesByIDDate(this.id,date);
+    this.dataService.getLinkedMoviesByIDDateAPI(this.id,date).subscribe({
+      next:(data: LinkedMovies[]) => {
+        this.linkedMovies = data;
+      },
+      error:(error) => {
+        console.error('Error fetching linkedmovies:', error);
+      }
+    });
   }
 
   getShowTimes(jsonString: string): string[] {
@@ -119,7 +141,7 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   filterLinkedMovies(): LinkedMovies[] {
     return this.linkedMovies.filter(lm =>
-      lm.MovieName.toLowerCase().startsWith(this.searchLM.toLowerCase())
+      lm.title.toLowerCase().startsWith(this.searchLM.toLowerCase())
     );
   }
 
@@ -201,10 +223,19 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.setProperty(seatMatrixContainer, 'innerHTML', matrixHTML);
   }
   
+
   updateSeatSelection() {
     const selectedSeats = document.querySelectorAll('.seat.selected');
     const selectedSeatsArray = Array.from(selectedSeats).map(seat => seat.getAttribute('data-seat-number'));
-    const totalPrice = selectedSeats.length * 100; // Update according to your logic
+
+    let totalPrice = 0;
+    selectedSeats.forEach(seat => {
+      const parentRow = seat.closest('.seat-row');
+      const seatPrice = parentRow ? parseInt(parentRow.getAttribute('data-price') || '0', 10) : 0;
+      totalPrice += seatPrice;
+    });
+  
+
     document.getElementById('selectedSeats')!.textContent = selectedSeatsArray.join(', ') || 'None';
     document.getElementById('totalPrice')!.textContent = totalPrice.toString();
     (document.getElementById('checkoutButton') as HTMLButtonElement).disabled = selectedSeats.length === 0;
@@ -223,6 +254,20 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.seatString = seatStringArray.join('');
   }
+
+    getSeatString(movieID: string, selectedTime: string): string {
+
+      for (const movie of this.linkedMovies) {
+          if (movie.movieId === movieID ) {
+              const showTimes = JSON.parse(movie.showTimes);
+              if (showTimes[selectedTime]) {
+                  return showTimes[selectedTime];
+              }
+          }
+      }
+      
+      return "00000000000000000000000000000000000000000000000000000000000000000000000000000000";
+  }
   
   checkOut() {
     $('#selectionModal').modal('hide');
@@ -232,6 +277,7 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       theatreName: this.multiplex.Name,
       theatreArea: this.multiplex.Area,
       movieName: this.movieName,
+      movieId: this.movieID,
       moviePoster: this.moviePoster,
       language: this.movieLang,
       selectedDate: this.selectedDate,
@@ -294,6 +340,7 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   
         if (this.selectedTime && currentCard) {
           this.movieName = currentCard.querySelector('.card-title')?.textContent;
+          this.movieID = currentCard.querySelector('.movieID')?.textContent;
           this.moviePoster = currentCard.querySelector('.movie-card-img')?.getAttribute('src');
           this.screenNumber = currentCard.querySelector('.screenNumber')?.textContent;
           const area = currentCard.querySelector('.card-subtitle')?.textContent;
@@ -305,7 +352,7 @@ export class MulDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           document.getElementById('selectedTime')!.textContent = 'Show Time: ' + this.selectedTime;
           $('#selectionModal').modal('show');
 
-          this.seatString = this.dataService.getSeatString(this.multiplex.TheatreID,this.movieName,this.selectedDate,this.selectedTime);
+          this.seatString = this.getSeatString(this.movieID,this.selectedTime);
           this.setupSeatMatrix();
         } 
         // else {

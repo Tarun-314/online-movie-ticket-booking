@@ -132,7 +132,7 @@ export class DataTransferObject {
   value!: number;
 }
 export class BookingHistory {
-  userId!: string;
+  userID!: string;
   movieName!: string;
   theatreName!: string;
   bookingDate?: Date;   
@@ -140,7 +140,7 @@ export class BookingHistory {
   showTime!: string;
   seats!: string;
   totalPrice!: number;   
-  transactionId!: string;
+  transactionID!: string;
   paymentMethod!: string;
 }
 
@@ -236,56 +236,77 @@ export class Bookings {
   }
 }
 
-
-
 export class LinkedMovies {
-  TheatreID: string;
-  TheatreName: string;
-  Area: string;
-  MovieID: string;
-  MovieName: string;
-  MoviePoster: string;
-  Language: string;
-  ReleaseDate: Date;
-  Likes: number;
-  Ratings: number;
-  ScreenNumber: number;
-  ShowDate: Date;
-  ShowTimes: string; 
-  AvailableSeats: string;
+  theatreId: string;
+  movieId: string;
+  title: string;
+  screenNumber: number;
+  language: string;
+  releaseDate: Date;
+  rating: number;
+  likes: number;
+  showTimes: string;
+  image: string;
 
   constructor(
-    TheatreID: string,
-    TheatreName: string,
-    Area: string,
-    MovieID: string,
-    MovieName: string,
-    MoviePoster: string,
-    Language: string,
-    ReleaseDate: Date,
-    Likes: number,
-    Ratings: number,
-    ScreenNumber: number,
-    ShowDate: Date,
-    ShowTimes: string,
-    AvailableSeats: string
+    theatreId: string,
+    movieId: string,
+    title: string,
+    screenNumber: number,
+    language: string,
+    releaseDate: Date,
+    rating: number,
+    likes: number,
+    showTimes: string,
+    image: string
   ) {
-    this.TheatreID = TheatreID;
-    this.TheatreName = TheatreName;
-    this.Area = Area;
-    this.MovieID = MovieID;
-    this.MovieName = MovieName;
-    this.MoviePoster = MoviePoster;
-    this.Language = Language;
-    this.ReleaseDate = ReleaseDate;
-    this.Likes = Likes;
-    this.Ratings = Ratings,
-    this.ScreenNumber = ScreenNumber;
-    this.ShowDate = ShowDate;
-    this.ShowTimes = ShowTimes;
-    this.AvailableSeats = AvailableSeats;
+    this.theatreId = theatreId;
+    this.movieId = movieId;
+    this.title = title;
+    this.screenNumber = screenNumber;
+    this.language = language;
+    this.releaseDate = releaseDate;
+    this.rating = rating;
+    this.likes = likes;
+    this.showTimes = showTimes;
+    this.image = image;
   }
 }
+
+export class LinkedMovies2 {
+  theatreId: string;
+  movieId: string;
+  name: string;
+  area: string;
+  location: string;
+  screenNumber: number;
+  rating: number;
+  showTimes: string;
+  image: string;
+
+  constructor(
+    theatreId: string,
+    movieId: string,
+    name: string,
+    area: string,
+    location: string,
+    screenNumber: number,
+    rating: number,
+    showTimes: string,
+    image: string
+  ) {
+    this.theatreId = theatreId;
+    this.movieId = movieId;
+    this.name = name;
+    this.area = area;
+    this.location = location;
+    this.screenNumber = screenNumber;
+    this.rating = rating;
+    this.showTimes = showTimes;
+    this.image = image;
+  }
+}
+
 
 export class Coupon {
   constructor(

@@ -63,19 +63,20 @@
         <div class="card mb-3 multiplex-card">
             <div class="row no-gutters">
                 <div class="col-md-4">
-                    <img src="{{lm.MoviePoster}}" class="movie-card-img" alt="{{lm.MovieName}}">
+                    <img src="{{lm.image}}" class="movie-card-img" alt="{{lm.title}}">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body px-3">
-                      <h4 class="card-title mb-3">{{lm.MovieName}}</h4>
-                      <p class="small card-subtitle text-primary"><i class="fa fa-tv"></i> Screen no : <span class="text-muted screenNumber">{{lm.ScreenNumber}}</span></p>
-                      <p class="small my-1 card-text text-dark"><i class="fa fa-language"></i> Language: <span class="text-muted movieLang">{{lm.Language}}</span></p>
-                      <p class="small my-1 card-text text-info"><i class="fa fa-calendar"></i> Release Date: <span class="text-muted">{{lm.ReleaseDate | date: "dd MMM yyyy"}}</span></p>
-                      <p class="small my-1 card-text text-danger"><i class="fa fa-heart text-danger"></i> Likes: <span class="text-muted">{{lm.Likes | likes}}</span></p>
-                      <p class="small my-1 card-text text-warning"><i class="fa fa-star"></i> Rating: <span class="text-muted">{{lm.Ratings}}</span></p>
+                      <h4 class="card-title mb-3">{{lm.title}}</h4>
+                      <h4 class="movieID d-none mb-3">{{lm.movieId}}</h4>
+                      <p class="small card-subtitle text-primary"><i class="fa fa-tv"></i> Screen no : <span class="text-muted screenNumber">{{lm.screenNumber}}</span></p>
+                      <p class="small my-1 card-text text-dark"><i class="fa fa-language"></i> Language: <span class="text-muted movieLang">{{lm.language}}</span></p>
+                      <p class="small my-1 card-text text-info"><i class="fa fa-calendar"></i> Release Date: <span class="text-muted">{{lm.releaseDate | date: "dd MMM yyyy"}}</span></p>
+                      <p class="small my-1 card-text text-danger"><i class="fa fa-heart text-danger"></i> Likes: <span class="text-muted">{{lm.likes | likes}}</span></p>
+                      <p class="small my-1 card-text text-warning"><i class="fa fa-star"></i> Rating: <span class="text-muted">{{lm.rating}}</span></p>
                       
                       <div class="d-flex flex-wrap my-1 mt-2 align-items-center justify-content-between">
-                        <button *ngFor="let st of getShowTimes(lm.ShowTimes)" class="btn btn-sm btn-outline-success rounded mr-1 my-1" [attr.data-time]="st">{{st}}</button>
+                        <button *ngFor="let st of getShowTimes(lm.showTimes)" class="btn btn-sm btn-outline-success rounded mr-1 my-1" [attr.data-time]="st">{{st}}</button>
                         <button class="btn btn-outline-info btn-sm rounded confirm-selection my-1 flex-grow-1" style="display: none;">Confirm Selection</button>
                       </div>
                   </div>

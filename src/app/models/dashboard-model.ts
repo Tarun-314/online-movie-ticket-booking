@@ -68,6 +68,7 @@ export class TheatreMovieWithName {
     showTimes: string = "";
     availableSeats: string = "";
 }
+
 export class UserWithBookingCount {
     userId: string = "";
     fullName: string = "";

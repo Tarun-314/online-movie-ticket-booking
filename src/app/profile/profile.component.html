@@ -46,10 +46,9 @@
                   #password="ngModel"
                   minlength="8"
                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
-                  [ngClass]="{ 'is-invalid': password.dirty && password.invalid && password.touched, 'is-valid': password.valid}"
+                  [ngClass]="{ 'is-invalid': password.invalid && password.touched, 'is-valid': password.valid}"
                 />
-                <div *ngIf="password.dirty && password.invalid && password.touched" class="invalid-feedback">
-                  <div *ngIf="password.errors?.['required']">Password is required</div>
+                <div *ngIf="password.invalid && password.touched" class="invalid-feedback">
                   <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters</div>
                   <div *ngIf="password.errors?.['pattern']">Password must contain at least one uppercase letter, one lowercase letter, and one digit</div>
                 </div>
@@ -146,7 +145,7 @@
                 <td>{{p.showTime}}</td>
                 <td>{{p.seats}}</td>
                 <td>{{p.totalPrice}}</td>
-                <td>{{p.transactionId}}</td>
+                <td class="small">{{p.transactionID}}</td>
                 <td>{{p.paymentMethod}}</td>
               </tr>
               

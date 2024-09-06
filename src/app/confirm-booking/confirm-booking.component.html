@@ -35,13 +35,13 @@
                 <h1>Theatre: {{bookingData.movieName}}</h1>
             </div>
             <div class="time">
-                <p>Show Time: {{bookingData.selectedTime}}</p>
+                <p>Show Time: <span class="text-muted">{{bookingData.selectedTime}}</span></p>
             </div>
             <div class="barcode">
                 <img [src]="qrCodeUrl" alt="QR code">
             </div>
-            <p class="ticket-number mt-3 mb-1">Booking ID : {{ bookingId }}</p>
-            <p class="text-secondary">Payment Method : {{ bookingData.paymentMethod }}</p>
+            <p class="ticket-number mt-2 mb-0">Booking ID : <span class="text-muted small">{{ bookingData.transactionId }}</span></p>
+            <p>Payment Method : <span class="text-muted">{{ bookingData.paymentMethod }}</span></p>
             <p class="admit-one">
                 <span>BOOK MOVIE</span>
                 <span>BOOK MOVIE</span>

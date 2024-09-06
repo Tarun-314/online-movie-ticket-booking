@@ -1,24 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import html2canvas from 'html2canvas';
 import QRCode from 'qrcode';
 import { DataService } from '../services/data-services';
+import { DataTransferObject } from '../models/data-model';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-confirm-booking',
   templateUrl: './confirm-booking.component.html',
   styleUrls: ['./confirm-booking.component.css']
 })
-export class ConfirmBookingComponent implements OnInit {
+export class ConfirmBookingComponent implements OnInit, OnDestroy {
   bookingId: string = '';
   qrCodeUrl: string = '';
   bookingData:any;
+  isError:boolean = false;
 
   constructor(private router:Router, private dataService:DataService){}
   ngOnInit() {
     this.retrieveStateData();
-    this.generateQRCode();
-    this.generateBookingId();
+  }
+
+  ngOnDestroy(): void {
+    if(!this.isError)
+      this.router.navigate(["/home"]);
   }
 
   retrieveStateData() {
@@ -28,9 +34,11 @@ export class ConfirmBookingComponent implements OnInit {
     if (!this.bookingData.theatreID || 
         !this.bookingData.theatreName || 
         !this.bookingData.movieName || 
+        !this.bookingData.movieId ||
         !this.bookingData.moviePoster || 
         !this.bookingData.language || 
         !this.bookingData.selectedDate || 
+        !this.bookingData.screenNumber ||
         !this.bookingData.selectedTime || 
         !this.bookingData.seats || 
         !this.bookingData.amount || 
@@ -40,24 +48,51 @@ export class ConfirmBookingComponent implements OnInit {
       ) {
       this.router.navigate(['/error']);
     } else {
-      this.bookingId = this.bookingData.transactionId; 
-      this.dataService.setSeatString(this.bookingData.theatreID, this.bookingData.movieName, this.bookingData.selectedDate, this.bookingData.selectedTime, this.bookingData.seatString);
+      this.dataService.confirmBooking(
+        {
+          "userId": "user",
+          "theatreId": this.bookingData.theatreID,
+          "movieId": this.bookingData.movieId,
+          "selectedDate": this.bookingData.selectedDate,
+          "selectedTime": this.bookingData.selectedTime,
+          "seats": this.bookingData.seats ,
+          "screenNumber": +this.bookingData.screenNumber,
+          "amount": +this.bookingData.amount,
+          "seatString": this.bookingData.seatString ,
+          "paymentMethod": this.bookingData.paymentMethod ,
+          "transactionId": this.bookingData.transactionId 
+        }).subscribe({
+        next:(data:DataTransferObject) => {
+            if(data.isSuccess)
+            {
+              this.bookingId = data.data;
+              this.generateQRCode(this.bookingId);
+              console.log("all details saved..!");
+            }
+            else
+            {
+              this.isError=true;
+              console.log("Error");
+              this.router.navigate(["/error"]);
+            }
+        },
+        error:(error) =>{
+          this.isError=true;
+          console.log("Error");
+          this.router.navigate(["/error"]);
+        }
+      });
     }
   }
 
-  generateQRCode() {
-    QRCode.toDataURL(this.bookingId, { errorCorrectionLevel: 'H' }, (err, url) => {
+  generateQRCode(bookingId:string) {
+    QRCode.toDataURL(bookingId, { errorCorrectionLevel: 'H' }, (err, url) => {
       if (err) {
         console.error('Error generating QR code:', err);
         return;
       }
       this.qrCodeUrl = url;
     });
-  }
-
-  generateBookingId() {
-    // Implement your booking ID generation logic here
-    this.bookingId = 'BOOK' + Math.random().toString(36).substr(2, 9).toUpperCase();
   }
 
 

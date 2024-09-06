@@ -62,10 +62,10 @@
     <div class="card-body">
       <div class="row align-items-center">
         <div class="col-12 col-md-5 mb-3 mb-md-0">
-          <h5 class="card-title">{{lm.TheatreName}}</h5>
-          <h3 class="d-none theatreID">{{lm.TheatreID}}</h3>
-          <h6 class="card-subtitle mb-2 text-muted"><i class="fa fa-map-marker text-danger"></i> <span class="TheatreArea">{{lm.Area}}</span></h6>
-          <h6 class="small mb-2 text-muted"><i class="fa fa-television text-primary"></i> Screen No: <span class="screenNumber">{{lm.ScreenNumber}}</span></h6>
+          <h5 class="card-title">{{lm.name}}</h5>
+          <h5 class="theatreID d-none">{{lm.theatreId}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted"><i class="fa fa-map-marker text-danger"></i> <span class="TheatreArea"> {{lm.area}}</span></h6>
+          <h6 class="small mb-2 text-muted"><i class="fa fa-television text-primary"></i> Screen No: <span class="screenNumber">{{lm.screenNumber}}</span></h6>
           <div>
             <span class="badge badge-outline-info mr-2"><i class="fa fa-ticket"></i> M-Ticket Available</span>
             <span class="badge badge-outline-warning"><i class="fa fa-cutlery"></i> Food & Beverages Available</span>
@@ -74,7 +74,7 @@
         <div class="col-12 col-md-7">
           <div class="d-flex justify-content-center justify-content-md-end mt-2 mt-md-0">
             <div class="d-flex flex-wrap">
-              <button *ngFor="let st of getShowTimes(lm.ShowTimes)" class="btn btn-sm btn-outline-success rounded mx-1 my-1" [attr.data-time]="st">{{st}}</button>
+              <button *ngFor="let st of getShowTimes(lm.showTimes)" class="btn btn-sm btn-outline-success rounded mx-1 my-1" [attr.data-time]="st">{{st}}</button>
             </div>
           </div>
           <button class="btn btn-outline-info btn-sm m-1 confirm-selection w-100" style="display: none;">Confirm Selection</button>
@@ -242,7 +242,7 @@
           <!-- Left Side: Ticket Details -->
           <div class="col-sm-4 text-center text-sm-left">
             <p>Selected Seat(s): <span id="selectedSeats" class="text-secondary small">None</span></p>
-            <p>Total Price: <span id="totalPrice" class="text-secondary small">0</span> <span class="small text-secondary">INR</span></p>
+            <p>Total Price: <span class="small text-secondary">Rs. </span> <span id="totalPrice" class="text-secondary small">0</span></p>
           </div>
             <!-- Right Side: Price Labels -->
             <div class="col-sm-7 d-flex align-items-center justify-content-end">
